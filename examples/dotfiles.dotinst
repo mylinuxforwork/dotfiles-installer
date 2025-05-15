@@ -10,23 +10,25 @@
 	"settings":[
 		{
 			"type":"text",
-			"name":"replacement1",
-			"title":"Replacement 1",
+			"name":"keyboard",
+			"title":"Keyboard",
 			"default":"Default",
 			"file":"file.sh",
 			"check":"Check",
 			"search":"",
-			"value":""
+			"value":"123",
+			"template":""
 		},
 		{
 			"type":"text",
-			"name":"replacement2",
-			"title":"Replacement 2",
+			"name":"screenresolution",
+			"title":"Screen Resolution",
 			"default":"Default",
 			"file":"file.sh",
 			"check":"Check",
 			"search":"",
-			"value":""
+			"value":"",
+			"template":""
 		}
 	]
 }

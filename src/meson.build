@@ -33,6 +33,7 @@ dotfiles_installer_sources = [
   'loadconfiguration.py',
   'information.py',
   'dotfilessettings.py',
+  'settingsitem.py',
 ]
 
 install_data(dotfiles_installer_sources, install_dir: moduledir)

@@ -6,26 +6,13 @@
     <property name="margin-start">100</property>
     <property name="spacing">10</property>
     <child>
-      <object class="AdwPreferencesGroup">
-        <property name="title" translatable="yes">Group Name</property>
-        <property name="description" translatable="yes">Group Description</property>
-        <child>
-          <object class="AdwEntryRow">
-            <property name="title" translatable="yes">Title</property>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="AdwPreferencesGroup">
-        <property name="title" translatable="yes">Group Name</property>
-        <property name="description" translatable="yes">Group Description</property>
-        <child>
-          <object class="AdwEntryRow">
-            <property name="title" translatable="yes">Title</property>
-          </object>
-        </child>
-      </object>
-    </child>
+      <object class="GtkListBox" id="settings_group">
+        <property name="selection-mode">0</property>
+        <property name="margin-bottom">20</property>
+        <style>
+        <class name="boxed-list"/>
+        </style>
+        </object>
+      </child>
   </template>
 </interface>
