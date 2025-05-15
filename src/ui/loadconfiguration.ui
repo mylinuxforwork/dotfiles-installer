@@ -53,14 +53,5 @@
     </child>
     <!-- path to dotinst file -->
 
-    <child>
-      <object class="AdwSpinner" id="spinner">
-        <property name="halign">3</property>
-        <property name="valign">3</property>
-        <property name="width-request">48</property>
-        <property name="height-request">48</property>
-      </object>
-    </child>
-
   </template>
 </interface>

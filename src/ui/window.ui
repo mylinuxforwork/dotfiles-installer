@@ -27,10 +27,27 @@
             <child type="start">
               <object class="GtkButton" id="wizzard_back_btn">
                 <property name="name">regular</property>
-                <property name="label" translatable="yes">Back</property>
+                <property name="label" translatable="yes">Cancel</property>
                 <property name="action-name">app.wizzard_back</property>
                 <property name="margin-start">15</property>
                 <property name="margin-bottom">15</property>
+                <style>
+                  <class name="destructive-action"/>
+                </style>
+              </object>
+            </child>
+            <child type="center">
+              <object class="GtkBox">
+                <property name="halign">1</property>
+                <child>
+                  <object class="AdwSpinner" id="spinner">
+                    <property name="halign">1</property>
+                    <property name="valign">3</property>
+                    <property name="width-request">32</property>
+                    <property name="height-request">32</property>
+                    <property name="visible">false</property>
+                  </object>
+                </child>
               </object>
             </child>
             <child type="end">
@@ -40,6 +57,9 @@
                 <property name="action-name">app.wizzard_next</property>
                 <property name="margin-end">15</property>
                 <property name="margin-bottom">15</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
               </object>
             </child>
           </object>

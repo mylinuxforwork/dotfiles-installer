@@ -23,6 +23,8 @@ import json
 import pathlib
 import os
 import shutil
+import threading
+from multiprocessing import Process
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
@@ -47,6 +49,8 @@ class DotfilesInstallerApplication(Adw.Application):
         self.create_action('preferences', self.on_preferences_action)
         self.create_action('wizzard_back', self.on_wizzard_back_action)
         self.create_action('wizzard_next', self.on_wizzard_next_action)
+        self.create_action('showdotfiles', self.on_show_dotfiles)
+        self.runSetup()
 
     # Activate
     def do_activate(self):
@@ -57,40 +61,63 @@ class DotfilesInstallerApplication(Adw.Application):
         # Get Objects
         self.wizzard_stack = win.wizzard_stack
         self.load_configuration = win.load_configuration
+        self.load_configuration.props = self.props.active_window
         self.config_information = win.config_information
+        self.config_information.props = self.props.active_window
+
+        self.props.active_window.wizzard_back_btn.set_visible(False)
+
+        self.status = "init"
 
         # Show Application Window
         win.present()
 
     # Wizzard Navigation
     def on_wizzard_back_action(self, widget, _):
-        match self.wizzard_stack.get_visible_child_name():
-            case "page2":
-               self.wizzard_stack.set_visible_child_name("page1")
-            case "page3":
-               self.wizzard_stack.set_visible_child_name("page2")
-            case _:
-                self.wizzard_stack.set_visible_child_name("page3")
+
+        # Add Cancel Dialog
+        self.props.active_window.wizzard_back_btn.set_visible(False)
+        self.props.active_window.wizzard_next_btn.set_label("Next")
+        self.wizzard_stack.set_visible_child_name("page1")
+        self.config_information.clear_page()
+        self.status = "init"
 
     def on_wizzard_next_action(self, widget, _):
         match self.wizzard_stack.get_visible_child_name():
             case "page1":
+                self.props.active_window.wizzard_back_btn.set_visible(True)
                 self.loadConfiguration()
             case "page2":
-                self.wizzard_stack.set_visible_child_name("page3")
-            case _:
-                self.wizzard_stack.set_visible_child_name("page1")
+                if self.config_information.show_replacement == False:
+                    self.downloadSource()
+                else:
+                    self.wizzard_stack.set_visible_child_name("page3")
+
 
     # Run Setup
     def runSetup(self):
-        print("Run Setup")
-        # pathlib.Path(configFolder).mkdir(parents=True, exist_ok=True)
+        pathlib.Path(home_folder + "/.local/share/dotfiles-installer/dotfiles").mkdir(parents=True, exist_ok=True)
+        pathlib.Path(home_folder + "/.local/share/dotfiles-installer/downloads").mkdir(parents=True, exist_ok=True)
+        pathlib.Path(home_folder + "/.local/share/dotfiles-installer/prepared").mkdir(parents=True, exist_ok=True)
+        pathlib.Path(home_folder + "/.local/share/dotfiles-installer/backup").mkdir(parents=True, exist_ok=True)
 
     # Load Configuration
     def loadConfiguration(self):
-        self.config_json = self.load_configuration.loadConfiguration()
-        self.config_information.showInformation(self.config_json)
-        self.wizzard_stack.set_visible_child_name("page2")
+        thread = threading.Thread(target=self.load_configuration.loadConfiguration)
+        thread.daemon = True
+        thread.start()
+
+    def downloadSource(self):
+        thread = threading.Thread(target=self.config_information.downloadSource)
+        thread.daemon = True
+        thread.start()
+
+    def on_show_dotfiles(self, widget, _):
+        self.config_information.showDotfiles()
+
+    def on_response_selected(_dialog, task):
+        response = _dialog.choose_finish(task)
+        print(f'Selected "{response}" response.')
 
     def on_about_action(self, *args):
         about = Adw.AboutDialog(application_name='Dotfiles Installer',

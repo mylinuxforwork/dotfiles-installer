@@ -1,6 +1,60 @@
 {
 	"name": "ML4W Dotfiles for Hyprland",
+	"id": "com.ml4w.dotfiles",
 	"description": "Advanced configuration for the dynamic tiling window manager Hyprland",
+	"version":"3.0",
 	"author": "Stephan Raabe",
-	"homepage": ""
+	"homepage": "https://github.com/mylinuxforwork/dotfiles",
+	"source": "/.ml4w-hyprland/dotfiles/",
+	"subfolder": "/share/dotfiles/",
+	"settings":[
+			{
+				"name":"Group 1",
+				"description":"Group 1 Description",
+				"replacements":[
+					{
+						"type":"text",
+						"name":"Replacement 1",
+						"default":"Default",
+						"file":"file.sh",
+						"check":"Check",
+						"search":"",
+						"value":""
+					},
+					{
+						"type":"text",
+						"name":"Replacement 1",
+						"default":"Default",
+						"file":"file.sh",
+						"check":"Check",
+						"search":"",
+						"value":""
+					}
+				]
+			},
+			{
+				"name":"Group 2",
+				"description":"Group 2 Description",
+				"replacements":[
+					{
+						"type":"text",
+						"name":"Replacement 1",
+						"default":"Default",
+						"file":"file.sh",
+						"check":"Check",
+						"search":"",
+						"value":""
+					},
+					{
+						"type":"text",
+						"name":"Replacement 1",
+						"default":"Default",
+						"file":"file.sh",
+						"check":"Check",
+						"search":"",
+						"value":""
+					}
+				]
+			}
+	]
 }

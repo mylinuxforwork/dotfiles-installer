@@ -28,8 +28,11 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'DotfilesinstallerWindow'
 
     wizzard_stack = Gtk.Template.Child()
+    wizzard_next_btn = Gtk.Template.Child()
+    wizzard_back_btn = Gtk.Template.Child()
     config_information = Gtk.Template.Child()
     load_configuration = Gtk.Template.Child()
+    spinner = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
