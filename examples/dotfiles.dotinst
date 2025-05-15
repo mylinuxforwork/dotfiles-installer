@@ -8,53 +8,25 @@
 	"source": "/.ml4w-hyprland/dotfiles/",
 	"subfolder": "/share/dotfiles/",
 	"settings":[
-			{
-				"name":"Group 1",
-				"description":"Group 1 Description",
-				"replacements":[
-					{
-						"type":"text",
-						"name":"Replacement 1",
-						"default":"Default",
-						"file":"file.sh",
-						"check":"Check",
-						"search":"",
-						"value":""
-					},
-					{
-						"type":"text",
-						"name":"Replacement 1",
-						"default":"Default",
-						"file":"file.sh",
-						"check":"Check",
-						"search":"",
-						"value":""
-					}
-				]
-			},
-			{
-				"name":"Group 2",
-				"description":"Group 2 Description",
-				"replacements":[
-					{
-						"type":"text",
-						"name":"Replacement 1",
-						"default":"Default",
-						"file":"file.sh",
-						"check":"Check",
-						"search":"",
-						"value":""
-					},
-					{
-						"type":"text",
-						"name":"Replacement 1",
-						"default":"Default",
-						"file":"file.sh",
-						"check":"Check",
-						"search":"",
-						"value":""
-					}
-				]
-			}
+		{
+			"type":"text",
+			"name":"replacement1",
+			"title":"Replacement 1",
+			"default":"Default",
+			"file":"file.sh",
+			"check":"Check",
+			"search":"",
+			"value":""
+		},
+		{
+			"type":"text",
+			"name":"replacement2",
+			"title":"Replacement 2",
+			"default":"Default",
+			"file":"file.sh",
+			"check":"Check",
+			"search":"",
+			"value":""
+		}
 	]
 }

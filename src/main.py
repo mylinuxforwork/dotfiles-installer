@@ -66,6 +66,7 @@ class DotfilesInstallerApplication(Adw.Application):
         self.config_information.props = self.props.active_window
 
         self.props.active_window.wizzard_back_btn.set_visible(False)
+        self.wizzard_stack.set_visible_child_name("page3")
 
         self.status = "init"
 
