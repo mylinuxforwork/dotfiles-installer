@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=com.ml4w.dotfilesinstaller
+Exec=@bindir@/dotfiles-installer --gapplication-service

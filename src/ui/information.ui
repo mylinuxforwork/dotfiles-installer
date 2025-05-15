@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<interface>
+  <template class="Information" parent="GtkBox">
+    <property name="orientation">1</property>
+    <property name="margin-end">100</property>
+    <property name="margin-start">100</property>
+    <property name="spacing">10</property>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">General</property>
+        <child>
+          <object class="AdwActionRow" id="config_name">
+            <style>
+              <class name="property"/>
+            </style>
+            <property name="title" translatable="yes">Name</property>
+            <property name="subtitle" translatable="yes">Sub</property>
+          </object>
+        </child>
+
+        <child>
+          <object class="AdwActionRow" id="config_version">
+            <style>
+              <class name="property"/>
+            </style>
+            <property name="title" translatable="yes">Version</property>
+            <property name="subtitle" translatable="yes">Version</property>
+          </object>
+        </child>
+
+        <child>
+          <object class="AdwActionRow">
+            <style>
+              <class name="property"/>
+            </style>
+            <property name="title" translatable="yes">Description</property>
+            <property name="subtitle" translatable="yes">Description</property>
+          </object>
+        </child>
+
+        <child>
+          <object class="AdwActionRow">
+            <style>
+              <class name="property"/>
+            </style>
+            <property name="title" translatable="yes">Author</property>
+            <property name="subtitle" translatable="yes">Author</property>
+          </object>
+        </child>
+
+        <child>
+          <object class="AdwActionRow">
+            <style>
+              <class name="property"/>
+            </style>
+            <property name="title" translatable="yes">Source</property>
+            <property name="subtitle" translatable="yes">Source</property>
+          </object>
+        </child>
+      </object>
+    </child>
+
+    <child>
+      <object class="AdwSpinner" id="spinner">
+        <property name="halign">3</property>
+        <property name="valign">3</property>
+        <property name="width-request">48</property>
+        <property name="height-request">48</property>
+      </object>
+    </child>
+
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">Content</property>
+        <child>
+          <object class="AdwActionRow">
+            <property name="title" translatable="yes">Open Dotfiles</property>
+            <property name="activatable-widget">toast_button</property>
+            <child type="suffix">
+              <object class="GtkButton" id="toast_button">
+                <property name="halign">3</property>
+                <property name="valign">3</property>
+                <property name="label" translatable="yes">show toast</property>
+                <property name="icon-name">bread-symbolic</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+
+  </template>
+</interface>

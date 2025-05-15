@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<interface>
+  <template class="DotfilesSettings" parent="GtkBox">
+    <property name="orientation">1</property>
+    <property name="margin-end">100</property>
+    <property name="margin-start">100</property>
+    <property name="spacing">10</property>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">Group Name</property>
+        <property name="description" translatable="yes">Group Description</property>
+        <child>
+          <object class="AdwEntryRow">
+            <property name="title" translatable="yes">Title</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title" translatable="yes">Group Name</property>
+        <property name="description" translatable="yes">Group Description</property>
+        <child>
+          <object class="AdwEntryRow">
+            <property name="title" translatable="yes">Title</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

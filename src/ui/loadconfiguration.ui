@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<interface>
+  <template class="Loadconfiguration" parent="GtkBox">
+    <property name="orientation">1</property>
+    <property name="margin-end">100</property>
+    <property name="margin-start">100</property>
+    <property name="spacing">10</property>
+
+    <!-- ML4W Logo -->
+    <child>
+      <object class="GtkImage">
+        <property name="name">logo</property>
+        <property name="icon-name">com.ml4w.dotfilesinstaller</property>
+        <property name="pixel-size">196</property>
+        <property name="margin-bottom">30</property>
+        <style>
+          <class name="icon-dropshadow"/>
+        </style>
+      </object>
+    </child>
+    <!-- ML4W Logo -->
+
+    <!-- ML4W Headline -->
+    <child>
+      <object class="GtkLabel">
+        <property name="label">Dotfiles Installer</property>
+        <style>
+          <class name="title-1"/>
+        </style>
+      </object>
+    </child>
+    <!-- ML4W Headline -->
+
+    <!-- ML4W Headline -->
+    <child>
+      <object class="GtkLabel" id="ml4w_version">
+        <property name="label">Install custom dotfiles and configurations easily on your system.</property>
+        <property name="margin-bottom">2</property>
+      </object>
+    </child>
+    <!-- ML4W Headline -->
+
+    <!-- Path to dotinst file -->
+    <child>
+      <object class="AdwPreferencesGroup">
+        <property name="title">Enter the url or path to the .dotinst file.</property>
+        <child>
+          <object class="AdwEntryRow" id="entry_dotinst">
+            <property name="title">.dotinst file</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <!-- path to dotinst file -->
+
+    <child>
+      <object class="AdwSpinner" id="spinner">
+        <property name="halign">3</property>
+        <property name="valign">3</property>
+        <property name="width-request">48</property>
+        <property name="height-request">48</property>
+      </object>
+    </child>
+
+  </template>
+</interface>
