@@ -32,8 +32,10 @@ dotfiles_installer_sources = [
   'window.py',
   'loadconfiguration.py',
   'information.py',
-  'dotfilessettings.py',
+  'settings.py',
   'settingsitem.py',
+  'restore.py',
+  'restoreitem.py',
 ]
 
 install_data(dotfiles_installer_sources, install_dir: moduledir)

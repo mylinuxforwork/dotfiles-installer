@@ -6,6 +6,14 @@
     <property name="margin-start">100</property>
     <property name="spacing">10</property>
     <child>
+      <object class="GtkLabel">
+        <property name="label">Information</property>
+        <style>
+          <class name="title-1"/>
+        </style>
+      </object>
+    </child>
+    <child>
       <object class="AdwPreferencesGroup">
         <property name="title" translatable="yes">General</property>
         <child>

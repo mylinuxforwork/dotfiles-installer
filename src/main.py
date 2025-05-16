@@ -70,6 +70,9 @@ class DotfilesInstallerApplication(Adw.Application):
         self.config_settings = win.config_settings
         self.config_settings.props = self.props.active_window
 
+        self.config_restore = win.config_restore
+        self.config_restore.props = self.props.active_window
+
         self.props.active_window.wizzard_back_btn.set_visible(False)
         self.wizzard_stack.set_visible_child_name("page1")
 
@@ -101,6 +104,8 @@ class DotfilesInstallerApplication(Adw.Application):
                     self.wizzard_stack.set_visible_child_name("page3")
             case "page3":
                 self.config_settings.replaceSettings()
+            case "page4":
+                print("restore")
 
     # Run Setup
     def runSetup(self):

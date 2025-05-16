@@ -10,9 +10,9 @@ from .settingsitem import SettingsItem
 
 home_folder = os.path.expanduser('~')
 
-@Gtk.Template(resource_path='/com/ml4w/dotfilesinstaller/ui/dotfilessettings.ui')
-class DotfilesSettings(Gtk.Box):
-    __gtype_name__ = 'DotfilesSettings'
+@Gtk.Template(resource_path='/com/ml4w/dotfilesinstaller/ui/settings.ui')
+class Settings(Gtk.Box):
+    __gtype_name__ = 'Settings'
 
     config_json = ""
     settings_group = Gtk.Template.Child()
@@ -22,8 +22,6 @@ class DotfilesSettings(Gtk.Box):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # with open(home_folder + "/Projects/dotfiles-installer/examples/dotfiles.dotinst") as f:
-        #     self.config_json = json.load(f)
         self.settings_group.bind_model(self.settings_store,self.create_settings_row)
 
     def loadSettings(self):

@@ -21,7 +21,8 @@ from gi.repository import Adw
 from gi.repository import Gtk
 from .information import Information
 from .loadconfiguration import LoadConfiguration
-from .dotfilessettings import DotfilesSettings
+from .settings import Settings
+from .restore import Restore
 
 @Gtk.Template(resource_path='/com/ml4w/dotfilesinstaller/ui/window.ui')
 class DotfilesInstallerWindow(Adw.ApplicationWindow):
@@ -32,6 +33,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     wizzard_back_btn = Gtk.Template.Child()
     config_information = Gtk.Template.Child()
     config_settings = Gtk.Template.Child()
+    config_restore = Gtk.Template.Child()
     load_configuration = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
 

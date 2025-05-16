@@ -52,7 +52,8 @@ class LoadConfiguration(Gtk.Box):
                 self.props.config_information.showInformation()
                 self.props.status = "info"
                 self.props.wizzard_next_btn.set_sensitive(True)
-                self.props.wizzard_stack.set_visible_child_name("page2")
+                # self.props.wizzard_stack.set_visible_child_name("page2")
+                self.props.wizzard_stack.set_visible_child_name("page4")
             except:
                 dialog = Adw.AlertDialog(
                     heading="File Error",
