@@ -31,6 +31,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     wizzard_next_btn = Gtk.Template.Child()
     wizzard_back_btn = Gtk.Template.Child()
     config_information = Gtk.Template.Child()
+    config_settings = Gtk.Template.Child()
     load_configuration = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
 

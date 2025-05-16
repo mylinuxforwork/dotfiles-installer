@@ -2,7 +2,7 @@ from gi.repository import GObject,Gtk, Gio, Adw
 
 class SettingsItem(GObject.GObject):
 
-    name = GObject.property(type = str)
+    mode = GObject.property(type = str)
     title = GObject.property(type = str)
     type = GObject.property(type = str)
     default = GObject.property(type = str)

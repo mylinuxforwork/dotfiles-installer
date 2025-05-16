@@ -10,24 +10,52 @@
 	"settings":[
 		{
 			"type":"text",
-			"name":"keyboard",
-			"title":"Keyboard",
-			"default":"Default",
+			"mode":"replacesingleline",
+			"title":"Keyboard Layout",
 			"file":"file.sh",
-			"check":"Check",
-			"search":"",
-			"value":"123",
+			"checkpoint":"Check",
+			"search":"kb_layout",
+			"value":"us",
+			"template":"    kb_layout = [VALUE]"
+		},
+		{
+			"type":"text",
+			"mode":"replacesingleline",
+			"title":"Keyboard Variant",
+			"file":"file.sh",
+			"checkpoint":"Check",
+			"search":"kb_variant",
+			"value":"",
+			"template":"    kb_variant = [VALUE]"
+		},
+		{
+			"type":"text",
+			"mode":"replacesinglelinecheckpoint",
+			"title":"Keyboard Layout",
+			"file":"file.sh",
+			"checkpoint":"CHECKPOINT",
+			"search":"kb_layout",
+			"value":"us",
+			"template":"    kb_layout = [VALUE]"
+		},
+		{
+			"type":"text",
+			"mode":"replacesingleline",
+			"title":"Screen Resolution",
+			"file":"file.sh",
+			"checkpoint":"Check",
+			"search":"asdjklas",
+			"value":"1980x1024",
 			"template":""
 		},
 		{
 			"type":"text",
-			"name":"screenresolution",
-			"title":"Screen Resolution",
-			"default":"Default",
-			"file":"file.sh",
+			"mode":"overwritefile",
+			"title":"Default Terminal",
+			"file":"file1.sh",
 			"check":"Check",
 			"search":"",
-			"value":"",
+			"value":"kitty",
 			"template":""
 		}
 	]

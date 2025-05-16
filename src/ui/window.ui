@@ -133,7 +133,7 @@
                         <property name="margin-start">15</property>
                         <property name="margin-end">15</property>
                         <child>
-                          <object class="DotfilesSettings"/>
+                          <object class="DotfilesSettings" id="config_settings"/>
                         </child>
                       </object>
                     </property>

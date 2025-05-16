@@ -60,13 +60,18 @@ class DotfilesInstallerApplication(Adw.Application):
 
         # Get Objects
         self.wizzard_stack = win.wizzard_stack
+
         self.load_configuration = win.load_configuration
         self.load_configuration.props = self.props.active_window
+
         self.config_information = win.config_information
         self.config_information.props = self.props.active_window
 
+        self.config_settings = win.config_settings
+        self.config_settings.props = self.props.active_window
+
         self.props.active_window.wizzard_back_btn.set_visible(False)
-        self.wizzard_stack.set_visible_child_name("page3")
+        self.wizzard_stack.set_visible_child_name("page1")
 
         self.status = "init"
 
@@ -92,8 +97,10 @@ class DotfilesInstallerApplication(Adw.Application):
                 if self.config_information.show_replacement == False:
                     self.downloadSource()
                 else:
+                    self.config_settings.loadSettings()
                     self.wizzard_stack.set_visible_child_name("page3")
-
+            case "page3":
+                self.config_settings.replaceSettings()
 
     # Run Setup
     def runSetup(self):
