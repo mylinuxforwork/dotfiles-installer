@@ -78,6 +78,12 @@ class DotfilesInstallerApplication(Adw.Application):
         self.config_protect = win.config_protect
         self.config_protect.props = self.props.active_window
 
+        self.config_installation = win.config_installation
+        self.config_installation.props = self.props.active_window
+
+        self.config_finish = win.config_finish
+        self.config_finish.props = self.props.active_window
+
         self.props.active_window.wizzard_back_btn.set_visible(False)
         self.wizzard_stack.set_visible_child_name("page1")
 
@@ -116,6 +122,8 @@ class DotfilesInstallerApplication(Adw.Application):
                 self.wizzard_stack.set_visible_child_name("page5")
             case "page5":
                 self.config_protect.startProtect()
+            case "page6":
+                self.config_installation.startInstallation()
 
     # Run Setup
     def runSetup(self):

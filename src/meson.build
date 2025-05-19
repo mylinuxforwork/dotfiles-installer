@@ -39,6 +39,7 @@ dotfiles_installer_sources = [
   'protect.py',
   'protectitem.py',
   'installation.py',
+  'finish.py',
 ]
 
 install_data(dotfiles_installer_sources, install_dir: moduledir)

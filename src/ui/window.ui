@@ -177,8 +177,40 @@
                 </child>
 
                 <!-- Page: Installation -->
+                <child>
+                  <object class="GtkStackPage">
+                    <property name="name">page6</property>
+                    <property name="title" translatable="yes">Installation</property>
+                    <property name="child">
+                      <object class="AdwStatusPage">
+                        <property name="valign">1</property>
+                        <property name="margin-start">15</property>
+                        <property name="margin-end">15</property>
+                        <child>
+                          <object class="Installation" id="config_installation"/>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </child>
 
                 <!-- Page: Finish -->
+                <child>
+                  <object class="GtkStackPage">
+                    <property name="name">page7</property>
+                    <property name="title" translatable="yes">Finish</property>
+                    <property name="child">
+                      <object class="AdwStatusPage">
+                        <property name="valign">1</property>
+                        <property name="margin-start">15</property>
+                        <property name="margin-end">15</property>
+                        <child>
+                          <object class="Finish" id="config_finish"/>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </child>
 
               </object>
             </child>
