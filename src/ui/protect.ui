@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<interface>
+  <template class="Protect" parent="GtkBox">
+    <property name="orientation">1</property>
+    <property name="margin-end">100</property>
+    <property name="margin-start">100</property>
+    <property name="spacing">10</property>
+    <child>
+      <object class="GtkLabel">
+        <property name="label">Protect your Custom Configuration</property>
+        <style>
+          <class name="title-1"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="GtkLabel">
+        <property name="label">Activate files and folders with your own configurations to protect them from being overwritten by the update. This can lead to errors after the update.</property>
+        <property name="margin-bottom">2</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkListBox" id="protect_group">
+        <property name="selection-mode">0</property>
+        <property name="margin-bottom">20</property>
+        <style>
+        <class name="boxed-list"/>
+        </style>
+        </object>
+      </child>
+  </template>
+</interface>

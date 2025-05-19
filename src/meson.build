@@ -36,6 +36,9 @@ dotfiles_installer_sources = [
   'settingsitem.py',
   'restore.py',
   'restoreitem.py',
+  'protect.py',
+  'protectitem.py',
+  'installation.py',
 ]
 
 install_data(dotfiles_installer_sources, install_dir: moduledir)

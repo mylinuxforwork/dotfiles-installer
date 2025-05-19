@@ -22,7 +22,7 @@ class Settings(Gtk.Box):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.settings_group.bind_model(self.settings_store,self.create_settings_row)
+        self.settings_group.bind_model(self.settings_store,self.create_row)
 
     def loadSettings(self):
         self.config_json = self.props.config_json
@@ -42,7 +42,7 @@ class Settings(Gtk.Box):
             else:
                 print("ERROR: File " + i["file"] + " for " + i["title"] + " does not exist.")
 
-    def create_settings_row(self,item):
+    def create_row(self,item):
         row = Adw.EntryRow()
         row.set_title(item.title)
         row.set_text(item.value)

@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=dotfiles-installer
+Name=Dotfiles Installer
 Exec=dotfiles-installer
 Icon=com.ml4w.dotfilesinstaller
 Terminal=false

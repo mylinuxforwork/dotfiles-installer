@@ -50,6 +50,8 @@ class DotfilesInstallerApplication(Adw.Application):
         self.create_action('wizzard_back', self.on_wizzard_back_action)
         self.create_action('wizzard_next', self.on_wizzard_next_action)
         self.create_action('showdotfiles', self.on_show_dotfiles)
+        self.create_action('opendependencies', self.on_open_dependencies)
+        self.create_action('openhomepage', self.on_open_homepage)
         self.runSetup()
 
     # Activate
@@ -73,6 +75,9 @@ class DotfilesInstallerApplication(Adw.Application):
         self.config_restore = win.config_restore
         self.config_restore.props = self.props.active_window
 
+        self.config_protect = win.config_protect
+        self.config_protect.props = self.props.active_window
+
         self.props.active_window.wizzard_back_btn.set_visible(False)
         self.wizzard_stack.set_visible_child_name("page1")
 
@@ -89,6 +94,8 @@ class DotfilesInstallerApplication(Adw.Application):
         self.props.active_window.wizzard_next_btn.set_label("Next")
         self.wizzard_stack.set_visible_child_name("page1")
         self.config_information.clear_page()
+        self.config_settings.settings_store = Gio.ListStore()
+        self.config_restore.restore_store = Gio.ListStore()
         self.status = "init"
 
     def on_wizzard_next_action(self, widget, _):
@@ -100,12 +107,15 @@ class DotfilesInstallerApplication(Adw.Application):
                 if self.config_information.show_replacement == False:
                     self.downloadSource()
                 else:
-                    self.config_settings.loadSettings()
-                    self.wizzard_stack.set_visible_child_name("page3")
+                    self.config_information.openNext()
             case "page3":
                 self.config_settings.replaceSettings()
             case "page4":
-                print("restore")
+                self.config_restore.startRestore()
+                self.config_protect.load()
+                self.wizzard_stack.set_visible_child_name("page5")
+            case "page5":
+                self.config_protect.startProtect()
 
     # Run Setup
     def runSetup(self):
@@ -127,6 +137,12 @@ class DotfilesInstallerApplication(Adw.Application):
 
     def on_show_dotfiles(self, widget, _):
         self.config_information.showDotfiles()
+
+    def on_open_homepage(self, widget, _):
+        self.config_information.openHomepage()
+
+    def on_open_dependencies(self, widget, _):
+        self.config_information.openDependencies()
 
     def on_response_selected(_dialog, task):
         response = _dialog.choose_finish(task)

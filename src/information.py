@@ -20,6 +20,7 @@ class Information(Gtk.Box):
     config_description = Gtk.Template.Child()
     config_author = Gtk.Template.Child()
     config_homepage = Gtk.Template.Child()
+    config_dependencies = Gtk.Template.Child()
     config_source = Gtk.Template.Child()
     config_subfolder = Gtk.Template.Child()
     open_dotfiles_content = Gtk.Template.Child()
@@ -39,6 +40,7 @@ class Information(Gtk.Box):
         self.config_description.set_subtitle(config_json["description"])
         self.config_author.set_subtitle(config_json["author"])
         self.config_homepage.set_subtitle(config_json["homepage"])
+        self.config_dependencies.set_subtitle(config_json["dependencies"])
         self.config_source.set_subtitle(config_json["source"])
         self.config_subfolder.set_subtitle(config_json["subfolder"])
         self.props.wizzard_next_btn.set_label("Download Dotfiles")
@@ -69,8 +71,8 @@ class Information(Gtk.Box):
             # Copy dotfiles into prepared folder
             shutil.copytree(home_folder + "/.local/share/dotfiles-installer/downloads/" + self.config_id.get_subtitle() + self.config_subfolder.get_subtitle(), prepared_folder)
             self.open_dotfiles_content.set_visible(True)
-            self.show_replacement = True
             self.props.wizzard_next_btn.set_label("Next")
+            self.show_replacement = True
         except:
             dialog = Adw.AlertDialog(
                 heading="Download Error",
@@ -87,8 +89,23 @@ class Information(Gtk.Box):
         response = _dialog.choose_finish(task)
         self.props.wizzard_stack.set_visible_child_name("page1")
 
+    def openNext(self):
+        if os.path.exists(home_folder + "/.local/share/dotfiles-installer/dotfiles/" + self.config_id.get_subtitle()):
+            self.props.config_restore.loadRestore()
+            self.props.wizzard_stack.set_visible_child_name("page4")
+        else:
+            self.props.config_settings.loadSettings()
+            self.props.wizzard_stack.set_visible_child_name("page3")
+
+
     def showDotfiles(self):
-        subprocess.Popen(["flatpak-spawn", "xdg-open", home_folder + "/.local/share/dotfiles-installer/prepared/" + self.config_id.get_subtitle()])
+        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", home_folder + "/.local/share/dotfiles-installer/prepared/" + self.config_id.get_subtitle()])
+
+    def openHomepage(self):
+        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.config_homepage.get_subtitle()])
+
+    def openDependencies(self):
+        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.config_dependencies.get_subtitle()])
 
     def clear_page(self):
         self.open_dotfiles_content.set_visible(False)

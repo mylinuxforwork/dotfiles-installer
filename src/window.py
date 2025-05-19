@@ -23,6 +23,7 @@ from .information import Information
 from .loadconfiguration import LoadConfiguration
 from .settings import Settings
 from .restore import Restore
+from .protect import Protect
 
 @Gtk.Template(resource_path='/com/ml4w/dotfilesinstaller/ui/window.ui')
 class DotfilesInstallerWindow(Adw.ApplicationWindow):
@@ -34,6 +35,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     config_information = Gtk.Template.Child()
     config_settings = Gtk.Template.Child()
     config_restore = Gtk.Template.Child()
+    config_protect = Gtk.Template.Child()
     load_configuration = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
 

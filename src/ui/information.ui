@@ -67,8 +67,36 @@
               <class name="property"/>
             </style>
             <property name="title" translatable="yes">Homepage</property>
+            <property name="activatable-widget">btn_open_homepage</property>
+            <child type="suffix">
+              <object class="GtkButton" id="btn_open_homepage">
+                <property name="halign">3</property>
+                <property name="valign">3</property>
+                <property name="label" translatable="yes">Open</property>
+                <property name="action-name">app.openhomepage</property>
+              </object>
+            </child>
           </object>
         </child>
+
+        <child>
+          <object class="AdwActionRow" id="config_dependencies">
+            <style>
+              <class name="property"/>
+            </style>
+            <property name="title" translatable="yes">Dependencies</property>
+            <property name="activatable-widget">btn_open_dependencies</property>
+            <child type="suffix">
+              <object class="GtkButton" id="btn_open_dependencies">
+                <property name="halign">3</property>
+                <property name="valign">3</property>
+                <property name="label" translatable="yes">Open</property>
+                <property name="action-name">app.opendependencies</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
       </object>
     </child>
     <child>
@@ -100,13 +128,13 @@
         <property name="visible">false</property>
         <child>
           <object class="AdwActionRow">
-            <property name="title" translatable="yes">Open Dotfiles</property>
+            <property name="title" translatable="yes">Show downloaded dotfiles</property>
             <property name="activatable-widget">btn_show_dotfiles</property>
             <child type="suffix">
               <object class="GtkButton" id="btn_show_dotfiles">
                 <property name="halign">3</property>
                 <property name="valign">3</property>
-                <property name="label" translatable="yes">Show Dotfiles</property>
+                <property name="label" translatable="yes">Open</property>
                 <property name="action-name">app.showdotfiles</property>
               </object>
             </child>

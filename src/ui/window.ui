@@ -4,7 +4,7 @@
   <requires lib="Adw" version="1.0"/>
   <template class="DotfilesinstallerWindow" parent="AdwApplicationWindow">
     <property name="title" translatable="yes">Dotfiles Installer</property>
-    <property name="default-width">800</property>
+    <property name="default-width">600</property>
     <property name="default-height">600</property>
     <property name="content">
       <object class="AdwToolbarView">
@@ -92,7 +92,7 @@
                         <property name="valign">1</property>
                         <property name="margin-start">15</property>
                         <property name="margin-end">15</property>
-                        <child>
+                        <child type="content">
                           <object class="Loadconfiguration" id="load_configuration"/>
                         </child>
                       </object>
@@ -152,6 +152,24 @@
                         <property name="margin-end">15</property>
                         <child>
                           <object class="Restore" id="config_restore"/>
+                        </child>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+
+                <!-- Page: Protect -->
+                <child>
+                  <object class="GtkStackPage">
+                    <property name="name">page5</property>
+                    <property name="title" translatable="yes">Protect</property>
+                    <property name="child">
+                      <object class="AdwStatusPage">
+                        <property name="valign">1</property>
+                        <property name="margin-start">15</property>
+                        <property name="margin-end">15</property>
+                        <child>
+                          <object class="Protect" id="config_protect"/>
                         </child>
                       </object>
                     </property>
