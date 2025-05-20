@@ -6,9 +6,8 @@ import json
 import pathlib
 import os
 import shutil
-from .settingsitem import SettingsItem
-
-home_folder = os.path.expanduser('~')
+from ..items.settingsitem import SettingsItem
+from .._settings import *
 
 @Gtk.Template(resource_path='/com/ml4w/dotfilesinstaller/ui/settings.ui')
 class Settings(Gtk.Box):
@@ -25,10 +24,8 @@ class Settings(Gtk.Box):
         self.settings_group.bind_model(self.settings_store,self.create_row)
 
     def loadSettings(self):
-        self.config_json = self.props.config_json
-        self.dotfiles = home_folder + "/.local/share/dotfiles-installer/prepared/" + self.config_json["id"]
-        for i in self.config_json["settings"]:
-            if os.path.exists(self.dotfiles + "/" + i["file"]):
+        for i in self.props.config_json["settings"]:
+            if os.path.exists(self.props.prepared_folder + "/" + i["file"]):
                 item = SettingsItem()
                 item.mode = i["mode"]
                 item.title = i["title"]
@@ -62,7 +59,7 @@ class Settings(Gtk.Box):
 
     # Replace Functions
     def searchInFile(self, f, search):
-        with open(self.dotfiles + f, 'r') as file:
+        with open(self.props.prepared_folder + "/" + f, 'r') as file:
             content = file.read()
             if search in content:
                 return True
@@ -70,12 +67,12 @@ class Settings(Gtk.Box):
                 return False
 
     def overwriteFile(self, f, text):
-        file=open(self.dotfiles + "/" + f, "w+")
+        file=open(self.props.prepared_folder + "/" + f, "w+")
         file.write(str(text))
         file.close()
 
     def replaceInFile(self, f, search, value, template):
-        file = open(self.dotfiles + "/" + f, 'r')
+        file = open(self.props.prepared_folder + "/" + f, 'r')
         lines = file.readlines()
         count = 0
         found = 0
@@ -87,13 +84,13 @@ class Settings(Gtk.Box):
         if found > 0:
             value = template.replace("[VALUE]",value)
             lines[found - 1] = value + "\n"
-            with open(self.dotfiles + "/" + f, 'w') as file:
+            with open(self.props.prepared_folder + "/" + f, 'w') as file:
                 file.writelines(lines)
         else:
             print("ERROR: " + search + " not found in " + f)
 
     def replaceInFileCheckpoint(self, f, checkpoint, search, value, template):
-        file = open(self.dotfiles + "/" + f, 'r')
+        file = open(self.props.prepared_folder + "/" + f, 'r')
         lines = file.readlines()
         count = 0
         checkpoint_found = 0
@@ -120,11 +117,11 @@ class Settings(Gtk.Box):
         if found > 0:
             value = template.replace("[VALUE]",value)
             lines[found-1] = value + "\n"
-            with open(self.dotfiles + "/" + f, 'w') as file:
+            with open(self.props.prepared_folder + "/" + f, 'w') as file:
                 file.writelines(lines)
 
     def replaceInFileNext(self, f, search, replace):
-        file = open(self.dotfiles + f, 'r')
+        file = open(self.props.prepared_folder + "/" + f, 'r')
         lines = file.readlines()
         count = 0
         found = 0
@@ -135,6 +132,6 @@ class Settings(Gtk.Box):
                 break
         if found > 0:
             lines[found] = replace + "\n"
-            with open(self.dotfiles + f, 'w') as file:
+            with open(self.props.prepared_folder + "/" + f, 'w') as file:
                 file.writelines(lines)
 

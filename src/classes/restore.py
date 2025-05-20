@@ -6,9 +6,8 @@ import json
 import pathlib
 import os
 import shutil
-from .restoreitem import RestoreItem
-
-home_folder = os.path.expanduser('~')
+from ..items.restoreitem import RestoreItem
+from .._settings import *
 
 @Gtk.Template(resource_path='/com/ml4w/dotfilesinstaller/ui/restore.ui')
 class Restore(Gtk.Box):
@@ -26,10 +25,7 @@ class Restore(Gtk.Box):
         self.restore_group.bind_model(self.restore_store,self.create_row)
 
     def loadRestore(self):
-        self.config_json = self.props.config_json
-        self.prepared = home_folder + "/.local/share/dotfiles-installer/prepared/" + self.config_json["id"]
-        self.dotfiles = home_folder + "/.local/share/dotfiles-installer/dotfiles/" + self.config_json["id"]
-        for i in self.config_json["restore"]:
+        for i in self.props.config_json["restore"]:
             item = RestoreItem()
             item.title = i["title"]
             item.source = i["source"]
@@ -48,9 +44,9 @@ class Restore(Gtk.Box):
         for i in range(self.restore_store.get_n_items()):
             v = self.restore_store.get_item(i)
             if v.value == True:
-                if os.path.exists(self.prepared + "/" + v.source):
-                    if os.path.isfile(self.prepared + "/" + v.source):
-                        os.remove(self.prepared + "/" + v.source)
-                    if os.path.isdir(self.prepared + "/" + v.source):
-                        shutil.rmtree(self.prepared + "/" + v.source)
+                if os.path.exists(self.props.prepared_folder + "/" + v.source):
+                    if os.path.isfile(self.props.prepared_folder + "/" + v.source):
+                        os.remove(self.props.prepared_folder + "/" + v.source)
+                    if os.path.isdir(self.props.prepared_folder + "/" + v.source):
+                        shutil.rmtree(self.props.prepared_folder + "/" + v.source)
 

@@ -6,8 +6,8 @@
 	"author": "Stephan Raabe",
 	"homepage": "https://github.com/mylinuxforwork/dotfiles",
 	"dependencies": "https://github.com/mylinuxforwork/dotfiles",
-	"source": "/.ml4w-hyprland/dotfiles/",
-	"subfolder": "/share/dotfiles/",
+	"source": ".ml4w-hyprland/dotfiles",
+	"subfolder": "share/dotfiles",
 	"restore":[
 		{
 			"title":"ML4W Settings",

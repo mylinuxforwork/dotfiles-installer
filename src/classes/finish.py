@@ -6,8 +6,7 @@ import json
 import pathlib
 import os
 import shutil
-
-home_folder = os.path.expanduser('~')
+from .._settings import *
 
 @Gtk.Template(resource_path='/com/ml4w/dotfilesinstaller/ui/finish.ui')
 class Finish(Gtk.Box):

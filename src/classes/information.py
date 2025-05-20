@@ -7,8 +7,7 @@ import pathlib
 import json
 import os
 import shutil
-
-home_folder = os.path.expanduser('~')
+from .._settings import *
 
 @Gtk.Template(resource_path='/com/ml4w/dotfilesinstaller/ui/information.ui')
 class Information(Gtk.Box):
@@ -33,16 +32,16 @@ class Information(Gtk.Box):
         super().__init__(**kwargs)
 
     def showInformation(self):
-        config_json = self.props.config_json
-        self.config_name.set_subtitle(config_json["name"])
-        self.config_id.set_subtitle(config_json["id"])
-        self.config_version.set_subtitle(config_json["version"])
-        self.config_description.set_subtitle(config_json["description"])
-        self.config_author.set_subtitle(config_json["author"])
-        self.config_homepage.set_subtitle(config_json["homepage"])
-        self.config_dependencies.set_subtitle(config_json["dependencies"])
-        self.config_source.set_subtitle(config_json["source"])
-        self.config_subfolder.set_subtitle(config_json["subfolder"])
+        self.config_json = self.props.config_json
+        self.config_name.set_subtitle(self.props.config_json["name"])
+        self.config_id.set_subtitle(self.props.config_json["id"])
+        self.config_version.set_subtitle(self.props.config_json["version"])
+        self.config_description.set_subtitle(self.props.config_json["description"])
+        self.config_author.set_subtitle(self.props.config_json["author"])
+        self.config_homepage.set_subtitle(self.props.config_json["homepage"])
+        self.config_dependencies.set_subtitle(self.props.config_json["dependencies"])
+        self.config_source.set_subtitle(self.props.config_json["source"])
+        self.config_subfolder.set_subtitle(self.props.config_json["subfolder"])
         self.props.wizzard_next_btn.set_label("Download Dotfiles")
         self.show_replacement = False
 
@@ -50,26 +49,29 @@ class Information(Gtk.Box):
         self.props.spinner.set_visible(True)
         self.props.wizzard_next_btn.set_sensitive(False)
 
-        # Set folder paths
-        download_folder = home_folder + "/.local/share/dotfiles-installer/downloads/" + self.config_id.get_subtitle()
-        prepared_folder = home_folder + "/.local/share/dotfiles-installer/prepared/" + self.config_id.get_subtitle()
-
         # Delete folders if exists
-        if os.path.exists(download_folder) and os.path.isdir(download_folder):
-            shutil.rmtree(download_folder)
+        if os.path.exists(self.props.download_folder) and os.path.isdir(self.props.download_folder):
+            shutil.rmtree(self.props.download_folder)
 
-        if os.path.exists(prepared_folder) and os.path.isdir(prepared_folder):
-            shutil.rmtree(prepared_folder)
+        if os.path.exists(self.props.prepared_folder) and os.path.isdir(self.props.prepared_folder):
+            shutil.rmtree(self.props.prepared_folder)
+
+        if os.path.exists(self.props.original_folder) and os.path.isdir(self.props.original_folder):
+            shutil.rmtree(self.props.original_folder)
 
         try:
             # Download or copy source into downloads folder
             if ".git" in self.config_source.get_subtitle():
-                subprocess.call(["flatpak-spawn", "--host", "git", "clone", "--depth", "1", self.config_source.get_subtitle(), download_folder])
+                subprocess.call(["flatpak-spawn", "--host", "git", "clone", "--depth", "1", self.props.config_json["source"], self.props.download_folder])
             else:
-                shutil.copytree(home_folder + self.config_source.get_subtitle(), download_folder)
+                shutil.copytree(home_folder + self.props.config_json["source"], self.props.download_folder)
+
+            # Copy dotfiles into original folder
+            shutil.copytree(self.props.download_folder + "/" + self.props.config_json["subfolder"], self.props.original_folder)
 
             # Copy dotfiles into prepared folder
-            shutil.copytree(home_folder + "/.local/share/dotfiles-installer/downloads/" + self.config_id.get_subtitle() + self.config_subfolder.get_subtitle(), prepared_folder)
+            shutil.copytree(self.props.download_folder + "/" + self.props.config_json["subfolder"], self.props.prepared_folder)
+
             self.open_dotfiles_content.set_visible(True)
             self.props.wizzard_next_btn.set_label("Next")
             self.show_replacement = True
@@ -90,7 +92,7 @@ class Information(Gtk.Box):
         self.props.wizzard_stack.set_visible_child_name("page1")
 
     def openNext(self):
-        if os.path.exists(home_folder + "/.local/share/dotfiles-installer/dotfiles/" + self.config_id.get_subtitle()):
+        if os.path.exists(self.props.dotfiles_folder):
             self.props.config_restore.loadRestore()
             self.props.wizzard_stack.set_visible_child_name("page4")
         else:
@@ -99,13 +101,13 @@ class Information(Gtk.Box):
 
 
     def showDotfiles(self):
-        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", home_folder + "/.local/share/dotfiles-installer/prepared/" + self.config_id.get_subtitle()])
+        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.props.original_folder])
 
     def openHomepage(self):
-        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.config_homepage.get_subtitle()])
+        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.props.config_json["homepage"]])
 
     def openDependencies(self):
-        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.config_dependencies.get_subtitle()])
+        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.props.config_json["dependencies"]])
 
     def clear_page(self):
         self.open_dotfiles_content.set_visible(False)

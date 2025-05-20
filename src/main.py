@@ -25,14 +25,11 @@ import os
 import shutil
 import threading
 from multiprocessing import Process
-
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-
 from gi.repository import Gtk, Gio, Adw
 from .window import DotfilesInstallerWindow
-
-home_folder = os.path.expanduser('~')
+from ._settings import *
 
 class DotfilesInstallerApplication(Adw.Application):
     """The main application singleton class."""
@@ -41,7 +38,7 @@ class DotfilesInstallerApplication(Adw.Application):
 
     # Init
     def __init__(self):
-        super().__init__(application_id='com.ml4w.dotfilesinstaller',
+        super().__init__(application_id=app_id,
                          flags=Gio.ApplicationFlags.DEFAULT_FLAGS,
                          resource_base_path='/com/ml4w/dotfilesinstaller')
         self.create_action('quit', lambda *_: self.quit(), ['<primary>q'])
@@ -127,10 +124,11 @@ class DotfilesInstallerApplication(Adw.Application):
 
     # Run Setup
     def runSetup(self):
-        pathlib.Path(home_folder + "/.local/share/dotfiles-installer/dotfiles").mkdir(parents=True, exist_ok=True)
-        pathlib.Path(home_folder + "/.local/share/dotfiles-installer/downloads").mkdir(parents=True, exist_ok=True)
-        pathlib.Path(home_folder + "/.local/share/dotfiles-installer/prepared").mkdir(parents=True, exist_ok=True)
-        pathlib.Path(home_folder + "/.local/share/dotfiles-installer/backup").mkdir(parents=True, exist_ok=True)
+        pathlib.Path(download_folder).mkdir(parents=True, exist_ok=True)
+        pathlib.Path(original_folder).mkdir(parents=True, exist_ok=True)
+        pathlib.Path(prepared_folder).mkdir(parents=True, exist_ok=True)
+        pathlib.Path(backup_folder).mkdir(parents=True, exist_ok=True)
+        pathlib.Path(dotfiles_folder).mkdir(parents=True, exist_ok=True)
 
     # Load Configuration
     def loadConfiguration(self):
@@ -157,11 +155,11 @@ class DotfilesInstallerApplication(Adw.Application):
         print(f'Selected "{response}" response.')
 
     def on_about_action(self, *args):
-        about = Adw.AboutDialog(application_name='Dotfiles Installer',
-                                application_icon='com.ml4w.dotfilesinstaller',
-                                developer_name='Stephan Raabe',
-                                version='0.1',
-                                copyright='© 2025 Stephan Raabe')
+        about = Adw.AboutDialog(application_name=app_name,
+                                application_icon=app_id,
+                                developer_name=app_developer,
+                                version=app_version,
+                                copyright='© 2025 ' + app_developer)
         # Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
         about.set_translator_credits(_('translator-credits'))
         about.present(self.props.active_window)

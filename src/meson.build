@@ -28,18 +28,21 @@ configure_file(
 
 dotfiles_installer_sources = [
   '__init__.py',
+  '_settings.py',
   'main.py',
   'window.py',
-  'loadconfiguration.py',
-  'information.py',
-  'settings.py',
-  'settingsitem.py',
-  'restore.py',
-  'restoreitem.py',
-  'protect.py',
-  'protectitem.py',
-  'installation.py',
-  'finish.py',
+  'classes/loadconfiguration.py',
+  'classes/information.py',
+  'classes/settings.py',
+  'classes/restore.py',
+  'classes/protect.py',
+  'classes/installation.py',
+  'classes/finish.py',
+  'items/settingsitem.py',
+  'items/restoreitem.py',
+  'items/protectitem.py',
 ]
 
 install_data(dotfiles_installer_sources, install_dir: moduledir)
+install_subdir('classes', install_dir: moduledir)
+install_subdir('items', install_dir: moduledir)

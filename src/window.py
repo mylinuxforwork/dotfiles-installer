@@ -19,13 +19,14 @@
 
 from gi.repository import Adw
 from gi.repository import Gtk
-from .information import Information
-from .loadconfiguration import LoadConfiguration
-from .settings import Settings
-from .restore import Restore
-from .protect import Protect
-from .installation import Installation
-from .finish import Finish
+from .classes.information import Information
+from .classes.loadconfiguration import LoadConfiguration
+from .classes.settings import Settings
+from .classes.restore import Restore
+from .classes.protect import Protect
+from .classes.installation import Installation
+from .classes.finish import Finish
+from ._settings import *
 
 @Gtk.Template(resource_path='/com/ml4w/dotfilesinstaller/ui/window.ui')
 class DotfilesInstallerWindow(Adw.ApplicationWindow):

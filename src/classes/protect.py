@@ -6,9 +6,8 @@ import json
 import pathlib
 import os
 import shutil
-from .protectitem import ProtectItem
-
-home_folder = os.path.expanduser('~')
+from ..items.protectitem import ProtectItem
+from .._settings import *
 
 @Gtk.Template(resource_path='/com/ml4w/dotfilesinstaller/ui/protect.ui')
 class Protect(Gtk.Box):
@@ -25,16 +24,13 @@ class Protect(Gtk.Box):
         self.protect_group.bind_model(self.protect_store,self.create_row)
 
     def load(self):
-        self.config_json = self.props.config_json
-        self.dotfiles = home_folder + "/.local/share/dotfiles-installer/dotfiles/" + self.config_json["id"]
-        self.prepared = home_folder + "/.local/share/dotfiles-installer/prepared/" + self.config_json["id"]
-        for f in os.listdir(self.prepared):
+        for f in os.listdir(self.props.prepared_folder):
             if f != ".config":
                 item = ProtectItem()
                 item.source = home_folder + "/" + f
                 item.target = f
                 self.protect_store.append(item)
-        for f in os.listdir(self.prepared + "/.config"):
+        for f in os.listdir(self.props.prepared_folder + "/.config"):
             item = ProtectItem()
             item.source = home_folder + "/.config/" + f
             item.target = ".config/" + f
@@ -50,9 +46,9 @@ class Protect(Gtk.Box):
         for i in range(self.protect_store.get_n_items()):
             v = self.protect_store.get_item(i)
             if v.value == True:
-                if os.path.exists(self.prepared + "/" + v.target):
-                    if os.path.isfile(self.prepared + "/" + v.target):
-                        os.remove(self.prepared + "/" + v.target)
-                    if os.path.isdir(self.prepared + "/" + v.target):
-                        shutil.rmtree(self.prepared + "/" + v.target)
+                if os.path.exists(self.props.prepared_folder + "/" + v.target):
+                    if os.path.isfile(self.props.prepared_folder + "/" + v.target):
+                        os.remove(self.props.prepared_folder + "/" + v.target)
+                    if os.path.isdir(self.props.prepared_folder + "/" + v.target):
+                        shutil.rmtree(self.props.prepared_folder + "/" + v.target)
 
