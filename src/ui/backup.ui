@@ -1,25 +1,30 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <interface>
-  <template class="Settings" parent="GtkBox">
+  <template class="Backup" parent="GtkBox">
     <property name="orientation">1</property>
     <property name="margin-end">100</property>
     <property name="margin-start">100</property>
     <property name="spacing">10</property>
     <child>
       <object class="GtkLabel">
-        <property name="label">Settings</property>
+        <property name="label">Backup your configuration</property>
         <style>
           <class name="title-1"/>
         </style>
       </object>
     </child>
-
     <child>
-      <object class="GtkListBox" id="settings_group">
+      <object class="GtkLabel">
+        <property name="label">This is the first time you install the dotfiles. Please backup your existing configuration.</property>
+        <property name="margin-bottom">2</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkListBox" id="backup_group">
         <property name="selection-mode">0</property>
         <property name="margin-bottom">20</property>
         <style>
-        <class name="boxed-list"/>
+          <class name="boxed-list"/>
         </style>
         </object>
       </child>

@@ -66,6 +66,9 @@ class DotfilesInstallerApplication(Adw.Application):
         self.config_information = win.config_information
         self.config_information.props = self.props.active_window
 
+        self.config_backup = win.config_backup
+        self.config_backup.props = self.props.active_window
+
         self.config_settings = win.config_settings
         self.config_settings.props = self.props.active_window
 
@@ -110,7 +113,8 @@ class DotfilesInstallerApplication(Adw.Application):
                 if self.config_information.show_replacement == False:
                     self.downloadSource()
                 else:
-                    self.config_information.openNext()
+                    self.loadBackup()
+                    self.wizzard_stack.set_visible_child_name("page8")
             case "page3":
                 self.config_settings.replaceSettings()
             case "page4":
@@ -133,6 +137,12 @@ class DotfilesInstallerApplication(Adw.Application):
     # Load Configuration
     def loadConfiguration(self):
         thread = threading.Thread(target=self.load_configuration.loadConfiguration)
+        thread.daemon = True
+        thread.start()
+
+    def loadBackup(self):
+        print("drin")
+        thread = threading.Thread(target=self.config_backup.load)
         thread.daemon = True
         thread.start()
 

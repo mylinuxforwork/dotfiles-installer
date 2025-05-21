@@ -33,6 +33,7 @@ dotfiles_installer_sources = [
   'window.py',
   'classes/loadconfiguration.py',
   'classes/information.py',
+  'classes/backup.py',
   'classes/settings.py',
   'classes/restore.py',
   'classes/protect.py',
@@ -41,6 +42,7 @@ dotfiles_installer_sources = [
   'items/settingsitem.py',
   'items/restoreitem.py',
   'items/protectitem.py',
+  'items/backupitem.py',
 ]
 
 install_data(dotfiles_installer_sources, install_dir: moduledir)

@@ -20,6 +20,7 @@
 from gi.repository import Adw
 from gi.repository import Gtk
 from .classes.information import Information
+from .classes.backup import Backup
 from .classes.loadconfiguration import LoadConfiguration
 from .classes.settings import Settings
 from .classes.restore import Restore
@@ -36,6 +37,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     wizzard_next_btn = Gtk.Template.Child()
     wizzard_back_btn = Gtk.Template.Child()
     config_information = Gtk.Template.Child()
+    config_backup = Gtk.Template.Child()
     config_settings = Gtk.Template.Child()
     config_restore = Gtk.Template.Child()
     config_protect = Gtk.Template.Child()

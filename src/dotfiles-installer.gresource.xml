@@ -4,6 +4,7 @@
     <file preprocess="xml-stripblanks">ui/window.ui</file>
     <file preprocess="xml-stripblanks">ui/loadconfiguration.ui</file>
     <file preprocess="xml-stripblanks">ui/information.ui</file>
+    <file preprocess="xml-stripblanks">ui/backup.ui</file>
     <file preprocess="xml-stripblanks">ui/settings.ui</file>
     <file preprocess="xml-stripblanks">ui/restore.ui</file>
     <file preprocess="xml-stripblanks">ui/protect.ui</file>

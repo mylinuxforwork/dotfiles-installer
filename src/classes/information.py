@@ -23,7 +23,6 @@ class Information(Gtk.Box):
     config_source = Gtk.Template.Child()
     config_subfolder = Gtk.Template.Child()
     open_dotfiles_content = Gtk.Template.Child()
-    btn_show_dotfiles = Gtk.Template.Child()
     show_replacement = False
 
     props = {}
@@ -58,19 +57,18 @@ class Information(Gtk.Box):
 
         if os.path.exists(self.props.original_folder) and os.path.isdir(self.props.original_folder):
             shutil.rmtree(self.props.original_folder)
-
         try:
             # Download or copy source into downloads folder
             if ".git" in self.config_source.get_subtitle():
                 subprocess.call(["flatpak-spawn", "--host", "git", "clone", "--depth", "1", self.props.config_json["source"], self.props.download_folder])
             else:
-                shutil.copytree(home_folder + self.props.config_json["source"], self.props.download_folder)
+                shutil.copytree(home_folder + self.props.config_json["source"], self.props.download_folder, dirs_exist_ok=True)
 
             # Copy dotfiles into original folder
-            shutil.copytree(self.props.download_folder + "/" + self.props.config_json["subfolder"], self.props.original_folder)
+            shutil.copytree(self.props.download_folder + "/" + self.props.config_json["subfolder"], self.props.original_folder, dirs_exist_ok=True)
 
             # Copy dotfiles into prepared folder
-            shutil.copytree(self.props.download_folder + "/" + self.props.config_json["subfolder"], self.props.prepared_folder)
+            shutil.copytree(self.props.download_folder + "/" + self.props.config_json["subfolder"], self.props.prepared_folder, dirs_exist_ok=True)
 
             self.open_dotfiles_content.set_visible(True)
             self.props.wizzard_next_btn.set_label("Next")
@@ -90,15 +88,6 @@ class Information(Gtk.Box):
     def on_response_selected(_dialog, task):
         response = _dialog.choose_finish(task)
         self.props.wizzard_stack.set_visible_child_name("page1")
-
-    def openNext(self):
-        if os.path.exists(self.props.dotfiles_folder):
-            self.props.config_restore.loadRestore()
-            self.props.wizzard_stack.set_visible_child_name("page4")
-        else:
-            self.props.config_settings.loadSettings()
-            self.props.wizzard_stack.set_visible_child_name("page3")
-
 
     def showDotfiles(self):
         subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.props.original_folder])
