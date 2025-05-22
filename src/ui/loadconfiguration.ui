@@ -2,11 +2,11 @@
 <interface>
   <template class="Loadconfiguration" parent="GtkBox">
     <property name="orientation">1</property>
-    <property name="margin-end">100</property>
-    <property name="margin-start">100</property>
+    <property name="margin-end">20</property>
+    <property name="margin-start">20</property>
     <property name="spacing">10</property>
 
-    <!-- ML4W Logo -->
+    <!-- Logo -->
     <child>
       <object class="GtkImage">
         <property name="name">logo</property>
@@ -18,9 +18,8 @@
         </style>
       </object>
     </child>
-    <!-- ML4W Logo -->
 
-    <!-- ML4W Headline -->
+    <!-- Headline -->
     <child>
       <object class="GtkLabel">
         <property name="label">Dotfiles Installer</property>
@@ -29,16 +28,16 @@
         </style>
       </object>
     </child>
-    <!-- ML4W Headline -->
 
-    <!-- ML4W Headline -->
+    <!-- Description -->
     <child>
-      <object class="GtkLabel" id="ml4w_version">
-        <property name="label">Install custom dotfiles and configurations easily on your system.</property>
+      <object class="GtkLabel">
+        <property name="label">Install custom dotfiles and configurations easily on your system. configurations easily on your system.</property>
         <property name="margin-bottom">2</property>
+        <property name="justify">2</property>
+        <property name="wrap">1</property>
       </object>
     </child>
-    <!-- ML4W Headline -->
 
     <!-- Path to dotinst file -->
     <child>

@@ -92,8 +92,6 @@
                     <property name="child">
                       <object class="AdwStatusPage">
                         <property name="valign">1</property>
-                        <property name="margin-start">15</property>
-                        <property name="margin-end">15</property>
                         <child type="content">
                           <object class="Loadconfiguration" id="load_configuration"/>
                         </child>
@@ -111,8 +109,6 @@
                     <property name="child">
                       <object class="AdwStatusPage">
                         <property name="valign">1</property>
-                        <property name="margin-start">15</property>
-                        <property name="margin-end">15</property>
                         <child>
                           <object class="Information" id="config_information"/>
                         </child>
@@ -129,8 +125,6 @@
                     <property name="child">
                       <object class="AdwStatusPage">
                         <property name="valign">1</property>
-                        <property name="margin-start">15</property>
-                        <property name="margin-end">15</property>
                         <child>
                           <object class="Backup" id="config_backup"/>
                         </child>
@@ -150,8 +144,6 @@
                     <property name="child">
                       <object class="AdwStatusPage">
                         <property name="valign">1</property>
-                        <property name="margin-start">15</property>
-                        <property name="margin-end">15</property>
                         <child>
                           <object class="Settings" id="config_settings"/>
                         </child>
@@ -168,8 +160,6 @@
                     <property name="child">
                       <object class="AdwStatusPage">
                         <property name="valign">1</property>
-                        <property name="margin-start">15</property>
-                        <property name="margin-end">15</property>
                         <child>
                           <object class="Restore" id="config_restore"/>
                         </child>
@@ -186,8 +176,6 @@
                     <property name="child">
                       <object class="AdwStatusPage">
                         <property name="valign">1</property>
-                        <property name="margin-start">15</property>
-                        <property name="margin-end">15</property>
                         <child>
                           <object class="Protect" id="config_protect"/>
                         </child>
@@ -204,8 +192,6 @@
                     <property name="child">
                       <object class="AdwStatusPage">
                         <property name="valign">1</property>
-                        <property name="margin-start">15</property>
-                        <property name="margin-end">15</property>
                         <child>
                           <object class="Installation" id="config_installation"/>
                         </child>
@@ -222,8 +208,6 @@
                     <property name="child">
                       <object class="AdwStatusPage">
                         <property name="valign">1</property>
-                        <property name="margin-start">15</property>
-                        <property name="margin-end">15</property>
                         <child>
                           <object class="Finish" id="config_finish"/>
                         </child>

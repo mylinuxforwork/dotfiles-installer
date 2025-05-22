@@ -2,8 +2,8 @@
 <interface>
   <template class="Restore" parent="GtkBox">
     <property name="orientation">1</property>
-    <property name="margin-end">100</property>
-    <property name="margin-start">100</property>
+    <property name="margin-end">20</property>
+    <property name="margin-start">20</property>
     <property name="spacing">10</property>
     <child>
       <object class="GtkLabel">

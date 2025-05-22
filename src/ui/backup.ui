@@ -2,8 +2,8 @@
 <interface>
   <template class="Backup" parent="GtkBox">
     <property name="orientation">1</property>
-    <property name="margin-end">100</property>
-    <property name="margin-start">100</property>
+    <property name="margin-end">20</property>
+    <property name="margin-start">20</property>
     <property name="spacing">10</property>
     <child>
       <object class="GtkLabel">
@@ -11,12 +11,6 @@
         <style>
           <class name="title-1"/>
         </style>
-      </object>
-    </child>
-    <child>
-      <object class="GtkLabel">
-        <property name="label">This is the first time you install the dotfiles. Please backup your existing configuration.</property>
-        <property name="margin-bottom">2</property>
       </object>
     </child>
     <child>
