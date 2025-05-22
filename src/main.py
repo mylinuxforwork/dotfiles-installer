@@ -120,8 +120,8 @@ class DotfilesInstallerApplication(Adw.Application):
             case "page_restore":
                 self.config_restore.startRestore()
                 self.config_protect.load()
-                self.wizzard_stack.set_visible_child_name("page5")
-            case "page5":
+                self.wizzard_stack.set_visible_child_name("page_protect")
+            case "page_protect":
                 self.config_protect.startProtect()
             case "page6":
                 self.config_installation.startInstallation()

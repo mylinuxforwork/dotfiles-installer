@@ -171,7 +171,7 @@
                 <!-- Page: Protect -->
                 <child>
                   <object class="GtkStackPage">
-                    <property name="name">page5</property>
+                    <property name="name">page_protect</property>
                     <property name="title" translatable="yes">Protect</property>
                     <property name="child">
                       <object class="AdwStatusPage">
@@ -187,7 +187,7 @@
                 <!-- Page: Installation -->
                 <child>
                   <object class="GtkStackPage">
-                    <property name="name">page6</property>
+                    <property name="name">page_installation</property>
                     <property name="title" translatable="yes">Installation</property>
                     <property name="child">
                       <object class="AdwStatusPage">
@@ -203,7 +203,7 @@
                 <!-- Page: Finish -->
                 <child>
                   <object class="GtkStackPage">
-                    <property name="name">page7</property>
+                    <property name="name">page_finish</property>
                     <property name="title" translatable="yes">Finish</property>
                     <property name="child">
                       <object class="AdwStatusPage">
