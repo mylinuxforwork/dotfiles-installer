@@ -87,7 +87,7 @@ class Information(Gtk.Box):
 
     def on_response_selected(_dialog, task):
         response = _dialog.choose_finish(task)
-        self.props.wizzard_stack.set_visible_child_name("page1")
+        self.props.wizzard_stack.set_visible_child_name("page_load")
 
     def showDotfiles(self):
         subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.props.original_folder])

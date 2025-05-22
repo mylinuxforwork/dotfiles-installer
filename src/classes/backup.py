@@ -6,6 +6,8 @@ import json
 import pathlib
 import os
 import shutil
+import time
+from datetime import datetime
 from ..items.backupitem import BackupItem
 from .._settings import *
 
@@ -18,6 +20,7 @@ class Backup(Gtk.Box):
     backup_store = Gio.ListStore()
     dotfiles = ""
     props = {}
+    time_stamp = ""
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -26,6 +29,8 @@ class Backup(Gtk.Box):
     def load(self):
         self.props.spinner.set_visible(True)
         self.props.wizzard_next_btn.set_sensitive(False)
+        date_time = datetime.fromtimestamp(time.time())
+        self.time_stamp = date_time.strftime("%Y%m%d-%H%M%S")
 
         for f in os.listdir(self.props.original_folder):
 
@@ -35,12 +40,14 @@ class Backup(Gtk.Box):
                         if os.path.exists(self.props.dotfiles_folder + "/" + f):
                             item = BackupItem()
                             item.file = f
-                            item.source = self.props.dotfiles_folder + "/"
+                            item.source = self.props.dotfiles_folder
+                            item.target = self.props.backup_folder + "/" + self.time_stamp
                             self.backup_store.append(item)
                     else:
                         item = BackupItem()
                         item.file = f
                         item.source = home_folder
+                        item.target = self.props.backup_folder + "/" + self.time_stamp
                         self.backup_store.append(item)
 
         for f in os.listdir(self.props.original_folder + "/.config"):
@@ -50,11 +57,13 @@ class Backup(Gtk.Box):
                         item = BackupItem()
                         item.file = f
                         item.source = self.props.dotfiles_folder + "/.config/"
+                        item.target = self.props.backup_folder + "/" + self.time_stamp + "/.config"
                         self.backup_store.append(item)
                 else:
                     item = BackupItem()
                     item.file = f
                     item.source = home_folder + ".config/"
+                    item.target = self.props.backup_folder + "/" + self.time_stamp + "/.config"
                     self.backup_store.append(item)
 
         self.props.spinner.set_visible(False)
@@ -69,21 +78,23 @@ class Backup(Gtk.Box):
         return row
 
     def startBackup(self):
-        for i in range(self.protect_store.get_n_items()):
-            v = self.protect_store.get_item(i)
-            if v.value == True:
-                if os.path.exists(self.props.prepared_folder + "/" + v.target):
-                    if os.path.isfile(self.props.prepared_folder + "/" + v.target):
-                        os.remove(self.props.prepared_folder + "/" + v.target)
-                    if os.path.isdir(self.props.prepared_folder + "/" + v.target):
-                        shutil.rmtree(self.props.prepared_folder + "/" + v.target)
+        pathlib.Path(self.props.backup_folder + "/" + self.time_stamp).mkdir(parents=True, exist_ok=True)
+        for i in range(self.backup_store.get_n_items()):
+            v = self.backup_store.get_item(i)
+            source = v.source + "/" + v.file
+            if os.path.isfile(source):
+                shutil.copy(source, v.target)
+            elif os.path.isdir(source):
+                shutil.copytree(source, v.target + "/" + v.file, dirs_exist_ok=True)
+
+        self.openNext()
 
     def openNext(self):
         if os.path.exists(self.props.dotfiles_folder):
             self.props.config_restore.loadRestore()
-            self.props.wizzard_stack.set_visible_child_name("page4")
+            self.props.wizzard_stack.set_visible_child_name("page_restore")
         else:
             self.props.config_settings.loadSettings()
-            self.props.wizzard_stack.set_visible_child_name("page3")
+            self.props.wizzard_stack.set_visible_child_name("page_settings")
 
 

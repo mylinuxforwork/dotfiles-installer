@@ -13,6 +13,15 @@
         </style>
       </object>
     </child>
+    <!-- Description -->
+    <child>
+      <object class="GtkLabel">
+        <property name="label">Install custom dotfiles and configurations easily on your system. configurations easily on your system.</property>
+        <property name="margin-bottom">2</property>
+        <property name="justify">2</property>
+        <property name="wrap">1</property>
+      </object>
+    </child>
     <child>
       <object class="GtkListBox" id="backup_group">
         <property name="selection-mode">0</property>

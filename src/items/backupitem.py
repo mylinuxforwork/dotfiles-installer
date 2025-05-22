@@ -4,6 +4,7 @@ class BackupItem(GObject.GObject):
 
     file = GObject.property(type = str)
     source = GObject.property(type = str)
+    target = GObject.property(type = str)
     value = GObject.property(type = bool,default=False)
 
     def __init__(self):

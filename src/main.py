@@ -85,7 +85,7 @@ class DotfilesInstallerApplication(Adw.Application):
         self.config_finish.props = self.props.active_window
 
         self.props.active_window.wizzard_back_btn.set_visible(False)
-        self.wizzard_stack.set_visible_child_name("page1")
+        self.wizzard_stack.set_visible_child_name("page_load")
 
         self.status = "init"
 
@@ -98,7 +98,7 @@ class DotfilesInstallerApplication(Adw.Application):
         # Add Cancel Dialog
         self.props.active_window.wizzard_back_btn.set_visible(False)
         self.props.active_window.wizzard_next_btn.set_label("Next")
-        self.wizzard_stack.set_visible_child_name("page1")
+        self.wizzard_stack.set_visible_child_name("page_load")
         self.config_information.clear_page()
         self.config_settings.settings_store = Gio.ListStore()
         self.config_restore.restore_store = Gio.ListStore()
@@ -106,18 +106,18 @@ class DotfilesInstallerApplication(Adw.Application):
 
     def on_wizzard_next_action(self, widget, _):
         match self.wizzard_stack.get_visible_child_name():
-            case "page1":
+            case "page_load":
                 self.props.active_window.wizzard_back_btn.set_visible(True)
                 self.loadConfiguration()
-            case "page2":
+            case "page_information":
                 if self.config_information.show_replacement == False:
                     self.downloadSource()
                 else:
                     self.loadBackup()
-                    self.wizzard_stack.set_visible_child_name("page8")
-            case "page3":
+                    self.wizzard_stack.set_visible_child_name("page_backup")
+            case "page_settings":
                 self.config_settings.replaceSettings()
-            case "page4":
+            case "page_restore":
                 self.config_restore.startRestore()
                 self.config_protect.load()
                 self.wizzard_stack.set_visible_child_name("page5")
@@ -125,6 +125,8 @@ class DotfilesInstallerApplication(Adw.Application):
                 self.config_protect.startProtect()
             case "page6":
                 self.config_installation.startInstallation()
+            case "page_backup":
+                self.config_backup.startBackup()
 
     # Run Setup
     def runSetup(self):
