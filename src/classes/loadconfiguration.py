@@ -21,6 +21,11 @@ class LoadConfiguration(Gtk.Box):
         super().__init__(**kwargs)
         self.entry_dotinst.set_text(test_path)
 
+    def loadLocalConfiguration(self):
+        self.props.local_json = {}
+        if os.path.exists(config_folder + self.props.id + ".json"):
+            self.props.local_json = json.load(open(config_folder + self.props.id + ".json"))
+
     def loadConfiguration(self):
         self.props.spinner.set_visible(True)
         self.props.wizzard_next_btn.set_sensitive(False)
@@ -42,6 +47,8 @@ class LoadConfiguration(Gtk.Box):
                 self.props.status = "info"
                 self.props.wizzard_next_btn.set_sensitive(True)
                 self.props.wizzard_stack.set_visible_child_name("page2")
+
+                self.loadLocalConfiguration()
             except:
                 dialog = Adw.AlertDialog(
                     heading="Url Error",
@@ -66,6 +73,8 @@ class LoadConfiguration(Gtk.Box):
                 self.props.status = "info"
                 self.props.wizzard_next_btn.set_sensitive(True)
                 self.props.wizzard_stack.set_visible_child_name("page_information")
+                self.loadLocalConfiguration()
+
                 # self.props.config_installation.load()
                 # self.props.wizzard_stack.set_visible_child_name("page_installation")
             except:

@@ -42,12 +42,16 @@ class Backup(Gtk.Box):
                             item.file = f
                             item.source = self.props.dotfiles_folder
                             item.target = self.props.backup_folder + "/" + self.time_stamp
+                            if f in self.props.local_json["backupexclude"]:
+                                item.value = False
                             self.backup_store.append(item)
                     else:
                         item = BackupItem()
                         item.file = f
                         item.source = home_folder
                         item.target = self.props.backup_folder + "/" + self.time_stamp
+                        if f in self.props.local_json["backupexclude"]:
+                            item.value = False
                         self.backup_store.append(item)
 
         for f in os.listdir(self.props.original_folder + "/.config"):
@@ -73,19 +77,25 @@ class Backup(Gtk.Box):
         row = Adw.SwitchRow()
         row.set_title(item.file)
         row.set_subtitle("Backup from " + item.source)
-        row.set_active(True)
+        row.set_active(item.value)
         row.bind_property("active", item, "value", GObject.BindingFlags.BIDIRECTIONAL)
         return row
 
     def startBackup(self):
+        self.props.local_json["backupexclude"] = []
         pathlib.Path(self.props.backup_folder + "/" + self.time_stamp).mkdir(parents=True, exist_ok=True)
         for i in range(self.backup_store.get_n_items()):
             v = self.backup_store.get_item(i)
             source = v.source + "/" + v.file
+            if not(v.value):
+                self.props.local_json["backupexclude"].append(v.file)
             if os.path.isfile(source):
                 shutil.copy(source, v.target)
             elif os.path.isdir(source):
                 shutil.copytree(source, v.target + "/" + v.file, dirs_exist_ok=True)
+
+        with open(config_folder + self.props.id + '.json', 'w', encoding='utf-8') as f:
+            json.dump(self.props.local_json, f, ensure_ascii=False, indent=4)
 
         self.openNext()
 

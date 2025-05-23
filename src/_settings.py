@@ -23,6 +23,7 @@ original_folder = share_folder + original_folder_name + "/"
 prepared_folder = share_folder + prepared_folder_name + "/"
 backup_folder = share_folder + backup_folder_name + "/"
 dotfiles_folder = share_folder + dotfiles_folder_name + "/"
+config_folder = home_folder + ".config/" + app_id + "/"
 
 # Dev
 test_url = "https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/examples/dotfiles.dotinst"

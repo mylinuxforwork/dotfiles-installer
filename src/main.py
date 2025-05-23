@@ -135,6 +135,7 @@ class DotfilesInstallerApplication(Adw.Application):
         pathlib.Path(prepared_folder).mkdir(parents=True, exist_ok=True)
         pathlib.Path(backup_folder).mkdir(parents=True, exist_ok=True)
         pathlib.Path(dotfiles_folder).mkdir(parents=True, exist_ok=True)
+        pathlib.Path(config_folder).mkdir(parents=True, exist_ok=True)
 
     # Load Configuration
     def loadConfiguration(self):

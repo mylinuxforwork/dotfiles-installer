@@ -73,6 +73,7 @@ class Information(Gtk.Box):
             self.open_dotfiles_content.set_visible(True)
             self.props.wizzard_next_btn.set_label("Next")
             self.show_replacement = True
+
         except:
             dialog = Adw.AlertDialog(
                 heading="Download Error",

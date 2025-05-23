@@ -106,7 +106,13 @@
             </child>
           </object>
         </child>
-
+        <child>
+          <object class="AdwButtonRow" id="open_dotfiles_content">
+            <property name="title" translatable="yes">Open Download Folder</property>
+            <property name="visible">false</property>
+            <property name="action-name">app.showdotfiles</property>
+          </object>
+        </child>
       </object>
     </child>
     <child>
@@ -127,14 +133,6 @@
               <class name="property"/>
             </style>
             <property name="title" translatable="yes">Subfolder</property>
-          </object>
-        </child>
-
-        <child>
-          <object class="AdwButtonRow" id="open_dotfiles_content">
-            <property name="title" translatable="yes">Open Download Folder</property>
-            <property name="visible">false</property>
-            <property name="action-name">app.showdotfiles</property>
           </object>
         </child>
 
