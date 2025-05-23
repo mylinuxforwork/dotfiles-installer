@@ -115,18 +115,24 @@ class DotfilesInstallerApplication(Adw.Application):
                 else:
                     self.loadBackup()
                     self.wizzard_stack.set_visible_child_name("page_backup")
+            case "page_backup":
+                self.config_backup.startBackup()
             case "page_settings":
                 self.config_settings.replaceSettings()
+                self.config_installation.load()
+                self.wizzard_stack.set_visible_child_name("page_installation")
             case "page_restore":
                 self.config_restore.startRestore()
                 self.config_protect.load()
                 self.wizzard_stack.set_visible_child_name("page_protect")
             case "page_protect":
                 self.config_protect.startProtect()
-            case "page6":
-                self.config_installation.startInstallation()
-            case "page_backup":
-                self.config_backup.startBackup()
+                self.config_installation.load()
+                self.wizzard_stack.set_visible_child_name("page_installation")
+            case "page_installation":
+                self.config_installation.installDotfiles()
+            case "page_finish":
+                self.quit()
 
     # Run Setup
     def runSetup(self):

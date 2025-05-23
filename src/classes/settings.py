@@ -57,6 +57,7 @@ class Settings(Gtk.Box):
                 case "overwritefile":
                     self.overwriteFile(v.file,v.value)
 
+
     # Replace Functions
     def searchInFile(self, f, search):
         with open(self.props.prepared_folder + "/" + f, 'r') as file:
