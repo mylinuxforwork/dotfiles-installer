@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="dotfiles-installer">
 	<schema id="com.ml4w.dotfilesinstaller" path="/com/ml4w/dotfilesinstaller/">
+  	  <key name="my-dotfiles-folder" type="s">
+	    <default>''</default>
+	  </key>
 	</schema>
 </schemalist>

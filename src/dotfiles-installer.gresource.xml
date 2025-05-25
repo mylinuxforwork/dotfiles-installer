@@ -10,6 +10,7 @@
     <file preprocess="xml-stripblanks">ui/protect.ui</file>
     <file preprocess="xml-stripblanks">ui/installation.ui</file>
     <file preprocess="xml-stripblanks">ui/finish.ui</file>
+    <file preprocess="xml-stripblanks">ui/preferences.ui</file>
     <file preprocess="xml-stripblanks">ui/help-overlay.ui</file>
   </gresource>
 </gresources>

@@ -1,5 +1,6 @@
 import os
 import pathlib
+from gi.repository import Gtk, Gio, Adw
 
 # App Id
 app_id = "com.ml4w.dotfilesinstaller"
@@ -28,3 +29,7 @@ config_folder = home_folder + ".config/" + app_id + "/"
 # Dev
 test_url = "https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/examples/dotfiles.dotinst"
 test_path = "Projects/dotfiles-installer/examples/dotfiles.dotinst"
+
+def get_dotfiles_folder(dotfiles_id):
+    my_settings = Gio.Settings(schema_id=app_id)
+    return home_folder + my_settings.get_string("my-dotfiles-folder") + "/" + dotfiles_id

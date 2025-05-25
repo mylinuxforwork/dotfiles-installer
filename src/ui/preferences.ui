@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <template class="Preferences" parent="AdwPreferencesDialog">
+    <property name="title">Preferences</property>
+
+    <child>
+      <object class="AdwPreferencesPage" id="waybar_page">
+        <property name="title">Preferences</property>
+        <property name="icon-name">settings-symbolic</property>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Folders</property>
+            <property name="description">Define the folder for your installed dotfiles.</property>
+            <child>
+              <object class="AdwEntryRow" id="dotfiles_folder">
+                <property name="title">Dotfiles Folder</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

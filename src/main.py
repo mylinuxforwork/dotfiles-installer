@@ -29,6 +29,7 @@ gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Gio, Adw
 from .window import DotfilesInstallerWindow
+from .classes.preferences import Preferences
 from ._settings import *
 
 class DotfilesInstallerApplication(Adw.Application):
@@ -49,6 +50,10 @@ class DotfilesInstallerApplication(Adw.Application):
         self.create_action('showdotfiles', self.on_show_dotfiles)
         self.create_action('opendependencies', self.on_open_dependencies)
         self.create_action('openhomepage', self.on_open_homepage)
+
+        self.settings = Gio.Settings(schema_id=app_id)
+        if (self.settings.get_string("my-dotfiles-folder") == ""):
+            self.settings.set_string("my-dotfiles-folder",dotfiles_folder + ".mydotfiles")
         self.runSetup()
 
     # Activate
@@ -154,7 +159,6 @@ class DotfilesInstallerApplication(Adw.Application):
         thread.start()
 
     def loadBackup(self):
-        print("drin")
         thread = threading.Thread(target=self.config_backup.load)
         thread.daemon = True
         thread.start()
@@ -188,7 +192,14 @@ class DotfilesInstallerApplication(Adw.Application):
         about.present(self.props.active_window)
 
     def on_preferences_action(self, widget, _):
-        print('app.preferences action activated')
+        settings = Preferences()
+        settings.dotfiles_folder.set_show_apply_button(True)
+        settings.dotfiles_folder.connect("apply", self.on_dotfiles_folder)
+        settings.present(self.props.active_window)
+
+    def on_dotfiles_folder(self, widget):
+        self.settings.set_string("my-dotfiles-folder",widget.get_text())
+        print(get_dotfiles_folder("123"))
 
     def create_action(self, name, callback, shortcuts=None):
         action = Gio.SimpleAction.new(name, None)

@@ -39,6 +39,7 @@ dotfiles_installer_sources = [
   'classes/protect.py',
   'classes/installation.py',
   'classes/finish.py',
+  'classes/preferences.py',
   'items/settingsitem.py',
   'items/restoreitem.py',
   'items/protectitem.py',

@@ -20,6 +20,7 @@ class LoadConfiguration(Gtk.Box):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.entry_dotinst.set_text(test_path)
+        self.settings = Gio.Settings(schema_id=app_id)
 
     def loadLocalConfiguration(self):
         self.props.local_json = {}
@@ -40,7 +41,8 @@ class LoadConfiguration(Gtk.Box):
                 self.props.original_folder = original_folder + self.props.id
                 self.props.prepared_folder = prepared_folder + self.props.id
                 self.props.backup_folder = backup_folder + self.props.id
-                self.props.dotfiles_folder = dotfiles_folder + self.props.id
+
+                self.props.dotfiles_folder = self.settings.get_string("my-dotfiles-folder") + "/" + self.props.id
 
                 self.props.config_json = json.loads(response.read())
                 self.props.config_information.showInformation()
