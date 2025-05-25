@@ -26,15 +26,17 @@ class Protect(Gtk.Box):
     def load(self):
         for f in os.listdir(self.props.prepared_folder):
             if f != ".config":
-                item = ProtectItem()
-                item.source = home_folder + "/" + f
-                item.target = f
-                self.protect_store.append(item)
+                if os.path.exists(home_folder + f):
+                    item = ProtectItem()
+                    item.source = home_folder + f
+                    item.target = f
+                    self.protect_store.append(item)
         for f in os.listdir(self.props.prepared_folder + "/.config"):
-            item = ProtectItem()
-            item.source = home_folder + "/.config/" + f
-            item.target = ".config/" + f
-            self.protect_store.append(item)
+            if os.path.exists(home_folder + ".config/" + f):
+                item = ProtectItem()
+                item.source = home_folder + ".config/" + f
+                item.target = ".config/" + f
+                self.protect_store.append(item)
 
     def create_row(self,item):
         row = Adw.SwitchRow()

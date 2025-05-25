@@ -27,24 +27,33 @@ class Installation(Gtk.Box):
     def installDotfiles(self):
 
         # Copy prepared folder to the dotfiles folder
-        shutil.copytree(self.props.prepared_folder, self.props.dotfiles_folder, dirs_exist_ok=True)
+        # shutil.copytree(self.props.prepared_folder, self.props.dotfiles_folder, dirs_exist_ok=True)
 
-        '''
         # Create symlinks for all files and folders
         for f in os.listdir(self.props.dotfiles_folder):
             if f != ".config":
-                self.createSymlink(home_folder + "/" + f, self.props.dotfiles_folder + "/" + f)
+                self.createSymlink(self.props.dotfiles_folder + "/" + f, home_folder + f)
         for f in os.listdir(self.props.dotfiles_folder + "/.config"):
-            self.createSymlink(home_folder + "/.config/" + f, self.props.dotfiles_folder + "/.config/" + f)
-        '''
-    '''
-    def createSymlink(self,target,source):
+            self.createSymlink(self.props.dotfiles_folder + "/.config/" + f, home_folder + ".config/" + f)
+
+    def createSymlink(self,source,target):
+
+        # Delete target if exists
         if os.path.islink(target):
             print("Remove Symlink: " + target)
-            # os.unlink(target)
-            print("Backup file: " + source)
+            os.unlink(target)
         elif os.path.isfile(target):
-            print("Backup file: " + target)
+            print("Remove File: " + target)
+            os.remove(target)
         elif os.path.isdir(target):
-            print("Backup folder: " + target)
-    '''
+            print("Remove Folder: " + target)
+            shutil.rmtree(target)
+
+        # Create symlink
+        if os.path.isfile(source):
+            print("Add Symlink File: " + source + "->" + target)
+            os.symlink(source, target)
+        elif os.path.isdir(source):
+            print("Add Symlink Folder: " + source + "->" + target)
+            os.symlink(source, target, target_is_directory=True)
+

@@ -102,6 +102,8 @@ class DotfilesInstallerApplication(Adw.Application):
         self.config_information.clear_page()
         self.config_settings.settings_store = Gio.ListStore()
         self.config_restore.restore_store = Gio.ListStore()
+        self.config_backup.backup_store = Gio.ListStore()
+        self.config_protect.protect_store = Gio.ListStore()
         self.status = "init"
 
     def on_wizzard_next_action(self, widget, _):
@@ -131,6 +133,8 @@ class DotfilesInstallerApplication(Adw.Application):
                 self.wizzard_stack.set_visible_child_name("page_installation")
             case "page_installation":
                 self.config_installation.installDotfiles()
+                self.config_finish.load()
+                self.wizzard_stack.set_visible_child_name("page_finish")
             case "page_finish":
                 self.quit()
 

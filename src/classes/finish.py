@@ -17,6 +17,10 @@ class Finish(Gtk.Box):
     dotfiles = ""
     props = {}
 
+    def load(self):
+        self.props.config_json = self.props.config_json
+        self.props.wizzard_next_btn.set_label("Close")
+
     def startReboot(self):
         print("startReboot")
 
