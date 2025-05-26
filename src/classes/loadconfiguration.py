@@ -2,6 +2,7 @@ from gi.repository import Adw
 from gi.repository import Gtk
 from gi.repository import Gio
 from urllib.request import urlopen
+from urllib.parse import urlparse
 
 import json
 import pathlib
@@ -15,8 +16,8 @@ class LoadConfiguration(Gtk.Box):
     __gtype_name__ = 'Loadconfiguration'
 
     entry_dotinst = Gtk.Template.Child()
-
     props = {}
+    json_response = ""
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -36,32 +37,28 @@ class LoadConfiguration(Gtk.Box):
         # Load from Url
         if "https://" in config_source:
             try:
-                json_response = urlopen(config_source)
+                urlparse(config_source)
+                try:
+                    json_response_http = urlopen(config_source)
+                    self.json_response = json_response_http.read().decode('utf-8')
+                    self.loadJson()
+                except:
+                    self.dialogUrlError()
             except:
-                dialog = Adw.AlertDialog(
-                    heading="Url Error",
-                    body="The url to the dotinst file is no working. Please check the url.",
-                    close_response="okay",
-                )
-                dialog.add_response("okay", "Okay")
-                dialog.choose(self.props, None, self.on_response_selected)
+                self.dialogUrlError()
 
         # Load from File
         else:
             try:
                 with open(home_folder + config_source) as f:
-                    json_response = f.read()
+                    self.json_response = f.read()
+                self.loadJson()
             except:
-                print("File Error")
-                dialog = Adw.AlertDialog(
-                    heading="File Error",
-                    body="The path to the dotinst file is no working. Please check the path.",
-                    close_response="okay",
-                )
-                dialog.add_response("okay", "Okay")
-                dialog.choose(self.props, None, self.on_response_selected)
+                self.dialogFileError()
+
+    def loadJson(self):
         try:
-            self.props.config_json = json.loads(json_response)
+            self.props.config_json = json.loads(self.json_response)
             self.props.id = self.props.config_json["id"]
             self.props.download_folder = download_folder + self.props.id
             self.props.original_folder = original_folder + self.props.id
@@ -76,16 +73,39 @@ class LoadConfiguration(Gtk.Box):
             self.props.spinner.set_visible(False)
         except:
             self.props.spinner.set_visible(False)
-            dialog = Adw.AlertDialog(
-                heading="Decoding Error",
-                body="The format of the dotinst file is not correct. The configuration could not be loaded.",
-                close_response="okay",
-            )
-            dialog.add_response("okay", "Okay")
-            dialog.choose(self.props, None, self.on_response_selected)
+            self.dialogEncodingError()
 
             self.props.wizzard_next_btn.set_sensitive(True)
 
     def on_response_selected(self, _dialog, task):
         response = _dialog.choose_finish(task)
+        self.props.spinner.set_visible(False)
+        self.props.wizzard_next_btn.set_sensitive(True)
 
+    def dialogUrlError(self):
+        dialog = Adw.AlertDialog(
+            heading="Url Error",
+            body="The url to the dotinst file is no working. Please check the url.",
+            close_response="okay",
+        )
+        dialog.add_response("okay", "Okay")
+        dialog.choose(self.props, None, self.on_response_selected)
+
+
+    def dialogEncodingError(self):
+        dialog = Adw.AlertDialog(
+            heading="Decoding Error",
+            body="The format of the dotinst file is not correct. The configuration could not be loaded.",
+            close_response="okay",
+        )
+        dialog.add_response("okay", "Okay")
+        dialog.choose(self.props, None, self.on_response_selected)
+
+    def dialogFileError(self):
+        dialog = Adw.AlertDialog(
+            heading="File Error",
+            body="The path to the dotinst file is no working. Please check the path.",
+            close_response="okay",
+        )
+        dialog.add_response("okay", "Okay")
+        dialog.choose(self.props, None, self.on_response_selected)
