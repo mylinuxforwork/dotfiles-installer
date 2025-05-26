@@ -24,6 +24,7 @@ import pathlib
 import os
 import shutil
 import threading
+import subprocess
 from urllib.request import urlopen
 from multiprocessing import Process
 gi.require_version('Gtk', '4.0')
@@ -53,6 +54,8 @@ class DotfilesInstallerApplication(Adw.Application):
         self.create_action('openhomepage', self.on_open_homepage)
         self.create_action('update_app', self.on_update_app)
         self.create_action('check_updates', self.on_check_updates)
+        self.create_action('open_dotfiles', self.on_open_dotfiles)
+        self.create_action('open_backups', self.on_open_backups)
 
         self.settings = Gio.Settings(schema_id=app_id)
         if (self.settings.get_string("my-dotfiles-folder") == ""):
@@ -177,7 +180,7 @@ class DotfilesInstallerApplication(Adw.Application):
             print("Check for updates failed")
 
     def on_update_app(self, widget, _):
-        print("Open Browser")
+        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", app_homepage])
         self.props.active_window.update_banner.set_revealed(False)
 
     # Load Configuration
@@ -208,6 +211,12 @@ class DotfilesInstallerApplication(Adw.Application):
     def on_response_selected(_dialog, task):
         response = _dialog.choose_finish(task)
         print(f'Selected "{response}" response.')
+
+    def on_open_dotfiles(self, widget, _):
+        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", home_folder + self.settings.get_string("my-dotfiles-folder")])
+
+    def on_open_backups(self, widget, _):
+        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", backup_folder])
 
     def on_about_action(self, *args):
         about = Adw.AboutDialog(application_name=app_name,

@@ -35,10 +35,24 @@ class Information(Gtk.Box):
         self.config_name.set_subtitle(self.props.config_json["name"])
         self.config_id.set_subtitle(self.props.config_json["id"])
         self.config_version.set_subtitle(self.props.config_json["version"])
-        self.config_description.set_subtitle(self.props.config_json["description"])
+
+        if not "description" in self.props.config_json:
+            self.config_description.set_visible(False)
+        else:
+            self.config_description.set_subtitle(self.props.config_json["description"])
+
         self.config_author.set_subtitle(self.props.config_json["author"])
-        self.config_homepage.set_subtitle(self.props.config_json["homepage"])
-        self.config_dependencies.set_subtitle(self.props.config_json["dependencies"])
+
+        if not "homepage" in self.props.config_json:
+            self.config_homepage.set_visible(False)
+        else:
+            self.config_homepage.set_subtitle(self.props.config_json["homepage"])
+
+        if not "dependencies" in self.props.config_json:
+            self.config_dependencies.set_visible(False)
+        else:
+            self.config_dependencies.set_subtitle(self.props.config_json["dependencies"])
+
         self.config_source.set_subtitle(self.props.config_json["source"])
         self.config_subfolder.set_subtitle(self.props.config_json["subfolder"])
         self.props.wizzard_next_btn.set_label("Download Dotfiles")

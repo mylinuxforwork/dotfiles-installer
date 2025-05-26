@@ -192,6 +192,7 @@
                     <property name="child">
                       <object class="AdwStatusPage">
                         <property name="valign">1</property>
+                        <property name="icon-name">playback-symbolic</property>
                         <child>
                           <object class="Installation" id="config_installation"/>
                         </child>
@@ -208,6 +209,7 @@
                     <property name="child">
                       <object class="AdwStatusPage">
                         <property name="valign">1</property>
+                        <property name="icon-name">verified-checkmark-symbolic</property>
                         <child>
                           <object class="Finish" id="config_finish"/>
                         </child>
@@ -221,7 +223,6 @@
 
           </object>
 
-
         </property>
       </object>
     </property>
@@ -232,6 +233,18 @@
         <attribute name="label" translatable="yes">_Preferences</attribute>
         <attribute name="action">app.preferences</attribute>
       </item>
+      <item>
+        <attribute name="label" translatable="yes">_Open Dotfiles Folder</attribute>
+        <attribute name="action">app.open_dotfiles</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Open Backups Folder</attribute>
+        <attribute name="action">app.open_backups</attribute>
+      </item>
+    </section>
+    <section>
       <item>
         <attribute name="label" translatable="yes">_Check for Updates</attribute>
         <attribute name="action">app.check_updates</attribute>
