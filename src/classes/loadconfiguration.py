@@ -36,21 +36,6 @@ class LoadConfiguration(Gtk.Box):
             try:
                 response = urlopen(config_source)
                 self.props.id = self.props.config_json["id"]
-
-                self.props.download_folder = download_folder + self.props.id
-                self.props.original_folder = original_folder + self.props.id
-                self.props.prepared_folder = prepared_folder + self.props.id
-                self.props.backup_folder = backup_folder + self.props.id
-
-                self.props.dotfiles_folder = self.settings.get_string("my-dotfiles-folder") + "/" + self.props.id
-
-                self.props.config_json = json.loads(response.read())
-                self.props.config_information.showInformation()
-                self.props.status = "info"
-                self.props.wizzard_next_btn.set_sensitive(True)
-                self.props.wizzard_stack.set_visible_child_name("page2")
-
-                self.loadLocalConfiguration()
             except:
                 dialog = Adw.AlertDialog(
                     heading="Url Error",
@@ -64,19 +49,6 @@ class LoadConfiguration(Gtk.Box):
                 with open(home_folder + self.entry_dotinst.get_text()) as f:
                     self.props.config_json = json.load(f)
                 self.props.id = self.props.config_json["id"]
-
-                self.props.download_folder = download_folder + self.props.id
-                self.props.original_folder = original_folder + self.props.id
-                self.props.prepared_folder = prepared_folder + self.props.id
-                self.props.backup_folder = backup_folder + self.props.id
-                self.props.dotfiles_folder = dotfiles_folder + self.props.id
-
-                self.props.config_information.showInformation()
-                self.props.status = "info"
-                self.props.wizzard_next_btn.set_sensitive(True)
-                self.props.wizzard_stack.set_visible_child_name("page_information")
-                self.loadLocalConfiguration()
-
                 # self.props.config_installation.load()
                 # self.props.wizzard_stack.set_visible_child_name("page_installation")
             except:
@@ -88,6 +60,16 @@ class LoadConfiguration(Gtk.Box):
                 dialog.add_response("okay", "Okay")
                 dialog.choose(self.props.active_window, None, self.on_response_selected)
 
+        self.props.download_folder = download_folder + self.props.id
+        self.props.original_folder = original_folder + self.props.id
+        self.props.prepared_folder = prepared_folder + self.props.id
+        self.props.backup_folder = backup_folder + self.props.id
+        self.props.dotfiles_folder = get_dotfiles_folder(self.props.id)
+        self.props.config_information.showInformation()
+        self.props.status = "info"
+        self.props.wizzard_next_btn.set_sensitive(True)
+        self.props.wizzard_stack.set_visible_child_name("page_information")
+        self.loadLocalConfiguration()
         self.props.spinner.set_visible(False)
 
     def on_response_selected(_dialog, task):

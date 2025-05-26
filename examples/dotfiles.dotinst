@@ -17,7 +17,7 @@
 		{
 			"title":"Keyboard settings",
 			"source":".config/hypr/conf/keyboard.conf",
-			"value":false
+			"value":true
 		},
 		{
 			"title":"Monitor settings",

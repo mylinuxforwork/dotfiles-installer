@@ -31,7 +31,9 @@ class Backup(Gtk.Box):
         self.props.wizzard_next_btn.set_sensitive(False)
         date_time = datetime.fromtimestamp(time.time())
         self.time_stamp = date_time.strftime("%Y%m%d-%H%M%S")
+        self.props.dotfiles_folder = get_dotfiles_folder(self.props.id)
 
+        print(self.props.dotfiles_folder)
         for f in os.listdir(self.props.original_folder):
 
             if f != ".config":

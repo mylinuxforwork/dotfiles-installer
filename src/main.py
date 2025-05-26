@@ -24,6 +24,7 @@ import pathlib
 import os
 import shutil
 import threading
+
 from multiprocessing import Process
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
@@ -64,6 +65,7 @@ class DotfilesInstallerApplication(Adw.Application):
 
         # Get Objects
         self.wizzard_stack = win.wizzard_stack
+        self.preferences = Preferences()
 
         self.load_configuration = win.load_configuration
         self.load_configuration.props = self.props.active_window
@@ -93,6 +95,10 @@ class DotfilesInstallerApplication(Adw.Application):
         self.wizzard_stack.set_visible_child_name("page_load")
 
         self.status = "init"
+
+        repo = git.Repo('https://github.com/mylinuxforwork/dotfiles-installer')
+        tags = sorted(repo.tags, key=lambda t: t.commit.committed_datetime)
+        latest_tag = tags[-1]
 
         # Show Application Window
         win.present()
@@ -149,7 +155,6 @@ class DotfilesInstallerApplication(Adw.Application):
         pathlib.Path(original_folder).mkdir(parents=True, exist_ok=True)
         pathlib.Path(prepared_folder).mkdir(parents=True, exist_ok=True)
         pathlib.Path(backup_folder).mkdir(parents=True, exist_ok=True)
-        pathlib.Path(dotfiles_folder).mkdir(parents=True, exist_ok=True)
         pathlib.Path(config_folder).mkdir(parents=True, exist_ok=True)
 
     # Load Configuration
@@ -192,14 +197,11 @@ class DotfilesInstallerApplication(Adw.Application):
         about.present(self.props.active_window)
 
     def on_preferences_action(self, widget, _):
-        settings = Preferences()
-        settings.dotfiles_folder.set_show_apply_button(True)
-        settings.dotfiles_folder.connect("apply", self.on_dotfiles_folder)
-        settings.present(self.props.active_window)
+        self.preferences.dotfiles_folder.connect("apply", self.on_dotfiles_folder)
+        self.preferences.present(self.props.active_window)
 
     def on_dotfiles_folder(self, widget):
         self.settings.set_string("my-dotfiles-folder",widget.get_text())
-        print(get_dotfiles_folder("123"))
 
     def create_action(self, name, callback, shortcuts=None):
         action = Gio.SimpleAction.new(name, None)

@@ -23,11 +23,15 @@ class Installation(Gtk.Box):
     def load(self):
         self.props.config_json = self.props.config_json
         self.props.wizzard_next_btn.set_label("Install Now")
+        self.props.dotfiles_folder = get_dotfiles_folder(self.props.id)
 
     def installDotfiles(self):
 
+        if not os.path.exists(self.props.dotfiles_folder):
+            pathlib.Path(self.props.dotfiles_folder).mkdir(parents=True, exist_ok=True)
+
         # Copy prepared folder to the dotfiles folder
-        # shutil.copytree(self.props.prepared_folder, self.props.dotfiles_folder, dirs_exist_ok=True)
+        shutil.copytree(self.props.prepared_folder, self.props.dotfiles_folder, dirs_exist_ok=True)
 
         # Create symlinks for all files and folders
         for f in os.listdir(self.props.dotfiles_folder):
