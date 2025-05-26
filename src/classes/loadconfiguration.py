@@ -21,7 +21,7 @@ class LoadConfiguration(Gtk.Box):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.entry_dotinst.set_text(test_path)
+        self.entry_dotinst.set_text(test_url)
         self.settings = Gio.Settings(schema_id=app_id)
 
     def loadLocalConfiguration(self):
