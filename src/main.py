@@ -96,10 +96,6 @@ class DotfilesInstallerApplication(Adw.Application):
 
         self.status = "init"
 
-        repo = git.Repo('https://github.com/mylinuxforwork/dotfiles-installer')
-        tags = sorted(repo.tags, key=lambda t: t.commit.committed_datetime)
-        latest_tag = tags[-1]
-
         # Show Application Window
         win.present()
 
