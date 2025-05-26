@@ -24,7 +24,7 @@ import pathlib
 import os
 import shutil
 import threading
-
+from urllib.request import urlopen
 from multiprocessing import Process
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
@@ -51,6 +51,8 @@ class DotfilesInstallerApplication(Adw.Application):
         self.create_action('showdotfiles', self.on_show_dotfiles)
         self.create_action('opendependencies', self.on_open_dependencies)
         self.create_action('openhomepage', self.on_open_homepage)
+        self.create_action('update_app', self.on_update_app)
+        self.create_action('check_updates', self.on_check_updates)
 
         self.settings = Gio.Settings(schema_id=app_id)
         if (self.settings.get_string("my-dotfiles-folder") == ""):
@@ -93,6 +95,8 @@ class DotfilesInstallerApplication(Adw.Application):
 
         self.props.active_window.wizzard_back_btn.set_visible(False)
         self.wizzard_stack.set_visible_child_name("page_load")
+
+        self.checkForUpdate()
 
         self.status = "init"
 
@@ -152,6 +156,29 @@ class DotfilesInstallerApplication(Adw.Application):
         pathlib.Path(prepared_folder).mkdir(parents=True, exist_ok=True)
         pathlib.Path(backup_folder).mkdir(parents=True, exist_ok=True)
         pathlib.Path(config_folder).mkdir(parents=True, exist_ok=True)
+
+    # Check For Updates
+    def on_check_updates(self, widget, _):
+        self.checkForUpdate()
+
+    def checkForUpdate(self):
+        thread = threading.Thread(target=self.checkLatestVersion)
+        thread.daemon = True
+        thread.start()
+
+    # Check Latest Tag
+    def checkLatestVersion(self):
+        try:
+            response = urlopen(app_github_api_tags)
+            tags = json.load(response)
+            if not tags[0]["name"] == app_version:
+                self.props.active_window.update_banner.set_revealed(True)
+        except:
+            print("Check for updates failed")
+
+    def on_update_app(self, widget, _):
+        print("Open Browser")
+        self.props.active_window.update_banner.set_revealed(False)
 
     # Load Configuration
     def loadConfiguration(self):

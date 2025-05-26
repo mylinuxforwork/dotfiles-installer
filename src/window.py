@@ -45,6 +45,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     config_finish = Gtk.Template.Child()
     load_configuration = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
+    update_banner = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

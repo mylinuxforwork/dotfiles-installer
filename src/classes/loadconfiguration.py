@@ -35,6 +35,7 @@ class LoadConfiguration(Gtk.Box):
         if "https://" in config_source:
             try:
                 response = urlopen(config_source)
+                self.props.config_json = json.load(response)
                 self.props.id = self.props.config_json["id"]
             except:
                 dialog = Adw.AlertDialog(

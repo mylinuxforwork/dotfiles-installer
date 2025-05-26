@@ -72,11 +72,11 @@
 
             <!-- Messages -->
             <child>
-                <object class="AdwBanner">
+                <object class="AdwBanner" id="update_banner">
                     <property name="button-label" translatable="true">Update now</property>
-                    <property name="title">An update for the ML4W Dotfiles is available!</property>
+                    <property name="title">An update for the Dotfiles Installer is available!</property>
                     <property name="revealed">false</property>
-                    <property name="action-name">app.update_dotfiles</property>
+                    <property name="action-name">app.update_app</property>
                 </object>
             </child>
 
@@ -233,12 +233,18 @@
         <attribute name="action">app.preferences</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
-        <attribute name="action">win.show-help-overlay</attribute>
+        <attribute name="label" translatable="yes">_Check for Updates</attribute>
+        <attribute name="action">app.check_updates</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">_About Dotfilesinstaller</attribute>
         <attribute name="action">app.about</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Quit</attribute>
+        <attribute name="action">app.quit</attribute>
       </item>
     </section>
   </menu>
