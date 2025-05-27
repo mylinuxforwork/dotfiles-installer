@@ -20,6 +20,7 @@ class Finish(Gtk.Box):
     def load(self):
         self.props.config_json = self.props.config_json
         self.props.wizzard_next_btn.set_label("Close")
+        self.props.progress_bar.set_fraction(1.0)
 
     def startReboot(self):
         print("startReboot")

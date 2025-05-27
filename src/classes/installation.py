@@ -21,6 +21,7 @@ class Installation(Gtk.Box):
     time_stamp = ""
 
     def load(self):
+        self.props.updateProgressBar(0.8)
         self.props.config_json = self.props.config_json
         self.props.wizzard_next_btn.set_label("Install Now")
         self.props.dotfiles_folder = get_dotfiles_folder(self.props.id)

@@ -32,8 +32,8 @@ class Backup(Gtk.Box):
         date_time = datetime.fromtimestamp(time.time())
         self.time_stamp = date_time.strftime("%Y%m%d-%H%M%S")
         self.props.dotfiles_folder = get_dotfiles_folder(self.props.id)
+        self.props.progress_bar.set_fraction(0.3)
 
-        print(self.props.dotfiles_folder)
         for f in os.listdir(self.props.original_folder):
 
             if f != ".config":

@@ -24,6 +24,7 @@ class Protect(Gtk.Box):
         self.protect_group.bind_model(self.protect_store,self.create_row)
 
     def load(self):
+        self.props.updateProgressBar(0.6)
         for f in os.listdir(self.props.prepared_folder):
             if f != ".config":
                 if os.path.exists(home_folder + f):

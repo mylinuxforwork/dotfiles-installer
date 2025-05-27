@@ -21,7 +21,7 @@ class LoadConfiguration(Gtk.Box):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.entry_dotinst.set_text(test_url)
+        self.entry_dotinst.set_text(test_path)
         self.settings = Gio.Settings(schema_id=app_id)
 
     def loadLocalConfiguration(self):
@@ -57,6 +57,7 @@ class LoadConfiguration(Gtk.Box):
                 self.dialogFileError()
 
     def loadJson(self):
+        print("drin")
         try:
             self.props.config_json = json.loads(self.json_response)
             self.props.id = self.props.config_json["id"]
@@ -74,7 +75,6 @@ class LoadConfiguration(Gtk.Box):
         except:
             self.props.spinner.set_visible(False)
             self.dialogEncodingError()
-
             self.props.wizzard_next_btn.set_sensitive(True)
 
     def on_response_selected(self, _dialog, task):

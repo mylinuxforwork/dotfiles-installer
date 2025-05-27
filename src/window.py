@@ -46,8 +46,12 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     load_configuration = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
     update_banner = Gtk.Template.Child()
+    progress_bar = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         config_name = Gtk.Template.Child()
         
+    def updateProgressBar(self,v):
+        self.progress_bar.set_fraction(v)
+

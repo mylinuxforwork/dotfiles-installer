@@ -57,6 +57,7 @@ class Information(Gtk.Box):
         self.config_subfolder.set_subtitle(self.props.config_json["subfolder"])
         self.props.wizzard_next_btn.set_label("Download Dotfiles")
         self.show_replacement = False
+        self.props.updateProgressBar(0.1)
 
     def downloadSource(self):
         self.props.spinner.set_visible(True)
@@ -87,6 +88,7 @@ class Information(Gtk.Box):
             self.open_dotfiles_content.set_visible(True)
             self.props.wizzard_next_btn.set_label("Next")
             self.show_replacement = True
+            self.props.updateProgressBar(0.2)
 
         except:
             dialog = Adw.AlertDialog(

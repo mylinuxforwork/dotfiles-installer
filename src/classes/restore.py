@@ -25,6 +25,7 @@ class Restore(Gtk.Box):
         self.restore_group.bind_model(self.restore_store,self.create_row)
 
     def loadRestore(self):
+        self.props.updateProgressBar(0.4)
         for i in self.props.config_json["restore"]:
             item = RestoreItem()
             item.title = i["title"]
