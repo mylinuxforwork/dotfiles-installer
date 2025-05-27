@@ -29,7 +29,7 @@ dotfiles_folder = share_folder + dotfiles_folder_name + "/"
 config_folder = home_folder + ".config/" + app_id + "/"
 
 # Dev
-test_url = "https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/examples/dotfiles.dotinst"
+test_url = "https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/examples/hyprland-dotfiles.dotinst"
 test_path = "Projects/dotfiles-installer/examples/dotfiles.dotinst"
 
 def get_dotfiles_folder(dotfiles_id):
