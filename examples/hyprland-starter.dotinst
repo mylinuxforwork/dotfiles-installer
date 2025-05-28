@@ -8,6 +8,7 @@
 	"dependencies": "https://github.com/mylinuxforwork/hyprland-starter",
 	"source": "Projects/hyprland-starter",
 	"subfolder": "dotfiles",
+	"setupscript":"setup.sh",
 	"restore":[
 		{
 			"title":"ML4W Settings",

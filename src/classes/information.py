@@ -20,6 +20,7 @@ class Information(Gtk.Box):
     config_author = Gtk.Template.Child()
     config_homepage = Gtk.Template.Child()
     config_dependencies = Gtk.Template.Child()
+    config_setupscript = Gtk.Template.Child()
     config_source = Gtk.Template.Child()
     config_subfolder = Gtk.Template.Child()
     open_dotfiles_content = Gtk.Template.Child()
@@ -85,6 +86,11 @@ class Information(Gtk.Box):
             # Copy dotfiles into prepared folder
             shutil.copytree(self.props.download_folder + "/" + self.props.config_json["subfolder"], self.props.prepared_folder, dirs_exist_ok=True)
 
+            if "setupscript" in self.props.config_json:
+                if os.path.exists(self.props.download_folder + "/" + self.props.config_json["setupscript"]):
+                    self.create_runsetup_dialog()
+                    self.config_setupscript.set_visible(True)
+
             self.open_dotfiles_content.set_visible(True)
             self.props.wizzard_next_btn.set_label("Next")
             self.show_replacement = True
@@ -105,6 +111,29 @@ class Information(Gtk.Box):
     def on_response_selected(_dialog, task):
         response = _dialog.choose_finish(task)
         self.props.wizzard_stack.set_visible_child_name("page_load")
+
+    def create_runsetup_dialog(self,*_args):
+        dialog = Adw.AlertDialog(
+            heading="Run Setup?",
+            body="The dotfiles include a setup script to install or update required dependencies. Do you want to run the script now?",
+            close_response="cancel",
+        )
+
+        dialog.add_response("cancel", "Cancel")
+        dialog.add_response("runsetup", "Run Setup")
+
+        # Use DESTRUCTIVE appearance to draw attention to the potentially damaging consequences of this action
+        dialog.set_response_appearance("runsetup", Adw.ResponseAppearance.DESTRUCTIVE)
+
+        dialog.choose(self.props, None, self.on_runsetup_selected)
+
+    def on_runsetup_selected(self,_dialog, task):
+        response = _dialog.choose_finish(task)
+        if response == "runsetup":
+            self.runSetupScript()
+
+    def runSetupScript(self):
+        subprocess.Popen(["flatpak-spawn", "--host", get_default_terminal(), "-e", self.props.download_folder + "/" + self.props.config_json["setupscript"]])
 
     def showDotfiles(self):
         subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.props.original_folder])

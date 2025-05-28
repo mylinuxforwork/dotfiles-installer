@@ -113,6 +113,13 @@
             <property name="action-name">app.showdotfiles</property>
           </object>
         </child>
+        <child>
+          <object class="AdwButtonRow" id="config_setupscript">
+            <property name="title" translatable="yes">Run Setup Script</property>
+            <property name="visible">false</property>
+            <property name="action-name">app.run_setupscript</property>
+          </object>
+        </child>
       </object>
     </child>
     <child>

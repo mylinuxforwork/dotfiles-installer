@@ -30,8 +30,12 @@ config_folder = home_folder + ".config/" + app_id + "/"
 
 # Dev
 test_url = "https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/examples/hyprland-dotfiles.dotinst"
-test_path = "Projects/dotfiles-installer/examples/dotfiles.dotinst"
+test_path = "Projects/dotfiles-installer/examples/hyprland-dotfiles.dotinst"
 
 def get_dotfiles_folder(dotfiles_id):
     my_settings = Gio.Settings(schema_id=app_id)
     return home_folder + my_settings.get_string("my-dotfiles-folder") + "/" + dotfiles_id
+
+def get_default_terminal():
+    my_settings = Gio.Settings(schema_id=app_id)
+    return my_settings.get_string("my-default-terminal")

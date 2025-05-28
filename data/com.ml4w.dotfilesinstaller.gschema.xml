@@ -2,6 +2,9 @@
 <schemalist gettext-domain="dotfiles-installer">
 	<schema id="com.ml4w.dotfilesinstaller" path="/com/ml4w/dotfilesinstaller/">
   	  <key name="my-dotfiles-folder" type="s">
+	    <default>'.mydotfiles'</default>
+	  </key>
+  	  <key name="my-default-terminal" type="s">
 	    <default>''</default>
 	  </key>
 	</schema>

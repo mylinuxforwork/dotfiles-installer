@@ -29,7 +29,7 @@ from urllib.request import urlopen
 from multiprocessing import Process
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Gio, Adw
+from gi.repository import GObject, Gtk, Gio, Adw
 from .window import DotfilesInstallerWindow
 from .classes.preferences import Preferences
 from ._settings import *
@@ -56,10 +56,12 @@ class DotfilesInstallerApplication(Adw.Application):
         self.create_action('check_updates', self.on_check_updates)
         self.create_action('open_dotfiles', self.on_open_dotfiles)
         self.create_action('open_backups', self.on_open_backups)
+        self.create_action('run_setupscript', self.on_run_setupscript)
 
         self.settings = Gio.Settings(schema_id=app_id)
         if (self.settings.get_string("my-dotfiles-folder") == ""):
-            self.settings.set_string("my-dotfiles-folder",dotfiles_folder + ".mydotfiles")
+            print("drin")
+            self.settings.set_string("my-dotfiles-folder",".mydotfiles")
         self.runSetup()
 
     # Activate
@@ -208,6 +210,9 @@ class DotfilesInstallerApplication(Adw.Application):
     def on_open_dependencies(self, widget, _):
         self.config_information.openDependencies()
 
+    def on_run_setupscript(self, widget, _):
+        self.config_information.runSetupScript()
+
     def on_response_selected(_dialog, task):
         response = _dialog.choose_finish(task)
         print(f'Selected "{response}" response.')
@@ -230,10 +235,14 @@ class DotfilesInstallerApplication(Adw.Application):
 
     def on_preferences_action(self, widget, _):
         self.preferences.dotfiles_folder.connect("apply", self.on_dotfiles_folder)
+        self.preferences.default_terminal.connect("apply", self.on_default_terminal)
         self.preferences.present(self.props.active_window)
 
     def on_dotfiles_folder(self, widget):
         self.settings.set_string("my-dotfiles-folder",widget.get_text())
+
+    def on_default_terminal(self, widget):
+        self.settings.set_string("my-default-terminal",widget.get_text())
 
     def create_action(self, name, callback, shortcuts=None):
         action = Gio.SimpleAction.new(name, None)

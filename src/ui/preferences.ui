@@ -11,11 +11,16 @@
         <property name="icon-name">settings-symbolic</property>
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="title">Folders</property>
-            <property name="description">Define the folder for your installed dotfiles.</property>
+            <property name="title">Default Settings</property>
+            <property name="description">Define the default settings for the Dotfiles Installer.</property>
             <child>
               <object class="AdwEntryRow" id="dotfiles_folder">
                 <property name="title">Dotfiles Folder</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwEntryRow" id="default_terminal">
+                <property name="title">Default Terminal</property>
               </object>
             </child>
           </object>
