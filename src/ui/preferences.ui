@@ -23,6 +23,12 @@
                 <property name="title">Default Terminal</property>
               </object>
             </child>
+            <child>
+              <object class="AdwSwitchRow" id="symlink_enabled">
+                <property name="title">Generating Symlinks</property>
+                <property name="subtitle">Will skip the generation of symlinks and therefor the installation of the dotfiles.</property>
+              </object>
+            </child>
           </object>
         </child>
       </object>

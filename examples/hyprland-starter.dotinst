@@ -1,8 +1,8 @@
 {
 	"name": "ML4W Hyprland Starter",
-	"id": "com.ml4w.dotfiles",
+	"id": "com.ml4w.hyprlandstarter",
 	"description": "Starter package for your Hyprland experiments",
-	"version":"3.0",
+	"version":"2.0",
 	"author": "Stephan Raabe",
 	"homepage": "https://github.com/mylinuxforwork/hyprland-starter",
 	"dependencies": "https://github.com/mylinuxforwork/hyprland-starter",
@@ -17,12 +17,12 @@
 		},
 		{
 			"title":"Keyboard settings",
-			"source":".config/hypr/conf/keyboard.conf",
+			"source":".config/hypr/conf/input.conf",
 			"value":true
 		},
 		{
 			"title":"Monitor settings",
-			"source":".config/hypr/conf/keyboard.conf",
+			"source":".config/hypr/conf/monitor.conf",
 			"value":true
 		}
 	],
@@ -31,7 +31,7 @@
 			"type":"text",
 			"mode":"replacesingleline",
 			"title":"Keyboard Layout",
-			"file":".config/hypr/conf/keyboard.conf",
+			"file":".config/hypr/conf/input.conf",
 			"checkpoint":"Check",
 			"search":"kb_layout",
 			"value":"us",
@@ -41,7 +41,7 @@
 			"type":"text",
 			"mode":"replacesingleline",
 			"title":"Keyboard Variant",
-			"file":".config/hypr/conf/keyboard.conf",
+			"file":".config/hypr/conf/input.conf",
 			"checkpoint":"Check",
 			"search":"kb_variant",
 			"value":"",
@@ -51,21 +51,11 @@
 			"type":"text",
 			"mode":"replacesingleline",
 			"title":"Screen Resolution",
-			"file":".config/hypr/conf/monitors/default.conf",
+			"file":".config/hypr/conf/monitor.conf",
 			"checkpoint":"Check",
 			"search":"monitor=,preferred,",
 			"value":"preferred",
 			"template":"monitor=,[VALUE],auto,1"
-		},
-		{
-			"type":"text",
-			"mode":"overwritefile",
-			"title":"Default Terminal",
-			"file":".config/ml4w/settings/terminal.sh",
-			"checkpoint":"Check",
-			"search":"",
-			"value":"kitty",
-			"template":""
 		},
 		{
 			"type":"text",
