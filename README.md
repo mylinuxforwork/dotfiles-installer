@@ -1,6 +1,7 @@
 # Dotfiles Installer
 
-> The application is currently in development and not ready for production.
+> [!IMPORTANT]
+> The application is currently in development. Errors may occur. Please open an issue.
 
 Install dotfiles easily with the Dotfiles Installer. Or if you want to publish your dotfiles with an easy to use installer, provide and share a configuration for the Dotfile Installer.
 
