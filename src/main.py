@@ -223,12 +223,15 @@ class DotfilesInstallerApplication(Adw.Application):
 
     def on_about_action(self, *args):
         about = Adw.AboutDialog(application_name=app_name,
-                                application_icon=app_id,
-                                developer_name=app_developer,
-                                version=app_version,
-                                copyright='© 2025 ' + app_developer)
-        # Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
-        about.set_translator_credits(_('translator-credits'))
+            application_icon=app_id,
+            developer_name=app_developer,
+            version=app_version,
+            website="https://github.com/mylinuxforwork/dotfiles-installer",
+            issue_url="https://github.com/mylinuxforwork/dotfiles-installer/issues",
+            support_url="https://github.com/mylinuxforwork/dotfiles-installer/issues",
+            copyright='© 2025 ' + app_developer,
+            license_type=Gtk.License.GPL_3_0_ONLY
+        )
         about.present(self.props.active_window)
 
     def on_preferences_action(self, widget, _):

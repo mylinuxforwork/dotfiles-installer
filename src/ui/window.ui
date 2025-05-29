@@ -6,6 +6,9 @@
     <property name="title" translatable="yes">Dotfiles Installer</property>
     <property name="default-width">600</property>
     <property name="default-height">600</property>
+    <style>
+      <class name="devel"/>
+    </style>
     <property name="content">
       <object class="AdwToolbarView">
         <child type="top">
@@ -238,12 +241,12 @@
         <attribute name="label" translatable="yes">_Preferences</attribute>
         <attribute name="action">app.preferences</attribute>
       </item>
+    </section>
+    <section>
       <item>
         <attribute name="label" translatable="yes">_Open Dotfiles Folder</attribute>
         <attribute name="action">app.open_dotfiles</attribute>
       </item>
-    </section>
-    <section>
       <item>
         <attribute name="label" translatable="yes">_Open Backups Folder</attribute>
         <attribute name="action">app.open_backups</attribute>

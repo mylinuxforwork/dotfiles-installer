@@ -17,7 +17,7 @@
     <!-- Description -->
     <child>
       <object class="GtkLabel">
-        <property name="label">The following dotfiles configuration will be downloaded and installed.</property>
+        <property name="label">The following dotfiles can now be downloaded and installed.</property>
         <property name="margin-bottom">2</property>
         <property name="justify">2</property>
         <property name="wrap">1</property>
