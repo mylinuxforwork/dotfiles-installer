@@ -45,10 +45,11 @@ backup_folder = share_folder + backup_folder_name + "/"
 dotfiles_folder = share_folder + dotfiles_folder_name + "/"
 config_folder = home_folder + ".config/" + app_id + "/"
 
-# Dev
+# Development
 test_url = "https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/examples/hyprland-starter.dotinst"
 test_path = "Projects/dotfiles-installer/examples/hyprland-starter.dotinst"
 
+# Get Settings
 def get_dotfiles_folder(dotfiles_id):
     my_settings = Gio.Settings(schema_id=app_id)
     return home_folder + my_settings.get_string("my-dotfiles-folder") + "/" + dotfiles_id
