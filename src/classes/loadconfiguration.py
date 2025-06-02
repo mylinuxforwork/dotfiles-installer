@@ -104,6 +104,8 @@ class LoadConfiguration(Gtk.Box):
             body="The url to the dotinst file is no working. Please check the url.",
             close_response="okay",
         )
+        dialog.set_content_height(300)
+        dialog.set_content_width(300)
         dialog.add_response("okay", "Okay")
         dialog.choose(self.props, None, self.on_response_selected)
 
@@ -114,6 +116,8 @@ class LoadConfiguration(Gtk.Box):
             body="The format of the dotinst file is not correct. The configuration could not be loaded.",
             close_response="okay",
         )
+        dialog.set_content_height(300)
+        dialog.set_content_width(300)
         dialog.add_response("okay", "Okay")
         dialog.choose(self.props, None, self.on_response_selected)
 
@@ -121,7 +125,9 @@ class LoadConfiguration(Gtk.Box):
         dialog = Adw.AlertDialog(
             heading="File Error",
             body="The path to the dotinst file is no working. Please check the path.",
-            close_response="okay",
+            close_response="okay"
         )
+        dialog.set_content_height(300)
+        dialog.set_content_width(300)
         dialog.add_response("okay", "Okay")
         dialog.choose(self.props, None, self.on_response_selected)

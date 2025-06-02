@@ -119,6 +119,8 @@ class Information(Gtk.Box):
                 body="The source could not be downloaded and prepared in the target directory. Please check the source and subfolder configuration.",
                 close_response="okay",
             )
+            dialog.set_content_height(300)
+            dialog.set_content_width(300)
             dialog.add_response("okay", "Okay")
             dialog.choose(self.props, None, self.on_response_selected)
 
