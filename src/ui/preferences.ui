@@ -25,8 +25,8 @@
             </child>
             <child>
               <object class="AdwSwitchRow" id="symlink_enabled">
-                <property name="title">Generating Symlinks</property>
-                <property name="subtitle">Will skip the generation of symlinks and therefor the installation of the dotfiles.</property>
+                <property name="title">Generate Symbolic Links</property>
+                <property name="subtitle">Dotfiles will be installed by generating symbolic links from the dotfiles folder to the target directories. Disable it for testing purposes.</property>
               </object>
             </child>
           </object>

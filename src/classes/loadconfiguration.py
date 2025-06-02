@@ -74,7 +74,6 @@ class LoadConfiguration(Gtk.Box):
                 self.dialogFileError()
 
     def loadJson(self):
-        print("drin")
         try:
             self.props.config_json = json.loads(self.json_response)
             self.props.id = self.props.config_json["id"]

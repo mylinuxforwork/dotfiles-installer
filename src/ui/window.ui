@@ -4,7 +4,7 @@
   <requires lib="Adw" version="1.0"/>
   <template class="DotfilesinstallerWindow" parent="AdwApplicationWindow">
     <property name="title" translatable="yes">Dotfiles Installer</property>
-    <property name="default-width">600</property>
+    <property name="default-width">800</property>
     <property name="default-height">600</property>
     <style>
       <class name="devel"/>

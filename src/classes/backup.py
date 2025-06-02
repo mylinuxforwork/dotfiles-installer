@@ -52,7 +52,6 @@ class Backup(Gtk.Box):
         self.props.progress_bar.set_fraction(0.3)
 
         for f in os.listdir(self.props.original_folder):
-
             if f != ".config":
                 if os.path.exists(home_folder + "/" + f):
                     if os.path.islink(home_folder + f):
@@ -61,7 +60,7 @@ class Backup(Gtk.Box):
                             item.file = f
                             item.source = self.props.dotfiles_folder
                             item.target = self.props.backup_folder + "/" + self.time_stamp
-                            if f in self.props.local_json["backupexclude"]:
+                            if "backupexclude" in self.props.local_json and f in self.props.local_json["backupexclude"]:
                                 item.value = False
                             self.backup_store.append(item)
                     else:
@@ -69,7 +68,7 @@ class Backup(Gtk.Box):
                         item.file = f
                         item.source = home_folder
                         item.target = self.props.backup_folder + "/" + self.time_stamp
-                        if f in self.props.local_json["backupexclude"]:
+                        if "backupexclude" in self.props.local_json and f in self.props.local_json["backupexclude"]:
                             item.value = False
                         self.backup_store.append(item)
 
@@ -81,12 +80,16 @@ class Backup(Gtk.Box):
                         item.file = f
                         item.source = self.props.dotfiles_folder + "/.config/"
                         item.target = self.props.backup_folder + "/" + self.time_stamp + "/.config"
+                        if "backupexclude" in self.props.local_json and f in self.props.local_json["backupexclude"]:
+                            item.value = False
                         self.backup_store.append(item)
                 else:
                     item = BackupItem()
                     item.file = f
                     item.source = home_folder + ".config/"
                     item.target = self.props.backup_folder + "/" + self.time_stamp + "/.config"
+                    if "backupexclude" in self.props.local_json and f in self.props.local_json["backupexclude"]:
+                        item.value = False
                     self.backup_store.append(item)
 
         self.props.spinner.set_visible(False)

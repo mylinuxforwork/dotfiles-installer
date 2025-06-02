@@ -57,9 +57,6 @@ class DotfilesInstallerApplication(Adw.Application):
         self.create_action('run_setupscript', self.on_run_setupscript)
 
         self.settings = Gio.Settings(schema_id=app_id)
-        if (self.settings.get_string("my-dotfiles-folder") == ""):
-            print("drin")
-            self.settings.set_string("my-dotfiles-folder",".mydotfiles")
         self.runSetup()
 
     # Activate
@@ -186,17 +183,14 @@ class DotfilesInstallerApplication(Adw.Application):
     # Load Configuration
     def loadConfiguration(self):
         thread = threading.Thread(target=self.load_configuration.loadConfiguration)
-        thread.daemon = True
         thread.start()
 
     def loadBackup(self):
         thread = threading.Thread(target=self.config_backup.load)
-        thread.daemon = True
         thread.start()
 
     def downloadSource(self):
         thread = threading.Thread(target=self.config_information.downloadSource)
-        thread.daemon = True
         thread.start()
 
     def on_show_dotfiles(self, widget, _):
