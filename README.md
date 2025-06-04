@@ -26,7 +26,8 @@ The ML4W Hyprland Settings App requires Flatpak:
 Copy the following command into your terminal to install or update the app:
 
 ```
-bash <(curl -s https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/setup.sh)
+bash -c "$(curl -s https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/setup.sh)"
+
 ```
 
 After the installation you can start the app from your application launcher or with:
