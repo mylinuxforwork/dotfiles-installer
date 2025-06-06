@@ -49,6 +49,7 @@ class Information(Gtk.Box):
         super().__init__(**kwargs)
 
     def showInformation(self):
+        print(":: Show dotfiles information")
         self.config_json = self.props.config_json
         self.config_name.set_subtitle(self.props.config_json["name"])
         self.config_id.set_subtitle(self.props.config_json["id"])
@@ -96,12 +97,15 @@ class Information(Gtk.Box):
                 subprocess.call(["flatpak-spawn", "--host", "git", "clone", "--depth", "1", self.props.config_json["source"], self.props.download_folder])
             else:
                 shutil.copytree(home_folder + self.props.config_json["source"], self.props.download_folder, dirs_exist_ok=True)
+            print(":: Download to " + self.props.download_folder)
 
             # Copy dotfiles into original folder
             shutil.copytree(self.props.download_folder + "/" + self.props.config_json["subfolder"], self.props.original_folder, dirs_exist_ok=True)
+            print(":: Copy " + self.props.download_folder + "/" + self.props.config_json["subfolder"] + " to " + self.props.prepared_folder)
 
             # Copy dotfiles into prepared folder
             shutil.copytree(self.props.download_folder + "/" + self.props.config_json["subfolder"], self.props.prepared_folder, dirs_exist_ok=True)
+            print(":: Copy " + self.props.download_folder + "/" + self.props.config_json["subfolder"] + " to " + self.props.prepared_folder)
 
             if "setupscript" in self.props.config_json:
                 if os.path.exists(self.props.download_folder + "/" + self.props.config_json["setupscript"]):
@@ -114,6 +118,7 @@ class Information(Gtk.Box):
             self.props.updateProgressBar(0.2)
 
         except:
+            print(":: Download error")
             dialog = Adw.AlertDialog(
                 heading="Download Error",
                 body="The source could not be downloaded and prepared in the target directory. Please check the source and subfolder configuration.",

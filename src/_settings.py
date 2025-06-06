@@ -23,7 +23,7 @@ from gi.repository import Gtk, Gio, Adw
 app_id = "com.ml4w.dotfilesinstaller"
 app_name = "Dotfiles Installer"
 app_developer = "Stephan Raabe"
-app_version = "0.4"
+app_version = "0.5"
 app_homepage = "https://github.com/mylinuxforwork/dotfiles-installer"
 app_github_api_tags = "https://api.github.com/repos/mylinuxforwork/dotfiles-installer/tags"
 

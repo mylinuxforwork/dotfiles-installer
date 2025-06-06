@@ -53,6 +53,7 @@ class LoadConfiguration(Gtk.Box):
 
         # Load from Url
         if "https://" in config_source:
+            print(":: Load remote configuration from " + config_source)
             try:
                 urlparse(config_source)
                 try:
@@ -66,6 +67,7 @@ class LoadConfiguration(Gtk.Box):
 
         # Load from File
         else:
+            print(":: Load local configuration from " + config_source)
             try:
                 with open(home_folder + config_source) as f:
                     self.json_response = f.read()
@@ -74,6 +76,7 @@ class LoadConfiguration(Gtk.Box):
                 self.dialogFileError()
 
     def loadJson(self):
+        print(":: Parse json")
         try:
             self.props.config_json = json.loads(self.json_response)
             self.props.id = self.props.config_json["id"]

@@ -15,11 +15,17 @@ Features:
 
 # Installation & Update
 
-The ML4W Hyprland Settings App requires Flatpak:
+The ML4W Hyprland Settings App requires Flatpak & git:
 
 ```
 # Install Flatpak on your distribution
 # https://flatpak.org/setup/
+
+# Install git for your distribution
+sudo pacman -S git # for Arch
+sudo dnf install git # for Fedora
+sudo zypper install git # for openSuse
+# etc.
 
 ```
 
@@ -37,4 +43,7 @@ After the installation you can start the app from your application launcher or w
 ```
 flatpak run com.ml4w.dotfilesinstaller
 ```
+# Wiki
 
+Please have a look at the Wiki to learn how to configure the Dotfiles Installer:
+https://github.com/mylinuxforwork/dotfiles-installer/wiki/01-Installation

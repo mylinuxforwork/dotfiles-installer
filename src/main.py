@@ -152,10 +152,15 @@ class DotfilesInstallerApplication(Adw.Application):
     # Run Setup
     def runSetup(self):
         pathlib.Path(download_folder).mkdir(parents=True, exist_ok=True)
+        print(":: " + download_folder + " created (if not exists)")
         pathlib.Path(original_folder).mkdir(parents=True, exist_ok=True)
+        print(":: " + original_folder + " created (if not exists)")
         pathlib.Path(prepared_folder).mkdir(parents=True, exist_ok=True)
+        print(":: " + prepared_folder + " created (if not exists)")
         pathlib.Path(backup_folder).mkdir(parents=True, exist_ok=True)
+        print(":: " + backup_folder + " created (if not exists)")
         pathlib.Path(config_folder).mkdir(parents=True, exist_ok=True)
+        print(":: " + config_folder + " created (if not exists)")
 
     # Check For Updates
     def on_check_updates(self, widget, _):
@@ -172,9 +177,10 @@ class DotfilesInstallerApplication(Adw.Application):
             response = urlopen(app_github_api_tags)
             tags = json.load(response)
             if not tags[0]["name"] == app_version:
+                print(":: Update is available")
                 self.props.active_window.update_banner.set_revealed(True)
         except:
-            print("Check for updates failed")
+            print(":: Check for updates failed")
 
     def on_update_app(self, widget, _):
         subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", app_homepage])
@@ -247,5 +253,6 @@ class DotfilesInstallerApplication(Adw.Application):
             self.set_accels_for_action(f"app.{name}", shortcuts)
 
 def main(version):
+    print(":: Welcome to the ML4W Dotfiles Installer " + app_version)
     app = DotfilesInstallerApplication()
     return app.run(sys.argv)
