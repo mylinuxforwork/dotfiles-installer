@@ -46,6 +46,17 @@ class LoadConfiguration(Gtk.Box):
         self.entry_dotinst.set_text(test_url)
         self.http_session = Soup.Session.new()
         self.settings = Gio.Settings(schema_id=app_id)
+        self.cancellable = Gio.Cancellable.new()
+        self.connect('unrealize', self._on_unrealize)
+
+    def _on_unrealize(self, widget):
+        """
+        Callback for when the widget is no longer visible on screen (unrealized).
+        Cancels pending requests for this specific page.
+        """
+        print("WelcomePageView unrealized. Cancelling pending network requests.")
+        self.cancellable.cancel()
+        # Removed: self.http_session = None, as session is no longer owned by this page.
 
     def loadLocalConfiguration(self):
         self.props.local_json = {}
@@ -133,7 +144,7 @@ class LoadConfiguration(Gtk.Box):
             self.http_session.send_and_read_async(
                 message,
                 GLib.PRIORITY_DEFAULT, # Or another priority
-                Gio.Cancellable.new(), # A cancellable object could be used to cancel the request
+                self.cancellable, # A cancellable object could be used to cancel the request
                 self._on_json_loaded_callback, # Callback function
                 message
             )
@@ -167,6 +178,7 @@ class LoadConfiguration(Gtk.Box):
 
             # Parse JSON content
             self.props.config_json = json.loads(json_string)
+            self.props.spinner.set_visible(False)
             self.loadJson()
 
         except GLib.Error as e:
@@ -181,6 +193,9 @@ class LoadConfiguration(Gtk.Box):
 
     def loadJson(self):
         print(":: Parse json")
+        self.props.wizzard_next_btn.set_sensitive(True)
+        self.props.spinner.set_visible(False)
+
         try:
             self.props.id = self.props.config_json["id"]
             self.props.download_folder = download_folder + self.props.id
@@ -188,16 +203,13 @@ class LoadConfiguration(Gtk.Box):
             self.props.prepared_folder = prepared_folder + self.props.id
             self.props.backup_folder = backup_folder + self.props.id
             self.props.dotfiles_folder = get_dotfiles_folder(self.props.id)
-            self.props.config_information.showInformation()
             self.props.status = "info"
-            self.props.wizzard_next_btn.set_sensitive(True)
             self.props.wizzard_stack.set_visible_child_name("page_information")
+            self.props.config_information.showInformation()
             self.loadLocalConfiguration()
-            self.props.spinner.set_visible(False)
+
         except:
-            self.props.spinner.set_visible(False)
             self._show_error_and_reset("Json encoding error. Please check the format of the .dotinst json file.")
-            self.props.wizzard_next_btn.set_sensitive(True)
 
     def _show_error_and_reset(self, message: str):
         dialog = Adw.AlertDialog(
