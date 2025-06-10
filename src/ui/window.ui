@@ -31,9 +31,9 @@
               <object class="GtkButton" id="wizzard_back_btn">
                 <property name="name">regular</property>
                 <property name="label" translatable="yes">Cancel</property>
-                <property name="action-name">app.wizzard_back</property>
                 <property name="margin-start">15</property>
                 <property name="margin-bottom">15</property>
+                <signal name="clicked" handler="on_wizzard_back_action"/>
                 <style>
                   <class name="destructive-action"/>
                 </style>
@@ -61,9 +61,9 @@
                   <object class="GtkButton" id="wizzard_next_btn">
                     <property name="name">regular</property>
                     <property name="label" translatable="yes">Next</property>
-                    <property name="action-name">app.wizzard_next</property>
                     <property name="margin-end">15</property>
                     <property name="margin-bottom">15</property>
+                    <signal name="clicked" handler="on_wizzard_next_action"/>
                     <style>
                       <class name="suggested-action"/>
                     </style>
@@ -239,27 +239,27 @@
     <section>
       <item>
         <attribute name="label" translatable="yes">_Preferences</attribute>
-        <attribute name="action">app.preferences</attribute>
+        <attribute name="action">win.preferences</attribute>
       </item>
     </section>
     <section>
       <item>
         <attribute name="label" translatable="yes">_Open Dotfiles Folder</attribute>
-        <attribute name="action">app.open_dotfiles</attribute>
+        <attribute name="action">win.open_dotfiles</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">_Open Backups Folder</attribute>
-        <attribute name="action">app.open_backups</attribute>
+        <attribute name="action">win.open_backups</attribute>
       </item>
     </section>
     <section>
       <item>
         <attribute name="label" translatable="yes">_Check for Updates</attribute>
-        <attribute name="action">app.check_updates</attribute>
+        <attribute name="action">win.check_updates</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_About Dotfilesinstaller</attribute>
-        <attribute name="action">app.about</attribute>
+        <attribute name="label" translatable="yes">_About Dotfiles Installer</attribute>
+        <attribute name="action">win.about</attribute>
       </item>
     </section>
     <section>

@@ -23,7 +23,7 @@ from gi.repository import Gtk, Gio, Adw
 app_id = "com.ml4w.dotfilesinstaller"
 app_name = "Dotfiles Installer"
 app_developer = "Stephan Raabe"
-app_version = "0.5"
+app_version = "0.6"
 app_homepage = "https://github.com/mylinuxforwork/dotfiles-installer"
 app_github_api_tags = "https://api.github.com/repos/mylinuxforwork/dotfiles-installer/tags"
 
@@ -62,3 +62,11 @@ def get_default_terminal():
 def get_symlink_enabled():
     my_settings = Gio.Settings(schema_id=app_id)
     return my_settings.get_boolean('my-enable-symlinks');
+
+def printLog(msg,cat='m'):
+    match cat:
+        case "e":
+            print("ERROR :: " + msg)
+        case _:
+            print(":: " + msg)
+
