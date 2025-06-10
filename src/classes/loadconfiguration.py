@@ -18,6 +18,9 @@
 from gi.repository import Adw
 from gi.repository import Gtk
 from gi.repository import Gio
+from gi.repository import Soup
+from gi.repository import GLib
+
 from urllib.request import urlopen
 from urllib.parse import urlparse
 
@@ -25,6 +28,7 @@ import json
 import pathlib
 import os
 import shutil
+import gi
 from .._settings import *
 from json.decoder import JSONDecodeError
 
@@ -35,10 +39,12 @@ class LoadConfiguration(Gtk.Box):
     entry_dotinst = Gtk.Template.Child()
     props = {}
     json_response = ""
+    config_source = ""
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.entry_dotinst.set_text(test_path)
+        self.entry_dotinst.set_text(test_url)
+        self.http_session = Soup.Session.new()
         self.settings = Gio.Settings(schema_id=app_id)
 
     def loadLocalConfiguration(self):
@@ -49,36 +55,133 @@ class LoadConfiguration(Gtk.Box):
     def loadConfiguration(self):
         self.props.spinner.set_visible(True)
         self.props.wizzard_next_btn.set_sensitive(False)
-        config_source = self.entry_dotinst.get_text()
+        self.config_source = self.entry_dotinst.get_text()
 
         # Load from Url
-        if "https://" in config_source:
-            print(":: Load remote configuration from " + config_source)
-            try:
-                urlparse(config_source)
-                try:
-                    json_response_http = urlopen(config_source)
-                    self.json_response = json_response_http.read().decode('utf-8')
-                    self.loadJson()
-                except:
-                    self.dialogUrlError()
-            except:
-                self.dialogUrlError()
+        if "https://" in self.config_source:
+            printLog("Load remote configuration from " + self.config_source)
+            self._load_json_from_url()
 
         # Load from File
         else:
-            print(":: Load local configuration from " + config_source)
-            try:
-                with open(home_folder + config_source) as f:
-                    self.json_response = f.read()
-                self.loadJson()
-            except:
-                self.dialogFileError()
+            printLog("Load local configuration from " + self.config_source)
+            self._load_json_from_local_file()
+
+    def _load_json_from_local_file(self):
+        """Loads JSON content from a local file in the user's home directory asynchronously."""
+        # home_dir = GLib.get_home_dir()
+        # file_path = os.path.join(home_dir, "test.json")
+        file_path = home_folder + self.config_source
+        local_file = Gio.File.new_for_path(file_path)
+
+        printLog("Attempting to load file from: " + file_path)
+
+        try:
+            # Use load_contents_async for simpler loading of entire file contents
+            # This is the core of the asynchronous file loading.
+            local_file.load_contents_async(
+                Gio.Cancellable.new(), # A cancellable object could be used to cancel the load
+                self._on_local_json_loaded_callback # Callback function to be executed when loading is complete
+            )
+        except GLib.Error as e:
+            print(f"Error initiating file load: {e.message}")
+            self._show_error_and_reset(f"File access error: {e.message}")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            self._show_error_and_reset(f"An unexpected error occurred: {e}")
+
+    def _on_local_json_loaded_callback(self, file: Gio.File, result: Gio.AsyncResult):
+        """Callback function executed when the local file loading is complete."""
+        try:
+            # Finish the asynchronous operation and get the contents
+            success, contents, etag = file.load_contents_finish(result)
+
+            if not success:
+                self._show_error_and_reset("Failed to read file contents.")
+                return
+
+            if not contents:
+                self._show_error_and_reset("File is empty or contains no readable content.")
+                return
+
+            json_string = contents.decode('utf-8')
+            self.props.config_json = json.loads(json_string)
+            self.loadJson()
+
+        except GLib.Error as e:
+            print(f"Error loading file contents: {e.message}")
+            self._show_error_and_reset(f"Error reading file: {e.message}")
+        except json.JSONDecodeError as e:
+            print(f"JSON decoding error: {e}")
+            self._show_error_and_reset(f"Failed to parse local JSON content: {e}")
+        except Exception as e:
+            print(f"An unexpected error occurred in callback: {e}")
+            self._show_error_and_reset(f"An error occurred: {e}")
+
+    def _load_json_from_url(self):
+        """Loads JSON content from a specific URL asynchronously."""
+        # Using the raw GitHub URL for the test.json file
+        url = self.config_source
+
+        message = Soup.Message.new("GET", url)
+        if not message:
+            self._show_error_and_reset("Failed to create HTTP message.")
+            return
+
+        try:
+            # send_and_read_async fetches the response body into a Soup.Buffer
+            self.http_session.send_and_read_async(
+                message,
+                GLib.PRIORITY_DEFAULT, # Or another priority
+                Gio.Cancellable.new(), # A cancellable object could be used to cancel the request
+                self._on_json_loaded_callback, # Callback function
+                message
+            )
+            print(f"Attempting to load JSON from URL: {url}")
+        except GLib.Error as e:
+            print(f"Error initiating network request: {e.message}")
+            self._show_error_and_reset(f"Network request error: {e.message}")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            self._show_error_and_reset(f"An unexpected error occurred: {e}")
+
+    def _on_json_loaded_callback(self, session: Soup.Session, result: Gio.AsyncResult, message: Soup.Message):
+        """Callback function executed when the URL loading is complete."""
+        try:
+            buffer = session.send_and_read_finish(result)
+
+            http_status_code = message.get_status()
+            http_reason_phrase = message.get_reason_phrase()
+
+            # Check HTTP status code (e.g., 200 OK)
+            if message.get_status() != Soup.Status.OK:
+                self._show_error_and_reset(f"Failed to load JSON from URL. HTTP Status: {message.get_status()}")
+                return
+
+            if not buffer:
+                self._show_error_and_reset("Received empty response from URL.")
+                return
+
+            # Decode the buffer content to a UTF-8 string
+            json_string = buffer.get_data().decode('utf-8')
+
+            # Parse JSON content
+            self.props.config_json = json.loads(json_string)
+            self.loadJson()
+
+        except GLib.Error as e:
+            print(f"Network error during receive: {e.message}")
+            self._show_error_and_reset(f"Network error: {e.message}")
+        except json.JSONDecodeError as e:
+            print(f"JSON decoding error: {e}")
+            self._show_error_and_reset(f"Failed to parse JSON content: {e}")
+        except Exception as e:
+            print(f"An unexpected error occurred in callback: {e}")
+            self._show_error_and_reset(f"An unexpected error occurred: {e}")
 
     def loadJson(self):
         print(":: Parse json")
         try:
-            self.props.config_json = json.loads(self.json_response)
             self.props.id = self.props.config_json["id"]
             self.props.download_folder = download_folder + self.props.id
             self.props.original_folder = original_folder + self.props.id
@@ -93,44 +196,22 @@ class LoadConfiguration(Gtk.Box):
             self.props.spinner.set_visible(False)
         except:
             self.props.spinner.set_visible(False)
-            self.dialogEncodingError()
+            self._show_error_and_reset("Json encoding error. Please check the format of the .dotinst json file.")
             self.props.wizzard_next_btn.set_sensitive(True)
 
-    def on_response_selected(self, _dialog, task):
-        response = _dialog.choose_finish(task)
-        self.props.spinner.set_visible(False)
-        self.props.wizzard_next_btn.set_sensitive(True)
-
-    def dialogUrlError(self):
+    def _show_error_and_reset(self, message: str):
         dialog = Adw.AlertDialog(
-            heading="Url Error",
-            body="The url to the dotinst file is no working. Please check the url.",
-            close_response="okay",
-        )
-        dialog.set_content_height(300)
-        dialog.set_content_width(300)
-        dialog.add_response("okay", "Okay")
-        dialog.choose(self.props, None, self.on_response_selected)
-
-
-    def dialogEncodingError(self):
-        dialog = Adw.AlertDialog(
-            heading="Decoding Error",
-            body="The format of the dotinst file is not correct. The configuration could not be loaded.",
-            close_response="okay",
-        )
-        dialog.set_content_height(300)
-        dialog.set_content_width(300)
-        dialog.add_response("okay", "Okay")
-        dialog.choose(self.props, None, self.on_response_selected)
-
-    def dialogFileError(self):
-        dialog = Adw.AlertDialog(
-            heading="File Error",
-            body="The path to the dotinst file is no working. Please check the path.",
+            heading="Loading Error",
+            body=message,
             close_response="okay"
         )
         dialog.set_content_height(300)
         dialog.set_content_width(300)
         dialog.add_response("okay", "Okay")
         dialog.choose(self.props, None, self.on_response_selected)
+
+    def on_response_selected(self,_dialog, task):
+        response = _dialog.choose_finish(task)
+        self.props.spinner.set_visible(False)
+        self.props.wizzard_next_btn.set_sensitive(True)
+
