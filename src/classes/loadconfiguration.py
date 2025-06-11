@@ -36,7 +36,7 @@ class LoadConfiguration(Gtk.Box):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.entry_dotinst.set_text(test_path)
+        # self.entry_dotinst.set_text(test_path)
         self.http_session = Soup.Session.new()
         self.settings = Gio.Settings(schema_id=app_id)
         self.cancellable = Gio.Cancellable.new()

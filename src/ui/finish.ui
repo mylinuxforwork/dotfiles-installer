@@ -22,5 +22,17 @@
         <property name="wrap">1</property>
       </object>
     </child>
+    <child>
+      <object class="GtkButton" id="reboot_system">
+        <property name="name">regular</property>
+        <property name="label" translatable="yes">Reboot Now</property>
+        <property name="margin-end">300</property>
+        <property name="margin-start">300</property>
+        <property name="action-name">win.reboot_system</property>
+        <style>
+          <class name="suggested-action"/>
+        </style>
+      </object>
+    </child>
   </template>
 </interface>

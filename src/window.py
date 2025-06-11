@@ -15,7 +15,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import gi, sys, json, pathlib, os, shutil, threading, subprocess
+import gi, sys, json, pathlib, os, shutil, threading, subprocess, time
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Adw, Gtk
@@ -46,7 +46,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     config_protect = Gtk.Template.Child()
     config_installation = Gtk.Template.Child()
     config_finish = Gtk.Template.Child()
-    load_configuration = Gtk.Template.Child()
+    config_configuration = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
     update_banner = Gtk.Template.Child()
     progress_bar = Gtk.Template.Child()
@@ -57,19 +57,23 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         config_name = Gtk.Template.Child()
         
         # Load props to stack pages
-        self.load_configuration.props = self
+        self.config_configuration.props = self
         self.config_information.props = self
         self.config_backup.props = self
         self.config_settings.props = self
         self.config_restore.props = self
         self.config_protect.props = self
         self.config_installation.props = self
+        self.config_finish.props = self
 
         self.preferences = Preferences()
         self.settings = Gio.Settings(schema_id=app_id)
 
         self.create_actions()
         self.check_for_update()
+
+        # self.config_finish.load()
+        # self.wizzard_stack.set_visible_child_name("page_finish")
 
     # Create actions
     def create_actions(self):
@@ -83,6 +87,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.create_action("open_dotfiles_dependencies",self.config_information.on_open_dependencies)
         self.create_action("show_dotfiles",self.config_information.on_show_dotfiles)
         self.create_action("run_setup_script",self.config_information.on_run_setup_script)
+        self.create_action("reboot_system",self.on_reboot_system)
 
     @Gtk.Template.Callback()
     def on_wizzard_back_action(self, widget):
@@ -101,7 +106,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     def on_wizzard_next_action(self, widget):
         match self.wizzard_stack.get_visible_child_name():
             case "page_load":
-                self.load_configuration.load_configuration()
+                self.config_configuration.load_configuration()
             case "page_information":
                 if self.config_information.show_replacement == False:
                     self.config_information.get_source()
@@ -122,7 +127,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
                 self.config_installation.install_dotfiles()
                 self.config_finish.load()
             case "page_finish":
-                self.quit()
+                self.close()
 
     def updateProgressBar(self,v):
         self.progress_bar.set_fraction(v)
@@ -149,6 +154,11 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 
     def on_default_terminal(self, widget):
         self.settings.set_string("my-default-terminal",widget.get_text())
+
+    def on_reboot_system(self, widget, _):
+        printLog("Rebooting now...")
+        time.sleep(0.5)
+        subprocess.Popen(["flatpak-spawn", "--host", "reboot"])
 
 # --------------------------------------------
 # Menu Actions

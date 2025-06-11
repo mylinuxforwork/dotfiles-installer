@@ -102,7 +102,7 @@
                       <object class="AdwStatusPage">
                         <property name="valign">1</property>
                         <child type="content">
-                          <object class="Loadconfiguration" id="load_configuration"/>
+                          <object class="Loadconfiguration" id="config_configuration"/>
                         </child>
                       </object>
                     </property>
