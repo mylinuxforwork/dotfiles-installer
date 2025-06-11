@@ -83,7 +83,7 @@
                 <property name="halign">3</property>
                 <property name="valign">3</property>
                 <property name="label" translatable="yes">Open</property>
-                <property name="action-name">app.openhomepage</property>
+                <property name="action-name">win.open_dotfiles_homepage</property>
               </object>
             </child>
           </object>
@@ -101,7 +101,7 @@
                 <property name="halign">3</property>
                 <property name="valign">3</property>
                 <property name="label" translatable="yes">Open</property>
-                <property name="action-name">app.opendependencies</property>
+                <property name="action-name">win.open_dotfiles_dependencies</property>
               </object>
             </child>
           </object>
@@ -110,14 +110,14 @@
           <object class="AdwButtonRow" id="open_dotfiles_content">
             <property name="title" translatable="yes">Open Download Folder</property>
             <property name="visible">false</property>
-            <property name="action-name">app.showdotfiles</property>
+            <property name="action-name">win.show_dotfiles</property>
           </object>
         </child>
         <child>
           <object class="AdwButtonRow" id="config_setupscript">
             <property name="title" translatable="yes">Run Setup Script</property>
             <property name="visible">false</property>
-            <property name="action-name">app.run_setupscript</property>
+            <property name="action-name">win.run_setup_script</property>
           </object>
         </child>
       </object>

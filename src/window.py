@@ -73,29 +73,16 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 
     # Create actions
     def create_actions(self):
-        about_action = Gio.SimpleAction.new("about", None)
-        about_action.connect("activate", self.on_about_action)
-        self.add_action(about_action)
-
-        preferences_action = Gio.SimpleAction.new("preferences", None)
-        preferences_action.connect("activate", self.on_preferences_action)
-        self.add_action(preferences_action)
-
-        open_dotfiles_action = Gio.SimpleAction.new("open_dotfiles", None)
-        open_dotfiles_action.connect("activate", self.on_open_dotfiles_action)
-        self.add_action(open_dotfiles_action)
-
-        open_backups_action = Gio.SimpleAction.new("open_backups", None)
-        open_backups_action.connect("activate", self.on_open_backups_action)
-        self.add_action(open_backups_action)
-
-        check_updates_action = Gio.SimpleAction.new("check_updates", None)
-        check_updates_action.connect("activate", self.on_check_updates_action)
-        self.add_action(check_updates_action)
-
-        update_app_action = Gio.SimpleAction.new("update_app", None)
-        update_app_action.connect("activate", self.on_update_app)
-        self.add_action(update_app_action)
+        self.create_action("about",self.on_about_action)
+        self.create_action("preferences",self.on_preferences_action)
+        self.create_action("open_dotfiles", self.on_open_dotfiles_action)
+        self.create_action("open_backups",self.on_open_backups_action)
+        self.create_action("check_updates",self.on_check_updates_action)
+        self.create_action("update_app",self.on_update_app)
+        self.create_action("open_dotfiles_homepage",self.config_information.on_open_homepage)
+        self.create_action("open_dotfiles_dependencies",self.config_information.on_open_dependencies)
+        self.create_action("show_dotfiles",self.config_information.on_show_dotfiles)
+        self.create_action("run_setup_script",self.config_information.on_run_setup_script)
 
     @Gtk.Template.Callback()
     def on_wizzard_back_action(self, widget):
@@ -224,3 +211,10 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         )
         about.present(self)
 
+    # Add an application action.
+    def create_action(self, name, callback, shortcuts=None):
+        action = Gio.SimpleAction.new(name, None)
+        action.connect("activate", callback)
+        self.add_action(action)
+        if shortcuts:
+            self.set_accels_for_action(f"win.{name}", shortcuts)

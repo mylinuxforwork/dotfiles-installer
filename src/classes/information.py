@@ -131,7 +131,10 @@ class Information(Gtk.Box):
         # Check for setup script
         if "setupscript" in self.props.config_json:
             if os.path.exists(self.props.download_folder + "/" + self.props.config_json["setupscript"]):
-                self.create_runsetup_dialog()
+                if not get_default_terminal() == "":
+                    self.create_runsetup_dialog()
+                else:
+                    self.no_terminal_notification()
                 self.config_setupscript.set_visible(True)
 
         self.props.spinner.set_visible(False)
@@ -145,7 +148,7 @@ class Information(Gtk.Box):
     def create_runsetup_dialog(self,*_args):
         dialog = Adw.AlertDialog(
             heading="Run Setup?",
-            body="The dotfiles include a setup script to install or update required dependencies. Do you want to run the script now?",
+            body="The dotfiles include a setup script to install or update required dependencies. Do you want to run the script now with " + get_default_terminal() + "?",
             close_response="cancel",
         )
 
@@ -157,27 +160,49 @@ class Information(Gtk.Box):
 
         dialog.choose(self.props, None, self.on_runsetup_selected)
 
+    # Show setup dialog
+    def no_terminal_notification(self,*_args):
+        dialog = Adw.AlertDialog(
+            heading="Run Setup?",
+            body="The dotfiles include a setup script to install or update required dependencies. But you haven't defined your default terminal yet. Do you want to open the preferences and define your terminal? The click on Run Setup.",
+            close_response="cancel",
+        )
+
+        dialog.add_response("cancel", "Skip")
+        dialog.add_response("openpreferences", "Preferences")
+
+        # Use DESTRUCTIVE appearance to draw attention to the potentially damaging consequences of this action
+        dialog.set_response_appearance("openpreferences", Adw.ResponseAppearance.DESTRUCTIVE)
+
+        dialog.choose(self.props, None, self.on_runsetup_selected)
+
     # run setup callback
     def on_runsetup_selected(self,_dialog, task):
         response = _dialog.choose_finish(task)
         if response == "runsetup":
-            self.runSetupScript()
+            self.run_setup_script()
+        elif response == "openpreferences":
+            self.props.on_preferences_action(self,_)
 
     # Run setup script in terminal
-    def runSetupScript(self):
+    def run_setup_script(self):
         print(self.props.download_folder + "/" + self.props.config_json["setupscript"])
         subprocess.Popen(["flatpak-spawn", "--host", get_default_terminal(), "-e", self.props.download_folder + "/" + self.props.config_json["setupscript"]])
 
     # Show dotfiles folder
-    def showDotfiles(self):
+    def on_run_setup_script(self, widget, _):
+        self.run_setup_script()
+
+    # Show dotfiles folder
+    def on_show_dotfiles(self, widget, _):
         subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.props.original_folder])
 
     # Open Homepage
-    def openHomepage(self):
+    def on_open_homepage(self, widget, _):
         subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.props.config_json["homepage"]])
 
     # Open Dependencies page
-    def openDependencies(self):
+    def on_open_dependencies(self, widget, _):
         subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.props.config_json["dependencies"]])
 
     # Clear page
