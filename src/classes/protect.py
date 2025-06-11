@@ -15,14 +15,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
-from gi.repository import Gtk
-from gi.repository import Gio
-from gi.repository import GObject
-import json
-import pathlib
-import os
-import shutil
+import gi, json, pathlib, os, shutil
+from gi.repository import Adw, Gtk, Gio, GObject
 from ..items.protectitem import ProtectItem
 from .._settings import *
 
@@ -55,6 +49,8 @@ class Protect(Gtk.Box):
                 item.source = home_folder + ".config/" + f
                 item.target = ".config/" + f
                 self.protect_store.append(item)
+        self.props.wizzard_stack.set_visible_child_name("page_protect")
+
 
     def create_row(self,item):
         row = Adw.SwitchRow()
@@ -62,7 +58,7 @@ class Protect(Gtk.Box):
         row.bind_property("active", item, "value", GObject.BindingFlags.BIDIRECTIONAL)
         return row
 
-    def startProtect(self):
+    def start_protect(self):
         for i in range(self.protect_store.get_n_items()):
             v = self.protect_store.get_item(i)
             if v.value == True:

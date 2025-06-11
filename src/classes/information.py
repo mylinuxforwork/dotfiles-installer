@@ -15,15 +15,10 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
-from gi.repository import Gtk
-from gi.repository import Gio
-
-import subprocess
-import pathlib
-import json
-import os
-import shutil
+import gi, subprocess, pathlib, json, os, shutil, asyncio
+gi.require_version('Gtk', '4.0')
+gi.require_version('Adw', '1')
+from gi.repository import Adw, Gtk, Gio, GObject
 from .._settings import *
 
 @Gtk.Template(resource_path='/com/ml4w/dotfilesinstaller/ui/information.ui')
@@ -47,8 +42,10 @@ class Information(Gtk.Box):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.current_cancellable = None
 
-    def showInformation(self):
+    # Show information
+    def show_information(self):
         print(":: Show dotfiles information")
         self.config_json = self.props.config_json
         self.config_name.set_subtitle(self.props.config_json["name"])
@@ -78,7 +75,8 @@ class Information(Gtk.Box):
         self.show_replacement = False
         self.props.updateProgressBar(0.1)
 
-    def downloadSource(self):
+    # Get download source
+    def get_source(self):
         self.props.spinner.set_visible(True)
         self.props.wizzard_next_btn.set_sensitive(False)
 
@@ -91,51 +89,59 @@ class Information(Gtk.Box):
 
         if os.path.exists(self.props.original_folder) and os.path.isdir(self.props.original_folder):
             shutil.rmtree(self.props.original_folder)
+
+        # Download or copy source into downloads folder
+        if ".git" in self.config_source.get_subtitle():
+            task = Gio.Task.new(self, self.current_cancellable, self.on_clone_source_sepository_completed, None)
+            # task.set_task_data("task_data", None) # Pass our custom data instance to the task
+            task.run_in_thread(self.clone_source_sepository)
+        else:
+            self.copySourceFolder()
+
+    # Clone the the source from git repository
+    def clone_source_sepository(self, task, source_object, task_data, cancellable):
+        printLog("Clone source repository")
+        command = ["flatpak-spawn", "--host", "git", "clone", "--depth", "1", self.props.config_json["source"], self.props.download_folder]
+        printLog("Executing command: " + " ".join(command))
         try:
-            # Download or copy source into downloads folder
-            if ".git" in self.config_source.get_subtitle():
-                subprocess.call(["flatpak-spawn", "--host", "git", "clone", "--depth", "1", self.props.config_json["source"], self.props.download_folder])
-            else:
-                shutil.copytree(home_folder + self.props.config_json["source"], self.props.download_folder, dirs_exist_ok=True)
-            print(":: Download to " + self.props.download_folder)
-
-            # Copy dotfiles into original folder
-            shutil.copytree(self.props.download_folder + "/" + self.props.config_json["subfolder"], self.props.original_folder, dirs_exist_ok=True)
-            print(":: Copy " + self.props.download_folder + "/" + self.props.config_json["subfolder"] + " to " + self.props.prepared_folder)
-
-            # Copy dotfiles into prepared folder
-            shutil.copytree(self.props.download_folder + "/" + self.props.config_json["subfolder"], self.props.prepared_folder, dirs_exist_ok=True)
-            print(":: Copy " + self.props.download_folder + "/" + self.props.config_json["subfolder"] + " to " + self.props.prepared_folder)
-
-            if "setupscript" in self.props.config_json:
-                if os.path.exists(self.props.download_folder + "/" + self.props.config_json["setupscript"]):
-                    self.create_runsetup_dialog()
-                    self.config_setupscript.set_visible(True)
-
-            self.open_dotfiles_content.set_visible(True)
-            self.props.wizzard_next_btn.set_label("Next")
-            self.show_replacement = True
-            self.props.updateProgressBar(0.2)
-
+            subprocess.call(command)
         except:
-            print(":: Download error")
-            dialog = Adw.AlertDialog(
-                heading="Download Error",
-                body="The source could not be downloaded and prepared in the target directory. Please check the source and subfolder configuration.",
-                close_response="okay",
-            )
-            dialog.set_content_height(300)
-            dialog.set_content_width(300)
-            dialog.add_response("okay", "Okay")
-            dialog.choose(self.props, None, self.on_response_selected)
+            self._show_error_and_reset("Git repopsitory couldn't be cloned successfully. Please check the git source and subfolder.")
 
-        self.props.wizzard_next_btn.set_sensitive(True)
+    # Clone is completed
+    def on_clone_source_sepository_completed(self, source_object, result, _):
+        self.on_get_source_completed()
+
+    # Copy source folder from local directory
+    def copySourceFolder(self):
+        printLog("Copy source folder")
+        shutil.copytree(home_folder + self.props.config_json["source"], self.props.download_folder, dirs_exist_ok=True)
+        self.on_get_source_completed()
+
+    # Distribute source to
+    def on_get_source_completed(self):
+        # Copy dotfiles into original folder
+        shutil.copytree(self.props.download_folder + "/" + self.props.config_json["subfolder"], self.props.original_folder, dirs_exist_ok=True)
+        printLog("Copy " + self.props.download_folder + "/" + self.props.config_json["subfolder"] + " to " + self.props.original_folder)
+
+        # Copy dotfiles into prepared folder
+        shutil.copytree(self.props.download_folder + "/" + self.props.config_json["subfolder"], self.props.prepared_folder, dirs_exist_ok=True)
+        printLog("Copy " + self.props.download_folder + "/" + self.props.config_json["subfolder"] + " to " + self.props.prepared_folder)
+
+        # Check for setup script
+        if "setupscript" in self.props.config_json:
+            if os.path.exists(self.props.download_folder + "/" + self.props.config_json["setupscript"]):
+                self.create_runsetup_dialog()
+                self.config_setupscript.set_visible(True)
+
         self.props.spinner.set_visible(False)
+        self.props.wizzard_next_btn.set_sensitive(True)
+        self.open_dotfiles_content.set_visible(True)
+        self.props.wizzard_next_btn.set_label("Next")
+        self.show_replacement = True
+        self.props.updateProgressBar(0.2)
 
-    def on_response_selected(_dialog, task):
-        response = _dialog.choose_finish(task)
-        self.props.wizzard_stack.set_visible_child_name("page_load")
-
+    # Show setup dialog
     def create_runsetup_dialog(self,*_args):
         dialog = Adw.AlertDialog(
             heading="Run Setup?",
@@ -151,23 +157,47 @@ class Information(Gtk.Box):
 
         dialog.choose(self.props, None, self.on_runsetup_selected)
 
+    # run setup callback
     def on_runsetup_selected(self,_dialog, task):
         response = _dialog.choose_finish(task)
         if response == "runsetup":
             self.runSetupScript()
 
+    # Run setup script in terminal
     def runSetupScript(self):
         print(self.props.download_folder + "/" + self.props.config_json["setupscript"])
         subprocess.Popen(["flatpak-spawn", "--host", get_default_terminal(), "-e", self.props.download_folder + "/" + self.props.config_json["setupscript"]])
 
+    # Show dotfiles folder
     def showDotfiles(self):
         subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.props.original_folder])
 
+    # Open Homepage
     def openHomepage(self):
         subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.props.config_json["homepage"]])
 
+    # Open Dependencies page
     def openDependencies(self):
         subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.props.config_json["dependencies"]])
 
+    # Clear page
     def clear_page(self):
         self.open_dotfiles_content.set_visible(False)
+
+    # Show Error Message
+    def _show_error_and_reset(self, message: str):
+        dialog = Adw.AlertDialog(
+            heading="Error",
+            body=message,
+            close_response="okay"
+        )
+        dialog.set_content_height(300)
+        dialog.set_content_width(300)
+        dialog.add_response("okay", "Okay")
+        dialog.choose(self.props, None, self.on_response_selected)
+
+    # Error Message callback
+    def on_response_selected(_dialog, task):
+        response = _dialog.choose_finish(task)
+        self.props.wizzard_stack.set_visible_child_name("page_load")
+

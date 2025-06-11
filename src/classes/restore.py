@@ -15,14 +15,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
-from gi.repository import Gtk
-from gi.repository import Gio
-from gi.repository import GObject
-import json
-import pathlib
-import os
-import shutil
+import gi, json, pathlib, os, shutil
+from gi.repository import Adw, Gtk, Gio, GObject
 from ..items.restoreitem import RestoreItem
 from .._settings import *
 
@@ -41,7 +35,7 @@ class Restore(Gtk.Box):
         super().__init__(**kwargs)
         self.restore_group.bind_model(self.restore_store,self.create_row)
 
-    def loadRestore(self):
+    def load(self):
         self.props.updateProgressBar(0.4)
         for i in self.props.config_json["restore"]:
             item = RestoreItem()
@@ -49,6 +43,7 @@ class Restore(Gtk.Box):
             item.source = i["source"]
             item.value = i["value"]
             self.restore_store.append(item)
+        self.props.wizzard_stack.set_visible_child_name("page_restore")
 
     def create_row(self,item):
         row = Adw.SwitchRow()
@@ -58,7 +53,7 @@ class Restore(Gtk.Box):
         row.bind_property("active", item, "value", GObject.BindingFlags.BIDIRECTIONAL)
         return row
 
-    def startRestore(self):
+    def start_restore(self):
         for i in range(self.restore_store.get_n_items()):
             v = self.restore_store.get_item(i)
             if v.value == True:

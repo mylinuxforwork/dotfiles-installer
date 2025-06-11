@@ -15,16 +15,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
-from gi.repository import Gtk
-from gi.repository import Gio
-from gi.repository import GObject
-import json
-import pathlib
-import os
-import shutil
-import time
-from datetime import datetime
+import gi, json, pathlib, os, shutil, time
+from gi.repository import Adw, Gtk, Gio, GObject
 from .._settings import *
 
 @Gtk.Template(resource_path='/com/ml4w/dotfilesinstaller/ui/installation.ui')
@@ -42,8 +34,9 @@ class Installation(Gtk.Box):
         self.props.config_json = self.props.config_json
         self.props.wizzard_next_btn.set_label("Install Now")
         self.props.dotfiles_folder = get_dotfiles_folder(self.props.id)
+        self.props.wizzard_stack.set_visible_child_name("page_installation")
 
-    def installDotfiles(self):
+    def install_dotfiles(self):
 
         if not os.path.exists(self.props.dotfiles_folder):
             pathlib.Path(self.props.dotfiles_folder).mkdir(parents=True, exist_ok=True)

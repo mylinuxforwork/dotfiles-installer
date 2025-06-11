@@ -15,8 +15,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import sys
-import gi
+import gi, sys
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import GObject, Gtk, Gio, Adw
@@ -24,9 +23,6 @@ from .window import DotfilesInstallerWindow
 from ._settings import *
 
 class DotfilesInstallerApplication(Adw.Application):
-    """The main application singleton class."""
-
-    config_json = ""
 
     # Init
     def __init__(self):
@@ -34,7 +30,7 @@ class DotfilesInstallerApplication(Adw.Application):
                          flags=Gio.ApplicationFlags.DEFAULT_FLAGS,
                          resource_base_path='/com/ml4w/dotfilesinstaller')
         self.win = None
-        self.runSetup()
+        run_setup()
         self.create_actions()
 
     # Create and show the main window when the application activates
@@ -47,7 +43,7 @@ class DotfilesInstallerApplication(Adw.Application):
     def do_open(self, files, hint):
         self.do_activate()
 
-    # Create the application actions
+    # Create the application quit actions
     def create_actions(self):
         quit_action = Gio.SimpleAction.new("quit", None)
         quit_action.connect("activate", self.on_quit_action)
@@ -58,19 +54,6 @@ class DotfilesInstallerApplication(Adw.Application):
     def on_quit_action(self, action, param):
         printLog("Quit action triggered from app level. Quitting application.")
         self.quit()
-
-    # Run Setup
-    def runSetup(self):
-        pathlib.Path(download_folder).mkdir(parents=True, exist_ok=True)
-        printLog(download_folder + " created (if not exists)")
-        pathlib.Path(original_folder).mkdir(parents=True, exist_ok=True)
-        printLog(original_folder + " created (if not exists)")
-        pathlib.Path(prepared_folder).mkdir(parents=True, exist_ok=True)
-        printLog(prepared_folder + " created (if not exists)")
-        pathlib.Path(backup_folder).mkdir(parents=True, exist_ok=True)
-        printLog(backup_folder + " created (if not exists)")
-        pathlib.Path(config_folder).mkdir(parents=True, exist_ok=True)
-        printLog(config_folder + " created (if not exists)")
 
 def main(version):
     printLog("Welcome to the ML4W Dotfiles Installer " + app_version)

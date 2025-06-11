@@ -15,14 +15,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
-from gi.repository import Gtk
-from gi.repository import Gio
-from gi.repository import GObject
-import json
-import pathlib
-import os
-import shutil
+import gi, json
+from gi.repository import Adw, Gtk, Gio, GObject
 from .._settings import *
 
 @Gtk.Template(resource_path='/com/ml4w/dotfilesinstaller/ui/finish.ui')
@@ -38,6 +32,8 @@ class Finish(Gtk.Box):
         self.props.config_json = self.props.config_json
         self.props.wizzard_next_btn.set_label("Close")
         self.props.progress_bar.set_fraction(1.0)
+        self.props.wizzard_stack.set_visible_child_name("page_finish")
+
 
     def startReboot(self):
         print("startReboot")

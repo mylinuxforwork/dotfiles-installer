@@ -15,20 +15,13 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
-from gi.repository import Gtk
-from gi.repository import Gio
-from gi.repository import Soup
-from gi.repository import GLib
-
+import gi, json, pathlib, os, shutil
+gi.require_version('Gtk', '4.0')
+gi.require_version('Adw', '1')
+gi.require_version('Soup', '3.0') # NEW: Import Soup here
+from gi.repository import Adw, Gtk, Gio, Soup, GLib
 from urllib.request import urlopen
 from urllib.parse import urlparse
-
-import json
-import pathlib
-import os
-import shutil
-import gi
 from .._settings import *
 from json.decoder import JSONDecodeError
 
@@ -43,27 +36,19 @@ class LoadConfiguration(Gtk.Box):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.entry_dotinst.set_text(test_url)
+        self.entry_dotinst.set_text(test_path)
         self.http_session = Soup.Session.new()
         self.settings = Gio.Settings(schema_id=app_id)
         self.cancellable = Gio.Cancellable.new()
-        self.connect('unrealize', self._on_unrealize)
 
-    def _on_unrealize(self, widget):
-        """
-        Callback for when the widget is no longer visible on screen (unrealized).
-        Cancels pending requests for this specific page.
-        """
-        print("WelcomePageView unrealized. Cancelling pending network requests.")
-        self.cancellable.cancel()
-        # Removed: self.http_session = None, as session is no longer owned by this page.
-
-    def loadLocalConfiguration(self):
+    # Load local configuration file
+    def load_local_configuration(self):
         self.props.local_json = {}
         if os.path.exists(config_folder + self.props.id + ".json"):
             self.props.local_json = json.load(open(config_folder + self.props.id + ".json"))
 
-    def loadConfiguration(self):
+    # Load configuration dispatcher
+    def load_configuration(self):
         self.props.spinner.set_visible(True)
         self.props.wizzard_next_btn.set_sensitive(False)
         self.config_source = self.entry_dotinst.get_text()
@@ -78,13 +63,10 @@ class LoadConfiguration(Gtk.Box):
             printLog("Load local configuration from " + self.config_source)
             self._load_json_from_local_file()
 
+    # Loads JSON content from a local file in the user's home directory asynchronously.
     def _load_json_from_local_file(self):
-        """Loads JSON content from a local file in the user's home directory asynchronously."""
-        # home_dir = GLib.get_home_dir()
-        # file_path = os.path.join(home_dir, "test.json")
         file_path = home_folder + self.config_source
         local_file = Gio.File.new_for_path(file_path)
-
         printLog("Attempting to load file from: " + file_path)
 
         try:
@@ -95,14 +77,14 @@ class LoadConfiguration(Gtk.Box):
                 self._on_local_json_loaded_callback # Callback function to be executed when loading is complete
             )
         except GLib.Error as e:
-            print(f"Error initiating file load: {e.message}")
+            printLog("Error initiating file load: " + e.message,"e")
             self._show_error_and_reset(f"File access error: {e.message}")
         except Exception as e:
-            print(f"An unexpected error occurred: {e}")
+            printLog("An unexpected error occurred: " + e,"e")
             self._show_error_and_reset(f"An unexpected error occurred: {e}")
 
+    # Callback function executed when the local file loading is complete.
     def _on_local_json_loaded_callback(self, file: Gio.File, result: Gio.AsyncResult):
-        """Callback function executed when the local file loading is complete."""
         try:
             # Finish the asynchronous operation and get the contents
             success, contents, etag = file.load_contents_finish(result)
@@ -120,17 +102,17 @@ class LoadConfiguration(Gtk.Box):
             self.loadJson()
 
         except GLib.Error as e:
-            print(f"Error loading file contents: {e.message}")
+            printLog("Error loading file contents: " + e.message,"e")
             self._show_error_and_reset(f"Error reading file: {e.message}")
         except json.JSONDecodeError as e:
-            print(f"JSON decoding error: {e}")
+            printLog("JSON decoding error: " + e,"e")
             self._show_error_and_reset(f"Failed to parse local JSON content: {e}")
         except Exception as e:
-            print(f"An unexpected error occurred in callback: {e}")
+            printLog("An unexpected error occurred in callback: " + e,"e")
             self._show_error_and_reset(f"An error occurred: {e}")
 
+    # Loads JSON content from a specific URL asynchronously.
     def _load_json_from_url(self):
-        """Loads JSON content from a specific URL asynchronously."""
         # Using the raw GitHub URL for the test.json file
         url = self.config_source
 
@@ -148,16 +130,16 @@ class LoadConfiguration(Gtk.Box):
                 self._on_json_loaded_callback, # Callback function
                 message
             )
-            print(f"Attempting to load JSON from URL: {url}")
+            printLog("Attempting to load JSON from URL: " + url)
         except GLib.Error as e:
-            print(f"Error initiating network request: {e.message}")
+            printLog("Error initiating network request: " + e.message,"e")
             self._show_error_and_reset(f"Network request error: {e.message}")
         except Exception as e:
-            print(f"An unexpected error occurred: {e}")
+            printLog("An unexpected error occurred: " + e,"e")
             self._show_error_and_reset(f"An unexpected error occurred: {e}")
 
+    # Callback function executed when the URL loading is complete.
     def _on_json_loaded_callback(self, session: Soup.Session, result: Gio.AsyncResult, message: Soup.Message):
-        """Callback function executed when the URL loading is complete."""
         try:
             buffer = session.send_and_read_finish(result)
 
@@ -182,19 +164,21 @@ class LoadConfiguration(Gtk.Box):
             self.loadJson()
 
         except GLib.Error as e:
-            print(f"Network error during receive: {e.message}")
+            printLog("Network error during receive: " + e.message,"e")
             self._show_error_and_reset(f"Network error: {e.message}")
         except json.JSONDecodeError as e:
-            print(f"JSON decoding error: {e}")
+            printLog("JSON decoding error: " + e,"e")
             self._show_error_and_reset(f"Failed to parse JSON content: {e}")
         except Exception as e:
-            print(f"An unexpected error occurred in callback: {e}")
+            printLog("An unexpected error occurred in callback: " + e,"e")
             self._show_error_and_reset(f"An unexpected error occurred: {e}")
 
+    # Parse JSON Content before showing the dotinst information
     def loadJson(self):
         print(":: Parse json")
         self.props.wizzard_next_btn.set_sensitive(True)
         self.props.spinner.set_visible(False)
+        self.props.wizzard_back_btn.set_visible(True)
 
         try:
             self.props.id = self.props.config_json["id"]
@@ -205,12 +189,13 @@ class LoadConfiguration(Gtk.Box):
             self.props.dotfiles_folder = get_dotfiles_folder(self.props.id)
             self.props.status = "info"
             self.props.wizzard_stack.set_visible_child_name("page_information")
-            self.props.config_information.showInformation()
-            self.loadLocalConfiguration()
+            self.props.config_information.show_information()
+            self.load_local_configuration()
 
         except:
             self._show_error_and_reset("Json encoding error. Please check the format of the .dotinst json file.")
 
+    # Show Error Message
     def _show_error_and_reset(self, message: str):
         dialog = Adw.AlertDialog(
             heading="Loading Error",
@@ -222,6 +207,7 @@ class LoadConfiguration(Gtk.Box):
         dialog.add_response("okay", "Okay")
         dialog.choose(self.props, None, self.on_response_selected)
 
+    # Response for error message
     def on_response_selected(self,_dialog, task):
         response = _dialog.choose_finish(task)
         self.props.spinner.set_visible(False)

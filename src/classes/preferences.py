@@ -15,12 +15,9 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
-from gi.repository import Gtk
-from gi.repository import Gio
+import gi
+from gi.repository import Adw, Gtk, Gio, GObject
 from .._settings import *
-import os
-import pathlib
 
 @Gtk.Template(resource_path='/com/ml4w/dotfilesinstaller/ui/preferences.ui')
 class Preferences(Adw.PreferencesDialog):

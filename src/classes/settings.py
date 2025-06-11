@@ -15,14 +15,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
-from gi.repository import Gtk
-from gi.repository import Gio
-from gi.repository import GObject
-import json
-import pathlib
-import os
-import shutil
+import gi, json, pathlib, os, shutil
+from gi.repository import Adw, Gtk, Gio, GObject
 from ..items.settingsitem import SettingsItem
 from .._settings import *
 
@@ -40,7 +34,7 @@ class Settings(Gtk.Box):
         super().__init__(**kwargs)
         self.settings_group.bind_model(self.settings_store,self.create_row)
 
-    def loadSettings(self):
+    def load(self):
         for i in self.props.config_json["settings"]:
             if os.path.exists(self.props.prepared_folder + "/" + i["file"]):
                 item = SettingsItem()
@@ -55,6 +49,7 @@ class Settings(Gtk.Box):
                 self.settings_store.append(item)
             else:
                 print("ERROR: File " + i["file"] + " for " + i["title"] + " does not exist.")
+        self.props.wizzard_stack.set_visible_child_name("page_settings")
 
     def create_row(self,item):
         row = Adw.EntryRow()
@@ -63,7 +58,7 @@ class Settings(Gtk.Box):
         row.bind_property("text", item, "value", GObject.BindingFlags.BIDIRECTIONAL)
         return row
 
-    def replaceSettings(self):
+    def replace_settings(self):
         for i in range(self.settings_store.get_n_items()):
             v = self.settings_store.get_item(i)
             match v.mode:

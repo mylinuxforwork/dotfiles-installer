@@ -15,15 +15,10 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import sys
-import gi
-import json
-import pathlib
-import os
-import shutil
-
-from gi.repository import Adw
-from gi.repository import Gtk
+import gi, sys, json, pathlib, os, shutil, threading, subprocess
+gi.require_version('Gtk', '4.0')
+gi.require_version('Adw', '1')
+from gi.repository import Adw, Gtk
 from .classes.information import Information
 from .classes.backup import Backup
 from .classes.loadconfiguration import LoadConfiguration
@@ -34,9 +29,6 @@ from .classes.installation import Installation
 from .classes.finish import Finish
 from .classes.preferences import Preferences
 from ._settings import *
-
-import threading
-import subprocess
 from urllib.request import urlopen
 from multiprocessing import Process
 
@@ -74,9 +66,10 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.config_installation.props = self
 
         self.preferences = Preferences()
-        self.create_actions()
         self.settings = Gio.Settings(schema_id=app_id)
-        self.checkForUpdate()
+
+        self.create_actions()
+        self.check_for_update()
 
     # Create actions
     def create_actions(self):
@@ -100,6 +93,10 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         check_updates_action.connect("activate", self.on_check_updates_action)
         self.add_action(check_updates_action)
 
+        update_app_action = Gio.SimpleAction.new("update_app", None)
+        update_app_action.connect("activate", self.on_update_app)
+        self.add_action(update_app_action)
+
     @Gtk.Template.Callback()
     def on_wizzard_back_action(self, widget):
 
@@ -117,47 +114,28 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     def on_wizzard_next_action(self, widget):
         match self.wizzard_stack.get_visible_child_name():
             case "page_load":
-                self.wizzard_back_btn.set_visible(True)
-                self.loadConfiguration()
+                self.load_configuration.load_configuration()
             case "page_information":
                 if self.config_information.show_replacement == False:
-                    self.downloadSource()
+                    self.config_information.get_source()
                 else:
-                    self.loadBackup()
-                    self.wizzard_stack.set_visible_child_name("page_backup")
+                    self.config_backup.load()
             case "page_backup":
-                self.config_backup.startBackup()
+                self.config_backup.create_backup()
             case "page_settings":
-                self.config_settings.replaceSettings()
+                self.config_settings.replace_settings()
                 self.config_installation.load()
-                self.wizzard_stack.set_visible_child_name("page_installation")
             case "page_restore":
-                self.config_restore.startRestore()
+                self.config_restore.start_restore()
                 self.config_protect.load()
-                self.wizzard_stack.set_visible_child_name("page_protect")
             case "page_protect":
-                self.config_protect.startProtect()
+                self.config_protect.start_protect()
                 self.config_installation.load()
-                self.wizzard_stack.set_visible_child_name("page_installation")
             case "page_installation":
-                self.config_installation.installDotfiles()
+                self.config_installation.install_dotfiles()
                 self.config_finish.load()
-                self.wizzard_stack.set_visible_child_name("page_finish")
             case "page_finish":
                 self.quit()
-
-    # Load Configuration
-    def loadConfiguration(self):
-        thread = threading.Thread(target=self.load_configuration.loadConfiguration)
-        thread.start()
-
-    def loadBackup(self):
-        thread = threading.Thread(target=self.config_backup.load)
-        thread.start()
-
-    def downloadSource(self):
-        thread = threading.Thread(target=self.config_information.downloadSource)
-        thread.start()
 
     def updateProgressBar(self,v):
         self.progress_bar.set_fraction(v)
@@ -201,23 +179,23 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 
     # Check for Updates menu action
     def on_check_updates_action(self, widget, _):
-        self.checkForUpdate()
+        self.check_for_update()
 
     # Start Update Thread
-    def checkForUpdate(self):
+    def check_for_update(self):
         printLog("Checking for updates...")
-        thread = threading.Thread(target=self.checkLatestVersion)
+        thread = threading.Thread(target=self.check_latest_version)
         thread.daemon = True
         thread.start()
 
     # Check Latest Tag
-    def checkLatestVersion(self):
+    def check_latest_version(self):
         try:
             response = urlopen(app_github_api_tags)
             tags = json.load(response)
             if not tags[0]["name"] == app_version:
                 printLog("Update is available")
-                self.props.active_window.update_banner.set_revealed(True)
+                self.update_banner.set_revealed(True)
             else:
                 printLog("No update available")
         except:
@@ -226,7 +204,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     # Open the homepage with update information
     def on_update_app(self, widget, _):
         subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", app_homepage])
-        self.props.active_window.update_banner.set_revealed(False)
+        self.update_banner.set_revealed(False)
 
 # --------------------------------------------
 # About Dialog

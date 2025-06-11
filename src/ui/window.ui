@@ -33,6 +33,7 @@
                 <property name="label" translatable="yes">Cancel</property>
                 <property name="margin-start">15</property>
                 <property name="margin-bottom">15</property>
+                <property name="visible">false</property>
                 <signal name="clicked" handler="on_wizzard_back_action"/>
                 <style>
                   <class name="destructive-action"/>
@@ -84,7 +85,7 @@
                     <property name="button-label" translatable="true">Update now</property>
                     <property name="title">An update for the Dotfiles Installer is available!</property>
                     <property name="revealed">false</property>
-                    <property name="action-name">app.update_app</property>
+                    <property name="action-name">win.update_app</property>
                 </object>
             </child>
 

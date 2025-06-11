@@ -15,15 +15,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
-from gi.repository import Gtk
-from gi.repository import Gio
-from gi.repository import GObject
-import json
-import pathlib
-import os
-import shutil
-import time
+import gi, json, pathlib, os, shutil, time, threading
+from gi.repository import Adw, Gtk, Gio, GObject
 from datetime import datetime
 from ..items.backupitem import BackupItem
 from .._settings import *
@@ -41,11 +34,24 @@ class Backup(Gtk.Box):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.current_cancellable = None
         self.backup_group.bind_model(self.backup_store,self.create_row)
 
+    # Init load backup
     def load(self):
         self.props.spinner.set_visible(True)
         self.props.wizzard_next_btn.set_sensitive(False)
+        task = Gio.Task.new(self, self.current_cancellable, self.on_check_backup_completed, None)
+        task.run_in_thread(self.check_backup)
+
+    # Callback check_backup
+    def on_check_backup_completed(self, source_object, result, _):
+        self.props.spinner.set_visible(False)
+        self.props.wizzard_next_btn.set_sensitive(True)
+        self.props.wizzard_stack.set_visible_child_name("page_backup")
+
+    # Check backup
+    def check_backup(self, task, source_object, task_data, cancellable):
         date_time = datetime.fromtimestamp(time.time())
         self.time_stamp = date_time.strftime("%Y%m%d-%H%M%S")
         self.props.dotfiles_folder = get_dotfiles_folder(self.props.id)
@@ -92,9 +98,6 @@ class Backup(Gtk.Box):
                         item.value = False
                     self.backup_store.append(item)
 
-        self.props.spinner.set_visible(False)
-        self.props.wizzard_next_btn.set_sensitive(True)
-
     def create_row(self,item):
         row = Adw.SwitchRow()
         row.set_title(item.file)
@@ -103,7 +106,7 @@ class Backup(Gtk.Box):
         row.bind_property("active", item, "value", GObject.BindingFlags.BIDIRECTIONAL)
         return row
 
-    def startBackup(self):
+    def create_backup(self):
         self.props.local_json["backupexclude"] = []
         pathlib.Path(self.props.backup_folder + "/" + self.time_stamp).mkdir(parents=True, exist_ok=True)
         for i in range(self.backup_store.get_n_items()):
@@ -123,10 +126,8 @@ class Backup(Gtk.Box):
 
     def openNext(self):
         if os.path.exists(self.props.dotfiles_folder):
-            self.props.config_restore.loadRestore()
-            self.props.wizzard_stack.set_visible_child_name("page_restore")
+            self.props.config_restore.load()
         else:
-            self.props.config_settings.loadSettings()
-            self.props.wizzard_stack.set_visible_child_name("page_settings")
+            self.props.config_settings.load()
 
 
