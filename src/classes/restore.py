@@ -36,6 +36,7 @@ class Restore(Gtk.Box):
         self.restore_group.bind_model(self.restore_store,self.create_row)
 
     def load(self):
+        printLog("Show restore page")
         self.props.updateProgressBar(0.4)
         for i in self.props.config_json["restore"]:
             item = RestoreItem()
@@ -60,6 +61,8 @@ class Restore(Gtk.Box):
                 if os.path.exists(self.props.prepared_folder + "/" + v.source):
                     if os.path.isfile(self.props.prepared_folder + "/" + v.source):
                         os.remove(self.props.prepared_folder + "/" + v.source)
+                        printLog("Restored file: " + self.props.prepared_folder + "/" + v.source)
                     if os.path.isdir(self.props.prepared_folder + "/" + v.source):
                         shutil.rmtree(self.props.prepared_folder + "/" + v.source)
+                        printLog("Restored folder: " + self.props.prepared_folder + "/" + v.source)
 

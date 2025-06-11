@@ -29,6 +29,7 @@ class Finish(Gtk.Box):
     props = {}
 
     def load(self):
+        printLog("Show finish page")
         self.props.wizzard_next_btn.set_label("Close")
         self.props.progress_bar.set_fraction(1.0)
         self.props.wizzard_stack.set_visible_child_name("page_finish")

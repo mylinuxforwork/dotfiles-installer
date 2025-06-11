@@ -35,6 +35,7 @@ class Settings(Gtk.Box):
         self.settings_group.bind_model(self.settings_store,self.create_row)
 
     def load(self):
+        printLog("Show settings page")
         for i in self.props.config_json["settings"]:
             if os.path.exists(self.props.prepared_folder + "/" + i["file"]):
                 item = SettingsItem()

@@ -30,6 +30,7 @@ class Installation(Gtk.Box):
     time_stamp = ""
 
     def load(self):
+        printLog("Show installation page")
         self.props.updateProgressBar(0.8)
         self.props.config_json = self.props.config_json
         self.props.wizzard_next_btn.set_label("Install Now")
@@ -52,26 +53,26 @@ class Installation(Gtk.Box):
             for f in os.listdir(self.props.dotfiles_folder + "/.config"):
                 self.createSymlink(self.props.dotfiles_folder + "/.config/" + f, home_folder + ".config/" + f)
         else:
-            print(":: Creating of symlinks disabled in preferences. Installation has been skipped.")
+            printLog("Creating of symlinks disabled in preferences. Installation has been skipped.")
 
     def createSymlink(self,source,target):
 
         # Delete target if exists
         if os.path.islink(target):
-            print("Remove Symlink: " + target)
+            printLog("Remove Symlink: " + target)
             os.unlink(target)
         elif os.path.isfile(target):
-            print("Remove File: " + target)
+            printLog("Remove File: " + target)
             os.remove(target)
         elif os.path.isdir(target):
-            print("Remove Folder: " + target)
+            printLog("Remove Folder: " + target)
             shutil.rmtree(target)
 
         # Create symlink
         if os.path.isfile(source):
-            print("Add Symlink File: " + source + "->" + target)
+            printLog("Add Symlink File: " + source + "->" + target)
             os.symlink(source, target)
         elif os.path.isdir(source):
-            print("Add Symlink Folder: " + source + "->" + target)
+            printLog("Add Symlink Folder: " + source + "->" + target)
             os.symlink(source, target, target_is_directory=True)
 

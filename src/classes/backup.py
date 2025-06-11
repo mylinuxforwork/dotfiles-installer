@@ -39,6 +39,7 @@ class Backup(Gtk.Box):
 
     # Init load backup
     def load(self):
+        printLog("Show backup page")
         self.props.spinner.set_visible(True)
         self.props.wizzard_next_btn.set_sensitive(False)
         task = Gio.Task.new(self, self.current_cancellable, self.on_check_backup_completed, None)

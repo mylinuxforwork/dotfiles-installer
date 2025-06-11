@@ -46,7 +46,7 @@ class Information(Gtk.Box):
 
     # Show information
     def show_information(self):
-        print(":: Show dotfiles information")
+        printLog("Show dotfiles information")
         self.config_json = self.props.config_json
         self.config_name.set_subtitle(self.props.config_json["name"])
         self.config_id.set_subtitle(self.props.config_json["id"])

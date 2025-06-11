@@ -35,6 +35,7 @@ class Protect(Gtk.Box):
         self.protect_group.bind_model(self.protect_store,self.create_row)
 
     def load(self):
+        printLog("Load protect page")
         self.props.updateProgressBar(0.6)
         for f in os.listdir(self.props.prepared_folder):
             if f != ".config":
@@ -65,6 +66,8 @@ class Protect(Gtk.Box):
                 if os.path.exists(self.props.prepared_folder + "/" + v.target):
                     if os.path.isfile(self.props.prepared_folder + "/" + v.target):
                         os.remove(self.props.prepared_folder + "/" + v.target)
+                        printLog("Protected file: " + self.props.prepared_folder + "/" + v.target)
                     if os.path.isdir(self.props.prepared_folder + "/" + v.target):
                         shutil.rmtree(self.props.prepared_folder + "/" + v.target)
+                        printLog("Protected folder: " + self.props.prepared_folder + "/" + v.target)
 

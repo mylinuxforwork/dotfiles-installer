@@ -15,8 +15,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import os
-import pathlib
+import os, pathlib, logging
 from gi.repository import Gtk, Gio, GLib, Adw
 
 # App Id
@@ -43,6 +42,9 @@ original_folder = share_folder + original_folder_name + "/"
 prepared_folder = share_folder + prepared_folder_name + "/"
 backup_folder = share_folder + backup_folder_name + "/"
 config_folder = home_folder + ".config/" + app_id + "/"
+
+# Logging
+logging.getLogger().setLevel(logging.INFO)
 
 # Development
 # test_url = "https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/examples/hyprland-starter.dotinst"
@@ -90,7 +92,7 @@ def run_setup():
 def printLog(msg,cat='m'):
     match cat:
         case "e":
-            print("ERROR :: " + msg)
+            logging.warning(msg)
         case _:
-            print(":: " + msg)
+            logging.info(msg)
 
