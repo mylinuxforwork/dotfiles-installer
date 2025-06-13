@@ -71,13 +71,14 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 
         self.create_actions()
         self.check_for_update()
-
+        self.progress_bar.set_visible(False)
         # self.config_finish.load()
         # self.wizzard_stack.set_visible_child_name("page_finish")
 
     # Create actions
     def create_actions(self):
         self.create_action("about",self.on_about_action)
+        self.create_action("github",self.on_github_action)
         self.create_action("preferences",self.on_preferences_action)
         self.create_action("open_dotfiles", self.on_open_dotfiles_action)
         self.create_action("open_backups",self.on_open_backups_action)
@@ -94,19 +95,21 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 
         # Add Cancel Dialog
         self.wizzard_back_btn.set_visible(False)
+        self.wizzard_next_btn.set_visible(False)
         self.wizzard_next_btn.set_label("Next")
         self.wizzard_stack.set_visible_child_name("page_load")
         self.config_information.clear_page()
-        self.config_settings.settings_store = Gio.ListStore()
-        self.config_restore.restore_store = Gio.ListStore()
-        self.config_backup.backup_store = Gio.ListStore()
-        self.config_protect.protect_store = Gio.ListStore()
+        self.config_settings.settings_store.remove_all()
+        self.config_restore.restore_store.remove_all()
+        self.config_backup.backup_store.remove_all()
+        self.config_protect.protect_store.remove_all()
+        self.config_configuration.load_installed_dotfiles()
+        self.updateProgressBar(0.0)
+        self.progress_bar.set_visible(False)
 
     @Gtk.Template.Callback()
     def on_wizzard_next_action(self, widget):
         match self.wizzard_stack.get_visible_child_name():
-            case "page_load":
-                self.config_configuration.load_configuration()
             case "page_information":
                 if self.config_information.show_replacement == False:
                     self.config_information.get_source()
@@ -165,10 +168,13 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 # --------------------------------------------
 
     def on_open_dotfiles_action(self, widget, _):
-        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", home_folder + self.settings.get_string("my-dotfiles-folder")])
+        open_folder(home_folder + self.settings.get_string("my-dotfiles-folder"))
 
     def on_open_backups_action(self, widget, _):
-        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", backup_folder])
+        open_folder(backup_folder)
+
+    def on_github_action(self, widget, _):
+        Gtk.UriLauncher(uri="https://github.com/mylinuxforwork/dotfiles-installer").launch()
 
 # --------------------------------------------
 # Updates
@@ -200,7 +206,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 
     # Open the homepage with update information
     def on_update_app(self, widget, _):
-        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", app_homepage])
+        Gtk.UriLauncher(uri=app_homepage).launch()
         self.update_banner.set_revealed(False)
 
 # --------------------------------------------

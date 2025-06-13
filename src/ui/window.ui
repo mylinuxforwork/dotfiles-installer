@@ -64,6 +64,7 @@
                     <property name="label" translatable="yes">Next</property>
                     <property name="margin-end">15</property>
                     <property name="margin-bottom">15</property>
+                    <property name="visible">false</property>
                     <signal name="clicked" handler="on_wizzard_next_action"/>
                     <style>
                       <class name="suggested-action"/>
@@ -254,6 +255,10 @@
       </item>
     </section>
     <section>
+      <item>
+        <attribute name="label" translatable="yes">_Dotfiles Installer on GitHub</attribute>
+        <attribute name="action">win.github</attribute>
+      </item>
       <item>
         <attribute name="label" translatable="yes">_Check for Updates</attribute>
         <attribute name="action">win.check_updates</attribute>

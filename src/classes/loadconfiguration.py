@@ -24,22 +24,60 @@ from urllib.request import urlopen
 from urllib.parse import urlparse
 from .._settings import *
 from json.decoder import JSONDecodeError
+from ..items.dotfilesitem import DotfilesItem
 
 @Gtk.Template(resource_path='/com/ml4w/dotfilesinstaller/ui/loadconfiguration.ui')
 class LoadConfiguration(Gtk.Box):
     __gtype_name__ = 'Loadconfiguration'
 
     entry_dotinst = Gtk.Template.Child()
+    installed_dotfiles_group = Gtk.Template.Child()
     props = {}
     json_response = ""
     config_source = ""
+    installed_dotfiles_store = Gio.ListStore()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # self.entry_dotinst.set_text(test_path)
+        self.entry_dotinst.set_show_apply_button(True)
+        self.entry_dotinst.connect("apply", self.load_configuration)
         self.http_session = Soup.Session.new()
         self.settings = Gio.Settings(schema_id=app_id)
         self.cancellable = Gio.Cancellable.new()
+        self.installed_dotfiles_group.bind_model(self.installed_dotfiles_store,self.create_row)
+        self.load_installed_dotfiles()
+
+    def create_row(self,item):
+        row = Adw.ActionRow()
+        row.set_title(item.name)
+        row.set_subtitle(item.id)
+        btn = Gtk.Button()
+        btn.set_valign(3)
+        btn.set_label("Activate")
+        row.add_suffix(btn)
+        btn.connect("clicked",self.install_dotfiles,item.id)
+        return row
+
+    def install_dotfiles(self,widget,id):
+        self.props.config_json = json.load(open(get_installed_dotfiles_folder() + id + "/config.dotinst"))
+        self.props.id = id
+        self.props.wizzard_back_btn.set_visible(True)
+        self.props.wizzard_next_btn.set_visible(True)
+        self.props.progress_bar.set_visible(True)
+        self.props.config_installation.activate = True
+        self.props.config_installation.load()
+
+    def load_installed_dotfiles(self):
+        self.installed_dotfiles_store.remove_all()
+        for f in os.listdir(get_installed_dotfiles_folder()):
+            if os.path.exists(get_installed_dotfiles_folder() + f + "/config.dotinst"):
+                dot_json = json.load(open(get_installed_dotfiles_folder() + f + "/config.dotinst"))
+                printLog(dot_json["id"] + " installed")
+                item = DotfilesItem()
+                item.name = dot_json["name"]
+                item.id = dot_json["id"]
+                self.installed_dotfiles_store.append(item)
 
     # Load local configuration file
     def load_local_configuration(self):
@@ -48,8 +86,7 @@ class LoadConfiguration(Gtk.Box):
             self.props.local_json = json.load(open(config_folder + self.props.id + ".json"))
 
     # Load configuration dispatcher
-    def load_configuration(self):
-        self.props.spinner.set_visible(True)
+    def load_configuration(self,_):
         self.props.wizzard_next_btn.set_sensitive(False)
         self.config_source = self.entry_dotinst.get_text()
 
@@ -188,6 +225,7 @@ class LoadConfiguration(Gtk.Box):
             self.props.backup_folder = backup_folder + self.props.id
             self.props.dotfiles_folder = get_dotfiles_folder(self.props.id)
             self.props.status = "info"
+            self.props.wizzard_next_btn.set_visible(True)
             self.props.wizzard_stack.set_visible_child_name("page_information")
             self.props.config_information.show_information()
             self.load_local_configuration()
@@ -210,6 +248,6 @@ class LoadConfiguration(Gtk.Box):
     # Response for error message
     def on_response_selected(self,_dialog, task):
         response = _dialog.choose_finish(task)
-        self.props.spinner.set_visible(False)
+        self.props.progress_bar.set_visible(False)
         self.props.wizzard_next_btn.set_sensitive(True)
 

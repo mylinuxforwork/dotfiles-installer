@@ -28,12 +28,15 @@ class Installation(Gtk.Box):
     dotfiles = ""
     props = {}
     time_stamp = ""
+    activate = False
 
     def load(self):
         printLog("Show installation page")
         self.props.updateProgressBar(0.8)
         self.props.config_json = self.props.config_json
         self.props.wizzard_next_btn.set_label("Install Now")
+        if self.activate:
+            self.props.wizzard_next_btn.set_label("Activate Now")
         self.props.dotfiles_folder = get_dotfiles_folder(self.props.id)
         self.props.wizzard_stack.set_visible_child_name("page_installation")
 
@@ -42,18 +45,22 @@ class Installation(Gtk.Box):
         if not os.path.exists(self.props.dotfiles_folder):
             pathlib.Path(self.props.dotfiles_folder).mkdir(parents=True, exist_ok=True)
 
-        # Copy prepared folder to the dotfiles folder
-        shutil.copytree(self.props.prepared_folder, self.props.dotfiles_folder, dirs_exist_ok=True)
+        if not self.activate:
+            # Copy prepared folder to the dotfiles folder
+            shutil.copytree(self.props.prepared_folder, self.props.dotfiles_folder, dirs_exist_ok=True)
 
         if get_symlink_enabled():
-            # Create symlinks for all files and folders
+            # Create symlinks for all files and folders except for .dotinst files
             for f in os.listdir(self.props.dotfiles_folder):
-                if f != ".config":
+                if f != ".config" and ".dotinst" not in f:
                     self.createSymlink(self.props.dotfiles_folder + "/" + f, home_folder + f)
             for f in os.listdir(self.props.dotfiles_folder + "/.config"):
-                self.createSymlink(self.props.dotfiles_folder + "/.config/" + f, home_folder + ".config/" + f)
+                if ".dotinst" not in f:
+                    self.createSymlink(self.props.dotfiles_folder + "/.config/" + f, home_folder + ".config/" + f)
         else:
             printLog("Creating of symlinks disabled in preferences. Installation has been skipped.")
+
+        self.activated = False
 
     def createSymlink(self,source,target):
 

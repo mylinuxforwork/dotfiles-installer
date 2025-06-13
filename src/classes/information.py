@@ -120,6 +120,7 @@ class Information(Gtk.Box):
 
     # Distribute source to
     def on_get_source_completed(self):
+
         # Copy dotfiles into original folder
         shutil.copytree(self.props.download_folder + "/" + self.props.config_json["subfolder"], self.props.original_folder, dirs_exist_ok=True)
         printLog("Copy " + self.props.download_folder + "/" + self.props.config_json["subfolder"] + " to " + self.props.original_folder)
@@ -127,6 +128,11 @@ class Information(Gtk.Box):
         # Copy dotfiles into prepared folder
         shutil.copytree(self.props.download_folder + "/" + self.props.config_json["subfolder"], self.props.prepared_folder, dirs_exist_ok=True)
         printLog("Copy " + self.props.download_folder + "/" + self.props.config_json["subfolder"] + " to " + self.props.prepared_folder)
+
+        # Write config.dotinst into original folder
+        with open(self.props.prepared_folder + '/config.dotinst', 'w', encoding='utf-8') as f:
+           json.dump(self.props.config_json, f, ensure_ascii=False, indent=4)
+        printLog("config.dotinst written to " + self.props.prepared_folder)
 
         # Check for setup script
         if "setupscript" in self.props.config_json:
@@ -195,15 +201,15 @@ class Information(Gtk.Box):
 
     # Show dotfiles folder
     def on_show_dotfiles(self, widget, _):
-        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.props.original_folder])
+        open_folder(self.props.original_folder)
 
     # Open Homepage
     def on_open_homepage(self, widget, _):
-        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.props.config_json["homepage"]])
+        Gtk.UriLauncher(uri=self.props.config_json["homepage"]).launch()
 
     # Open Dependencies page
     def on_open_dependencies(self, widget, _):
-        subprocess.Popen(["flatpak-spawn", "--host", "xdg-open", self.props.config_json["dependencies"]])
+        Gtk.UriLauncher(uri=self.props.config_json["dependencies"]).launch()
 
     # Clear page
     def clear_page(self):

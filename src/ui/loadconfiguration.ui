@@ -43,6 +43,7 @@
     <child>
       <object class="AdwPreferencesGroup">
         <property name="title">Enter the url or path to the .dotinst file.</property>
+        <property name="margin-bottom">20</property>
         <child>
           <object class="AdwEntryRow" id="entry_dotinst">
             <property name="title">.dotinst file</property>
@@ -50,7 +51,33 @@
         </child>
       </object>
     </child>
-    <!-- path to dotinst file -->
+
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="label">&lt;b&gt;The following dotfiles are already installed on your system.&lt;/b&gt;</property>
+            <property name="margin-bottom">2</property>
+            <property name="wrap">1</property>
+            <property name="use-markup">true</property>
+            <property name="margin-bottom">10</property>
+          </object>
+        </child>
+
+        <!-- listbox for installed dotfiles -->
+        <child>
+          <object class="GtkListBox" id="installed_dotfiles_group">
+            <property name="selection-mode">0</property>
+            <property name="margin-bottom">20</property>
+            <style>
+              <class name="boxed-list"/>
+            </style>
+          </object>
+        </child>
+      </object>
+
+    </child>
 
   </template>
 </interface>
