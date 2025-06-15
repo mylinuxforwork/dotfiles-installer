@@ -22,10 +22,24 @@ _commandExists() {
 }
 
 # ----------------------------------------------------------
+# Check if flatpak app
+# ----------------------------------------------------------
+
+_checkFlatpakAppExists() {
+	local app="$1"
+	flatpak_output=$(flatpak info $runtime)
+	if [[ $flatpak_output == *"ID:"* ]]; then
+	  	return 0
+	else
+		return 1
+	fi
+}
+
+# ----------------------------------------------------------
 # Check if flatpak repo is installed
 # ----------------------------------------------------------
 
-is_flatpak_repo_installed() {
+_is_flatpak_repo_installed() {
   local repo_name="$1"
   flatpak_output=$(flatpak remotes)
   if [[ $flatpak_output == *"$repo_name"* ]]; then
@@ -57,7 +71,7 @@ fi
 # Adding flathub
 # ----------------------------------------------------------
 
-if is_flatpak_repo_installed "flathub"; then
+if _is_flatpak_repo_installed "flathub"; then
 	echo ":: flathub is already added."
 else
 	echo ":: Adding flathub"
@@ -85,6 +99,17 @@ else
 	fi	
 	echo ":: Adding ml4w-repo"
 	flatpak remote-add --user --if-not-exists ml4w-repo https://mylinuxforwork.github.io/ml4w-flatpak-repo/ml4w-apps.flatpakrepo --gpg-import=$HOME/.cache/$public_key
+fi
+
+# ----------------------------------------------------------
+# Install the correct environment
+# ----------------------------------------------------------
+
+if _checkFlatpakAppExists "org.gnome.Platform/x86_64/47"; then
+	echo ":: org.gnome.Platform/x86_64/47 already installed"	
+else
+	echo ":: Installing org.gnome.Platform/x86_64/47"	
+	flatpak install flathub org.gnome.Platform/x86_64/47
 fi
 
 # ----------------------------------------------------------
