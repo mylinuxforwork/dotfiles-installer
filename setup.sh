@@ -75,7 +75,7 @@ if _is_flatpak_repo_installed "flathub"; then
 	echo ":: flathub is already added."
 else
 	echo ":: Adding flathub"
-	flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+	sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 fi
 
 # ----------------------------------------------------------
@@ -98,7 +98,7 @@ else
 		exit
 	fi	
 	echo ":: Adding ml4w-repo"
-	flatpak remote-add --user --if-not-exists ml4w-repo https://mylinuxforwork.github.io/ml4w-flatpak-repo/ml4w-apps.flatpakrepo --gpg-import=$HOME/.cache/$public_key
+	sudo flatpak remote-add --if-not-exists ml4w-repo https://mylinuxforwork.github.io/ml4w-flatpak-repo/ml4w-apps.flatpakrepo --gpg-import=$HOME/.cache/$public_key
 fi
 
 # ----------------------------------------------------------
@@ -109,7 +109,7 @@ if _checkFlatpakAppExists "org.gnome.Platform/x86_64/47"; then
 	echo ":: org.gnome.Platform/x86_64/47 already installed"	
 else
 	echo ":: Installing org.gnome.Platform/x86_64/47"	
-	flatpak -y install flathub org.gnome.Platform/x86_64/47
+	sudo flatpak install -y flathub org.gnome.Platform/x86_64/47
 fi
 
 # ----------------------------------------------------------
@@ -117,7 +117,7 @@ fi
 # ----------------------------------------------------------
 
 echo ":: Installing $app"
-flatpak -y install --reinstall --user ml4w-repo $app
+sudo flatpak install -y --reinstall --user ml4w-repo $app
 
 # ----------------------------------------------------------
 # Cleanup
