@@ -117,7 +117,7 @@ fi
 # ----------------------------------------------------------
 
 echo ":: Installing $app"
-sudo flatpak install -y --reinstall --user ml4w-repo $app
+sudo flatpak install -y --reinstall ml4w-repo $app
 
 # ----------------------------------------------------------
 # Cleanup
