@@ -27,7 +27,7 @@ _commandExists() {
 
 _checkFlatpakAppExists() {
 	local app="$1"
-	flatpak_output=$(flatpak info $runtime)
+	flatpak_output=$(flatpak info $app)
 	if [[ $flatpak_output == *"ID:"* ]]; then
 	  	return 0
 	else
