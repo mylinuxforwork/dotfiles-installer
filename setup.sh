@@ -82,7 +82,7 @@ fi
 # Adding ml4w-repo
 # ----------------------------------------------------------
 
-if is_flatpak_repo_installed "ml4w-repo"; then
+if _is_flatpak_repo_installed "ml4w-repo"; then
 	echo ":: ml4w-repo is already added."
 else
 	echo ":: Downloading Public Key"
@@ -109,7 +109,7 @@ if _checkFlatpakAppExists "org.gnome.Platform/x86_64/47"; then
 	echo ":: org.gnome.Platform/x86_64/47 already installed"	
 else
 	echo ":: Installing org.gnome.Platform/x86_64/47"	
-	flatpak install flathub org.gnome.Platform/x86_64/47
+	flatpak -y install flathub org.gnome.Platform/x86_64/47
 fi
 
 # ----------------------------------------------------------
