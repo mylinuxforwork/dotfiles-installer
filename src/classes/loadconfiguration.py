@@ -32,6 +32,7 @@ class LoadConfiguration(Gtk.Box):
 
     entry_dotinst = Gtk.Template.Child()
     installed_dotfiles_group = Gtk.Template.Child()
+    installed_dotfiles_box = Gtk.Template.Child()
     props = {}
     json_response = ""
     config_source = ""
@@ -48,6 +49,7 @@ class LoadConfiguration(Gtk.Box):
         self.installed_dotfiles_group.bind_model(self.installed_dotfiles_store,self.create_row)
         self.load_installed_dotfiles()
 
+    # Create row for installed dotfiles
     def create_row(self,item):
         row = Adw.ActionRow()
         row.set_title(item.name)
@@ -59,6 +61,7 @@ class LoadConfiguration(Gtk.Box):
         btn.connect("clicked",self.install_dotfiles,item.id)
         return row
 
+    # Install selected dotfiles
     def install_dotfiles(self,widget,id):
         self.props.config_json = json.load(open(get_installed_dotfiles_folder() + id + "/config.dotinst"))
         self.props.id = id
@@ -70,6 +73,7 @@ class LoadConfiguration(Gtk.Box):
 
     def load_installed_dotfiles(self):
         self.installed_dotfiles_store.remove_all()
+        counter = 0
         for f in os.listdir(get_installed_dotfiles_folder()):
             if os.path.exists(get_installed_dotfiles_folder() + f + "/config.dotinst"):
                 dot_json = json.load(open(get_installed_dotfiles_folder() + f + "/config.dotinst"))
@@ -78,6 +82,9 @@ class LoadConfiguration(Gtk.Box):
                 item.name = dot_json["name"]
                 item.id = dot_json["id"]
                 self.installed_dotfiles_store.append(item)
+                counter = counter + 1
+        if counter > 0:
+            self.installed_dotfiles_box.set_visible(True)
 
     # Load local configuration file
     def load_local_configuration(self):

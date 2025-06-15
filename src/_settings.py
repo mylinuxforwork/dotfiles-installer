@@ -72,21 +72,28 @@ def get_symlink_enabled():
 
 # Create folder structure
 def run_setup():
+
+    if not os.path.exists(get_installed_dotfiles_folder()):
+        pathlib.Path(get_installed_dotfiles_folder()).mkdir(parents=True, exist_ok=True)
+        printLog(get_installed_dotfiles_folder() + " created")
+    else:
+        printLog(get_installed_dotfiles_folder() + " exists")
+
     if not os.path.exists(download_folder):
         pathlib.Path(download_folder).mkdir(parents=True, exist_ok=True)
-        printLog(download_folder + " created (if not exists)")
+        printLog(download_folder + " created")
 
     if not os.path.exists(original_folder):
         pathlib.Path(original_folder).mkdir(parents=True, exist_ok=True)
-        printLog(original_folder + " created (if not exists)")
+        printLog(original_folder + " created")
 
     if not os.path.exists(prepared_folder):
         pathlib.Path(prepared_folder).mkdir(parents=True, exist_ok=True)
-        printLog(prepared_folder + " created (if not exists)")
+        printLog(prepared_folder + " created")
 
     if not os.path.exists(backup_folder):
         pathlib.Path(backup_folder).mkdir(parents=True, exist_ok=True)
-        printLog(backup_folder + " created (if not exists)")
+        printLog(backup_folder + " created")
 
     if not os.path.exists(config_folder):
         pathlib.Path(config_folder).mkdir(parents=True, exist_ok=True)
