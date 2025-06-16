@@ -130,9 +130,7 @@ class Information(Gtk.Box):
         printLog("Copy " + self.props.download_folder + "/" + self.props.config_json["subfolder"] + " to " + self.props.prepared_folder)
 
         # Write config.dotinst into original folder
-        with open(self.props.prepared_folder + '/config.dotinst', 'w', encoding='utf-8') as f:
-           json.dump(self.props.config_json, f, ensure_ascii=False, indent=4)
-        printLog("config.dotinst written to " + self.props.prepared_folder)
+        self.writeProjectConfig()
 
         # Check for setup script
         if "setupscript" in self.props.config_json:
@@ -149,6 +147,12 @@ class Information(Gtk.Box):
         self.props.wizzard_next_btn.set_label("Next")
         self.show_replacement = True
         self.props.updateProgressBar(0.2)
+
+    def writeProjectConfig(self):
+        with open(self.props.prepared_folder + '/config.dotinst', 'w', encoding='utf-8') as f:
+           json.dump(self.props.config_json, f, ensure_ascii=False, indent=4)
+        printLog("config.dotinst written to " + self.props.prepared_folder)
+
 
     # Show setup dialog
     def create_runsetup_dialog(self,*_args):

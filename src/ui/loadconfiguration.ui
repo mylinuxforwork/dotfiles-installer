@@ -42,7 +42,8 @@
     <!-- Path to dotinst file -->
     <child>
       <object class="AdwPreferencesGroup">
-        <property name="title">Enter the url or path to the .dotinst file.</property>
+        <property name="title">Load Configuration</property>
+        <property name="description" translatable="yes">Enter the url of a remote .dotinst file or path to a local .dotinst file.</property>
         <property name="margin-bottom">20</property>
         <child>
           <object class="AdwEntryRow" id="entry_dotinst">
@@ -52,17 +53,24 @@
       </object>
     </child>
 
+    <!-- Path to dotinst file -->
     <child>
       <object class="GtkBox" id="installed_dotfiles_box">
         <property name="visible">false</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel">
-            <property name="label">&lt;b&gt;The following dotfiles are already installed on your system.&lt;/b&gt;</property>
-            <property name="margin-bottom">2</property>
-            <property name="wrap">1</property>
-            <property name="use-markup">true</property>
-            <property name="margin-bottom">10</property>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Installed Dotfiles</property>
+            <property name="description" translatable="yes">The following dotfiles are already installed on your system.</property>
+            <child type="header-suffix">
+              <object class="GtkButton" id="btn_add_configuration">
+                <property name="visible">false</property>
+                <property name="halign">3</property>
+                <property name="valign">3</property>
+                <property name="visible">false</property>
+                <property name="icon-name">plus-symbolic</property>
+              </object>
+            </child>
           </object>
         </child>
 

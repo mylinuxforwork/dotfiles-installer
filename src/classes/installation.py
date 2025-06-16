@@ -60,6 +60,12 @@ class Installation(Gtk.Box):
         else:
             printLog("Creating of symlinks disabled in preferences. Installation has been skipped.")
 
+        # Write dotfiles config file to dotfiles folder
+        dotfiles_json = {}
+        dotfiles_json["active"] = self.props.id
+        with open(get_installed_dotfiles_folder() + 'dotfiles.json', 'w', encoding='utf-8') as f:
+            json.dump(dotfiles_json, f, ensure_ascii=False, indent=4)
+
         self.activated = False
 
     def createSymlink(self,source,target):

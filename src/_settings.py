@@ -49,7 +49,8 @@ logging.getLogger().setLevel(logging.INFO)
 # Development
 # test_url = "https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/examples/hyprland-starter.dotinst"
 test_url = "https://raw.githubusercontent.com/mylinuxforwork/hyprland-starter/main/hyprland-starter.dotinst"
-test_path = "Projects/dotfiles-installer/examples/hyprland-starter.dotinst"
+#test_path = "Projects/dotfiles-installer/examples/hyprland-starter-dev.dotinst"
+test_path = "Projects/hyprland-starter/dev/hyprland-starter.dotinst"
 
 # Get Settings
 def get_dotfiles_folder(dotfiles_id):
@@ -69,6 +70,10 @@ def get_default_terminal():
 def get_symlink_enabled():
     my_settings = Gio.Settings(schema_id=app_id)
     return my_settings.get_boolean('my-enable-symlinks');
+
+def get_dev_enabled():
+    my_settings = Gio.Settings(schema_id=app_id)
+    return my_settings.get_boolean('my-enable-dev');
 
 # Create folder structure
 def run_setup():

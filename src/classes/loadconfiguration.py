@@ -33,6 +33,7 @@ class LoadConfiguration(Gtk.Box):
     entry_dotinst = Gtk.Template.Child()
     installed_dotfiles_group = Gtk.Template.Child()
     installed_dotfiles_box = Gtk.Template.Child()
+    btn_add_configuration = Gtk.Template.Child()
     props = {}
     json_response = ""
     config_source = ""
@@ -40,7 +41,7 @@ class LoadConfiguration(Gtk.Box):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # self.entry_dotinst.set_text(test_path)
+        self.entry_dotinst.set_text(test_path)
         self.entry_dotinst.set_show_apply_button(True)
         self.entry_dotinst.connect("apply", self.load_configuration)
         self.http_session = Soup.Session.new()
@@ -52,14 +53,40 @@ class LoadConfiguration(Gtk.Box):
     # Create row for installed dotfiles
     def create_row(self,item):
         row = Adw.ActionRow()
+        if not ".git" in item.source:
+            row.set_icon_name("folder-symbolic")
+        else:
+            row.set_icon_name("help-website-symbolic")
         row.set_title(item.name)
         row.set_subtitle(item.id)
         btn = Gtk.Button()
         btn.set_valign(3)
         btn.set_label("Activate")
-        row.add_suffix(btn)
         btn.connect("clicked",self.install_dotfiles,item.id)
+        row.add_suffix(btn)
+
+        if get_dev_enabled():
+            menu_model = Gio.Menu()
+
+            menu_model.append(
+                label='Open Dotfiles Folder', detailed_action='win.dev_open_dotfiles_folder::' + item.id
+            )
+            if not ".git" in item.source:
+                menu_model.append(
+                    label='Push to project repository', detailed_action='win.dev_push_to_repo::' + item.id + ";" + item.source + "/" + item.subfolder
+                )
+                menu_model.append(
+                    label='Pull from project repository', detailed_action='win.dev_pull_from_repo::' + item.id + ";" + item.source + "/" + item.subfolder
+                )
+            menu_button = Gtk.MenuButton.new()
+            menu_button.set_label("Dev")
+            menu_button.set_menu_model(menu_model=menu_model)
+            menu_button.set_valign(3)
+            row.add_suffix(menu_button)
         return row
+
+    def on_preferences_action(self, action, param):
+        print('Action `app.preferences` was active.')
 
     # Install selected dotfiles
     def install_dotfiles(self,widget,id):
@@ -81,6 +108,8 @@ class LoadConfiguration(Gtk.Box):
                 item = DotfilesItem()
                 item.name = dot_json["name"]
                 item.id = dot_json["id"]
+                item.source = dot_json["source"]
+                item.subfolder = dot_json["subfolder"]
                 self.installed_dotfiles_store.append(item)
                 counter = counter + 1
         if counter > 0:

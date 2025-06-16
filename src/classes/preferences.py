@@ -26,6 +26,7 @@ class Preferences(Adw.PreferencesDialog):
     dotfiles_folder = Gtk.Template.Child()
     default_terminal = Gtk.Template.Child()
     symlink_enabled = Gtk.Template.Child()
+    dev_enabled = Gtk.Template.Child()
     my_settings = Gio.Settings(schema_id=app_id)
 
     props = {}
@@ -40,6 +41,8 @@ class Preferences(Adw.PreferencesDialog):
         self.default_terminal.set_text(self.settings.get_string("my-default-terminal"))
         self.symlink_enabled.set_active(self.settings.get_boolean("my-enable-symlinks"))
         self.symlink_enabled.connect("notify::active",self.change_symlink)
+        self.dev_enabled.set_active(self.settings.get_boolean("my-enable-dev"))
+        self.dev_enabled.connect("notify::active",self.change_dev)
 
     def change_symlink(self, switch, GParamBoolean):
         if switch.get_active():
@@ -47,3 +50,9 @@ class Preferences(Adw.PreferencesDialog):
         else:
             self.settings.set_boolean("my-enable-symlinks",False)
 
+    def change_dev(self, switch, GParamBoolean):
+        if switch.get_active():
+            self.settings.set_boolean("my-enable-dev",True)
+        else:
+            self.settings.set_boolean("my-enable-dev",False)
+        self.props.config_configuration.load_installed_dotfiles()

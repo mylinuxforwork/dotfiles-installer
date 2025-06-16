@@ -67,6 +67,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.config_finish.props = self
 
         self.preferences = Preferences()
+        self.preferences.props = self
         self.settings = Gio.Settings(schema_id=app_id)
 
         self.create_actions()
@@ -89,6 +90,20 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.create_action("show_dotfiles",self.config_information.on_show_dotfiles)
         self.create_action("run_setup_script",self.config_information.on_run_setup_script)
         self.create_action("reboot_system",self.on_reboot_system)
+        self.create_action("dev_push_to_repo",self.on_dev_push_to_repo)
+        self.create_action("dev_pull_from_repo",self.on_dev_pull_from_repo)
+
+        self.open_dotfiles_action = Gio.SimpleAction.new("dev_open_dotfiles_folder", GLib.VariantType.new('s'))
+        self.open_dotfiles_action.connect("activate", self.on_dev_open_dotfiles_folder)
+        self.add_action(self.open_dotfiles_action) # Add the action to the window
+
+        self.dev_push_to_repo_action = Gio.SimpleAction.new("dev_push_to_repo", GLib.VariantType.new('s'))
+        self.dev_push_to_repo_action.connect("activate", self.on_dev_push_to_repo)
+        self.add_action(self.dev_push_to_repo_action) # Add the action to the window
+
+        self.dev_pull_from_repo_action = Gio.SimpleAction.new("dev_pull_from_repo", GLib.VariantType.new('s'))
+        self.dev_pull_from_repo_action.connect("activate", self.on_dev_pull_from_repo)
+        self.add_action(self.dev_pull_from_repo_action) # Add the action to the window
 
     @Gtk.Template.Callback()
     def on_wizzard_back_action(self, widget):
@@ -162,6 +177,58 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         printLog("Rebooting now...")
         time.sleep(0.5)
         subprocess.Popen(["flatpak-spawn", "--host", "reboot"])
+
+# --------------------------------------------
+# Dev Actions
+# --------------------------------------------
+
+    def on_dev_push_to_repo(self, widget, param):
+        p = param.get_string()
+        id = p.split(";")[0]
+        dialog = Adw.AlertDialog(
+            heading="Push to Project Folder",
+            body="Do you really want to push all changes of " + id + " from the dotfiles folder to the project folder?",
+            close_response="cancel",
+        )
+        dialog.add_response("cancel", "Cancel")
+        dialog.add_response("push", "Push")
+        dialog.set_response_appearance("push", Adw.ResponseAppearance.DESTRUCTIVE)
+        dialog.choose(self, None, self.on_confirm_dev_push_to_repo, param)
+
+    def on_confirm_dev_push_to_repo(self,_dialog, task, param):
+        response = _dialog.choose_finish(task)
+        if response == "push":
+            p = param.get_string()
+            id = p.split(";")[0]
+            project = p.split(";")[1]
+            printLog("Copy " + get_dotfiles_folder(id) + "/" + " to " +  home_folder + project + "/")
+            shutil.copytree(get_dotfiles_folder(id) + "/", home_folder + project + "/", dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.dotinst'))
+
+    def on_dev_pull_from_repo(self, widget, param):
+        p = param.get_string()
+        id = p.split(";")[0]
+        project = p.split(";")[1]
+        dialog = Adw.AlertDialog(
+            heading="Pull from Project Folder",
+            body="Do you really want to pull all files and folders from " + project + " to the dotfiles folder " + id + "?",
+            close_response="cancel",
+        )
+        dialog.add_response("cancel", "Cancel")
+        dialog.add_response("pull", "Pull")
+        dialog.set_response_appearance("pull", Adw.ResponseAppearance.DESTRUCTIVE)
+        dialog.choose(self, None, self.on_confirm_dev_pull_from_repo, param)
+
+    def on_confirm_dev_pull_from_repo(self,_dialog, task, param):
+        response = _dialog.choose_finish(task)
+        if response == "pull":
+            p = param.get_string()
+            id = p.split(";")[0]
+            project = p.split(";")[1]
+            printLog("Copy " + home_folder + project + "/" + " to " + get_dotfiles_folder(id) + "/")
+            shutil.copytree(home_folder + project + "/", get_dotfiles_folder(id) + "/", dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.dotinst'))
+
+    def on_dev_open_dotfiles_folder(self, widget, param):
+        open_folder(get_dotfiles_folder(param.get_string()))
 
 # --------------------------------------------
 # Menu Actions

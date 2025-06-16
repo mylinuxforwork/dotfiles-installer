@@ -29,6 +29,12 @@
                 <property name="subtitle">Dotfiles will be installed by generating symbolic links from the dotfiles folder to the target directories. Disable it for testing purposes.</property>
               </object>
             </child>
+            <child>
+              <object class="AdwSwitchRow" id="dev_enabled">
+                <property name="title">Enable Development Tools</property>
+                <property name="subtitle">Activate the development tools if you want to develop on your own dotfiles.</property>
+              </object>
+            </child>
           </object>
         </child>
       </object>

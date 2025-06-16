@@ -10,5 +10,8 @@
   	  <key name="my-enable-symlinks" type="b">
 	    <default>true</default>
 	  </key>
+  	  <key name="my-enable-dev" type="b">
+	    <default>false</default>
+	  </key>
 	</schema>
 </schemalist>
