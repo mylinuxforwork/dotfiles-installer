@@ -41,16 +41,11 @@ class LoadConfiguration(Gtk.Box):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.entry_dotinst.set_text(test_path)
-        # self.entry_dotinst.set_show_apply_button(True)
-
         btn = Gtk.Button()
         btn.set_valign(3)
         btn.set_label("Load")
         btn.connect("clicked",self.load_configuration)
         self.entry_dotinst.add_suffix(btn)
-
-        # self.entry_dotinst.connect("apply", self.load_configuration)
         self.http_session = Soup.Session.new()
         self.settings = Gio.Settings(schema_id=app_id)
         self.cancellable = Gio.Cancellable.new()
