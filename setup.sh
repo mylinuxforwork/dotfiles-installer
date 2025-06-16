@@ -22,20 +22,6 @@ _commandExists() {
 }
 
 # ----------------------------------------------------------
-# Check if flatpak app
-# ----------------------------------------------------------
-
-_checkFlatpakAppExists() {
-	local app="$1"
-	flatpak_output=$(flatpak info $app)
-	if [[ $flatpak_output == *"ID:"* ]]; then
-	  	return 0
-	else
-		return 1
-	fi
-}
-
-# ----------------------------------------------------------
 # Check if flatpak repo is installed
 # ----------------------------------------------------------
 
@@ -99,17 +85,6 @@ else
 	fi	
 	echo ":: Adding ml4w-repo"
 	sudo flatpak remote-add --if-not-exists ml4w-repo https://mylinuxforwork.github.io/ml4w-flatpak-repo/ml4w-apps.flatpakrepo --gpg-import=$HOME/.cache/$public_key
-fi
-
-# ----------------------------------------------------------
-# Install the correct environment
-# ----------------------------------------------------------
-
-if _checkFlatpakAppExists "org.gnome.Platform/x86_64/47"; then
-	echo ":: org.gnome.Platform/x86_64/47 already installed"	
-else
-	echo ":: Installing org.gnome.Platform/x86_64/47"	
-	sudo flatpak install -y flathub org.gnome.Platform/x86_64/47
 fi
 
 # ----------------------------------------------------------
