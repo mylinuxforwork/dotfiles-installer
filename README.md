@@ -29,6 +29,9 @@ sudo zypper install git # for openSuse
 
 ```
 
+> [!IMPORTANT]
+> A reboot after installing Flatpak is recommended to see application in your app launcher.
+
 Copy the following command into your terminal to install or update the app:
 
 ```
