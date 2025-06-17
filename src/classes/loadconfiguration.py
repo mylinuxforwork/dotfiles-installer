@@ -42,7 +42,9 @@ class LoadConfiguration(Gtk.Box):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.entry_dotinst.set_text(test_path)
+        # For testing
+        # self.entry_dotinst.set_text(test_path)
+
         btn = Gtk.Button()
         btn.set_valign(3)
         btn.set_label("Load")
