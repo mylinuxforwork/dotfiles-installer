@@ -16,7 +16,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os, pathlib, logging
-from gi.repository import Gtk, Gio, GLib, Adw
+from gi.repository import Gtk, Gdk, Gio, GLib, Adw
 
 # App Id
 app_id = "com.ml4w.dotfilesinstaller"

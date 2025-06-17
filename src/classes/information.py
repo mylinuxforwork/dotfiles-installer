@@ -18,7 +18,7 @@
 import gi, subprocess, pathlib, json, os, shutil, asyncio
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Adw, Gtk, Gio, GObject
+from gi.repository import Adw, Gtk, Gdk, Gio, GObject
 from .._settings import *
 
 @Gtk.Template(resource_path='/com/ml4w/dotfilesinstaller/ui/information.ui')
@@ -134,12 +134,8 @@ class Information(Gtk.Box):
 
         # Check for setup script
         if "setupscript" in self.props.config_json:
-            if os.path.exists(self.props.download_folder + "/" + self.props.config_json["setupscript"]):
-                if not get_default_terminal() == "":
-                    self.create_runsetup_dialog()
-                else:
-                    self.no_terminal_notification()
-                self.config_setupscript.set_visible(True)
+            self.create_runsetup_dialog()
+            self.config_setupscript.set_visible(True)
 
         self.props.spinner.set_visible(False)
         self.props.wizzard_next_btn.set_sensitive(True)
@@ -158,50 +154,67 @@ class Information(Gtk.Box):
     def create_runsetup_dialog(self,*_args):
         dialog = Adw.AlertDialog(
             heading="Run Setup?",
-            body="The dotfiles include a setup script to install or update required dependencies. Do you want to run the script now with " + get_default_terminal() + "?",
+            body="The dotfiles include a setup script to install or update required dependencies. You can copy the path and execute it in your preferred terminal",
             close_response="cancel",
         )
 
-        dialog.add_response("cancel", "Skip")
-        dialog.add_response("runsetup", "Run Setup")
+        # Create a container for the command display and copy button
+        command_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        command_box.set_css_classes(["card", "accent"]) # Add some styling
+
+        # Label to display the command
+        command_label = Gtk.Label()
+        command_label.set_text(self.props.download_folder + "/" + self.props.config_json["setupscript"])
+        command_label.set_wrap(True)
+        command_label.set_selectable(True) # Make the text selectable
+        command_label.set_xalign(0) # Align text to the start (left)
+        command_label.set_margin_start(12)
+        command_label.set_margin_end(12)
+        command_label.set_margin_top(12)
+
+        command_box.append(command_label)
+
+        # Copy to clipboard button
+        copy_button = Gtk.Button(label="Copy Command")
+        copy_button.set_icon_name("edit-copy-symbolic")
+        copy_button.set_halign(Gtk.Align.END) # Align button to the end (right)
+        copy_button.set_margin_end(12)
+        copy_button.set_margin_bottom(12)
+
+        # Connect the copy button to a handler
+        copy_button.connect("clicked", self.on_copy_button_clicked)
+        command_box.append(copy_button)
+        dialog.set_extra_child(command_box)
+
+        dialog.add_response("cancel", "Cancel")
+        dialog.add_response("open", "Open file")
+        dialog.add_response("run", "Run Setup")
 
         # Use DESTRUCTIVE appearance to draw attention to the potentially damaging consequences of this action
-        dialog.set_response_appearance("runsetup", Adw.ResponseAppearance.DESTRUCTIVE)
+        dialog.set_response_appearance("run", Adw.ResponseAppearance.DESTRUCTIVE)
 
         dialog.choose(self.props, None, self.on_runsetup_selected)
 
-    # Show setup dialog
-    def no_terminal_notification(self,*_args):
-        dialog = Adw.AlertDialog(
-            heading="Run Setup?",
-            body="The dotfiles include a setup script to install or update required dependencies. But you haven't defined your default terminal yet. Do you want to open the preferences and define your terminal? The click on Run Setup.",
-            close_response="cancel",
-        )
-
-        dialog.add_response("cancel", "Skip")
-        dialog.add_response("openpreferences", "Preferences")
-
-        # Use DESTRUCTIVE appearance to draw attention to the potentially damaging consequences of this action
-        dialog.set_response_appearance("openpreferences", Adw.ResponseAppearance.DESTRUCTIVE)
-
-        dialog.choose(self.props, None, self.on_runsetup_selected)
+    def on_copy_button_clicked(self, button):
+        self.copy_to_clipboard()
 
     # run setup callback
     def on_runsetup_selected(self,_dialog, task):
         response = _dialog.choose_finish(task)
-        if response == "runsetup":
+        if response == "run":
             self.run_setup_script()
-        elif response == "openpreferences":
-            self.props.on_preferences_action(self,_)
+        elif response == "open":
+            subprocess.Popen(["xdg-open",self.props.download_folder + "/" + self.props.config_json["setupscript"]])
+
+    def copy_to_clipboard(self):
+        clipboard = Gdk.Display.get_default().get_clipboard()
+        clipboard.set(self.props.download_folder + "/" + self.props.config_json["setupscript"])
+        print("Copied to clipboard: " + self.props.download_folder + "/" + self.props.config_json["setupscript"])
 
     # Run setup script in terminal
     def run_setup_script(self):
-        print(self.props.download_folder + "/" + self.props.config_json["setupscript"])
+        printLog(self.props.download_folder + "/" + self.props.config_json["setupscript"])
         subprocess.Popen(["flatpak-spawn", "--host", get_default_terminal(), "-e", self.props.download_folder + "/" + self.props.config_json["setupscript"]])
-
-    # Show dotfiles folder
-    def on_run_setup_script(self, widget, _):
-        self.run_setup_script()
 
     # Show dotfiles folder
     def on_show_dotfiles(self, widget, _):

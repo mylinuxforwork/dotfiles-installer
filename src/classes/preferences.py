@@ -56,3 +56,4 @@ class Preferences(Adw.PreferencesDialog):
         else:
             self.settings.set_boolean("my-enable-dev",False)
         self.props.config_configuration.load_installed_dotfiles()
+

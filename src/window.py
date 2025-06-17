@@ -88,7 +88,6 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.create_action("open_dotfiles_homepage",self.config_information.on_open_homepage)
         self.create_action("open_dotfiles_dependencies",self.config_information.on_open_dependencies)
         self.create_action("show_dotfiles",self.config_information.on_show_dotfiles)
-        self.create_action("run_setup_script",self.config_information.on_run_setup_script)
         self.create_action("reboot_system",self.on_reboot_system)
         self.create_action("dev_push_to_repo",self.on_dev_push_to_repo)
         self.create_action("dev_pull_from_repo",self.on_dev_pull_from_repo)
@@ -301,3 +300,4 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.add_action(action)
         if shortcuts:
             self.set_accels_for_action(f"win.{name}", shortcuts)
+

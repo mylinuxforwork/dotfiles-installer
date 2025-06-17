@@ -34,3 +34,4 @@ class Finish(Gtk.Box):
         self.props.progress_bar.set_fraction(1.0)
         self.props.wizzard_stack.set_visible_child_name("page_finish")
 
+
