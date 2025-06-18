@@ -39,14 +39,17 @@ dotfiles_installer_sources = [
   'classes/protect.py',
   'classes/installation.py',
   'classes/finish.py',
+  'classes/addproject.py',
   'classes/preferences.py',
   'items/settingsitem.py',
   'items/restoreitem.py',
   'items/protectitem.py',
   'items/backupitem.py',
   'items/dotfilesitem.py',
+  'templates/tpl.dotinst',
 ]
 
 install_data(dotfiles_installer_sources, install_dir: moduledir)
 install_subdir('classes', install_dir: moduledir)
 install_subdir('items', install_dir: moduledir)
+install_subdir('templates', install_dir: moduledir)

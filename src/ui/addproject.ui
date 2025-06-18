@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="adw" version="1.0"/>
+
+  <template class="AddProject" parent="AdwDialog">
+    <property name="title">Create New Project</property>
+
+    <child>
+      <object class="AdwToolbarView">
+        <child type="top">
+          <object class="AdwHeaderBar" id="header_bar">
+            <property name="title-widget">
+              <object class="AdwWindowTitle">
+                <property name="title">Create New Project</property>
+              </object>
+            </property>
+            <child type="start">
+              <object class="GtkButton" id="cancel_button">
+                <property name="label">Cancel</property>
+                <property name="action-name">window.close</property>
+                <property name="css-classes">suggested-action</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkButton" id="add_button">
+                <property name="label">Save As</property>
+                <property name="action-name">dialog.add-project</property>
+                <property name="css-classes">suggested-action</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <property name="content">
+          <object class="GtkBox" id="main_content_box">
+            <property name="orientation">vertical</property>
+            <property name="spacing">12</property>
+            <property name="margin-start">24</property>
+            <property name="margin-end">24</property>
+            <property name="margin-top">24</property>
+            <property name="margin-bottom">24</property>
+
+            <child>
+              <object class="AdwPreferencesGroup">
+                <property name="title">Project Details</property>
+                <property name="description">Enter the details for your new project to save it as .dotinst in your corresponding project folder.</property>
+                <child>
+                  <object class="AdwEntryRow" id="project_name_entry">
+                    <property name="title">Name</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwEntryRow" id="project_id_entry">
+                    <property name="title">ID</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwEntryRow" id="project_description_entry">
+                    <property name="title">Description</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwEntryRow" id="project_version_entry">
+                    <property name="title">Version</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwEntryRow" id="project_author_entry">
+                    <property name="title">Author</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwEntryRow" id="project_source_entry">
+                    <property name="title">Source</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwEntryRow" id="project_subfolder_entry">
+                    <property name="title">Subfolder</property>
+                  </object>
+                </child>
+                <!--
+                <child>
+                  <object class="AdwEntryRow" id="project_path_entry">
+                    <property name="title">Project Path</property>
+                    <property name="input-purpose">url</property>
+                  </object>
+                </child>
+                -->
+              </object>
+            </child>
+          </object>
+        </property>
+      </object>
+    </child>
+  </template>
+</interface>

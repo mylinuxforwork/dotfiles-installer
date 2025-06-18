@@ -1,0 +1,14 @@
+{
+	"name": "{name}",
+	"id": "{id}",
+	"description": "{description}",
+	"version":"{version}",
+	"author": "{author}",
+	"homepage": "",
+	"dependencies": "",
+	"source": "{source}",
+	"subfolder": "{subfolder}",
+	"setupscript":"setup.sh",
+	"restore":[],
+	"settings":[]
+}

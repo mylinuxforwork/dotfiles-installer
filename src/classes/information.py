@@ -145,10 +145,12 @@ class Information(Gtk.Box):
         self.props.updateProgressBar(0.2)
 
     def writeProjectConfig(self):
+        # Add additional information to config.dotinst
+        self.props.config_json["dotinst"] = self.props.source_dotinst
+        self.props.config_json["type"] = self.props.source_type
         with open(self.props.prepared_folder + '/config.dotinst', 'w', encoding='utf-8') as f:
            json.dump(self.props.config_json, f, ensure_ascii=False, indent=4)
         printLog("config.dotinst written to " + self.props.prepared_folder)
-
 
     # Show setup dialog
     def create_runsetup_dialog(self,*_args):

@@ -28,6 +28,7 @@ from .classes.protect import Protect
 from .classes.installation import Installation
 from .classes.finish import Finish
 from .classes.preferences import Preferences
+from .classes.addproject import AddProject
 from ._settings import *
 from urllib.request import urlopen
 from multiprocessing import Process
@@ -48,6 +49,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     config_finish = Gtk.Template.Child()
     config_configuration = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
+    btn_add_project = Gtk.Template.Child()
     update_banner = Gtk.Template.Child()
     progress_bar = Gtk.Template.Child()
 
@@ -68,11 +70,18 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 
         self.preferences = Preferences()
         self.preferences.props = self
+
+        self.add_project = AddProject()
+        self.add_project.props = self
         self.settings = Gio.Settings(schema_id=app_id)
 
         self.create_actions()
         self.check_for_update()
         self.progress_bar.set_visible(False)
+
+        if get_dev_enabled():
+            self.btn_add_project.set_visible(True)
+
         # self.config_finish.load()
         # self.wizzard_stack.set_visible_child_name("page_finish")
 
@@ -103,6 +112,10 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.dev_pull_from_repo_action = Gio.SimpleAction.new("dev_pull_from_repo", GLib.VariantType.new('s'))
         self.dev_pull_from_repo_action.connect("activate", self.on_dev_pull_from_repo)
         self.add_action(self.dev_pull_from_repo_action) # Add the action to the window
+
+        self.dev_open_dotinst_action = Gio.SimpleAction.new("dev_open_dotinst", GLib.VariantType.new('s'))
+        self.dev_open_dotinst_action.connect("activate", self.on_dev_open_dotinst)
+        self.add_action(self.dev_open_dotinst_action) # Add the action to the window
 
     @Gtk.Template.Callback()
     def on_wizzard_back_action(self, widget):
@@ -146,6 +159,10 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
             case "page_finish":
                 self.close()
 
+    @Gtk.Template.Callback()
+    def on_add_project_action(self, widget):
+        self.add_project.present(self)
+
     def updateProgressBar(self,v):
         self.progress_bar.set_fraction(v)
 
@@ -180,6 +197,14 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 # --------------------------------------------
 # Dev Actions
 # --------------------------------------------
+
+    def on_dev_open_dotinst(self, widget, param):
+        p = param.get_string()
+        if "https://" in p:
+            Gtk.UriLauncher(uri=p).launch()
+        else:
+            file_to_open = Gio.File.new_for_path(p)
+            Gtk.FileLauncher.new(file_to_open).launch()
 
     def on_dev_push_to_repo(self, widget, param):
         p = param.get_string()

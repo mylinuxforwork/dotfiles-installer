@@ -38,6 +38,7 @@ class LoadConfiguration(Gtk.Box):
     json_response = ""
     config_source = ""
     installed_dotfiles_store = Gio.ListStore()
+    load_btn = Gtk.Button()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -45,16 +46,32 @@ class LoadConfiguration(Gtk.Box):
         # For testing
         # self.entry_dotinst.set_text(test_path)
 
-        btn = Gtk.Button()
-        btn.set_valign(3)
-        btn.set_label("Load")
-        btn.connect("clicked",self.load_configuration)
-        self.entry_dotinst.add_suffix(btn)
+        self.load_btn.set_valign(3)
+        self.load_btn.set_label("Load")
+        self.load_btn.connect("clicked",self.load_configuration)
+        self.load_btn.set_sensitive(False)
+        self.entry_dotinst.connect("notify::text", self._on_input_changed)
+        self.entry_dotinst.add_suffix(self.load_btn)
         self.http_session = Soup.Session.new()
         self.settings = Gio.Settings(schema_id=app_id)
         self.cancellable = Gio.Cancellable.new()
         self.installed_dotfiles_group.bind_model(self.installed_dotfiles_store,self.create_row)
         self.load_installed_dotfiles()
+
+    def _on_input_changed(self, entry, pspec):
+        self._check_input_validity()
+
+    def _check_input_validity(self):
+        entry_source =  self.entry_dotinst.get_text().strip()
+        is_entry_source = bool(entry_source)
+
+        # Apply/remove 'error' CSS class based on validation
+        if is_entry_source:
+            self.entry_dotinst.remove_css_class("error")
+            self.load_btn.set_sensitive(True)
+        else:
+            self.entry_dotinst.add_css_class("error")
+            self.load_btn.set_sensitive(False)
 
     # Create row for installed dotfiles
     def create_row(self,item):
@@ -77,6 +94,11 @@ class LoadConfiguration(Gtk.Box):
             menu_model.append(
                 label='Open Dotfiles Folder', detailed_action='win.dev_open_dotfiles_folder::' + item.id
             )
+            if not item.dotinst == "":
+                menu_model.append(
+                    label='Open .dotinst file', detailed_action='win.dev_open_dotinst::' + item.dotinst
+                )
+
             if not ".git" in item.source:
                 menu_model.append(
                     label='Pull from project repository', detailed_action='win.dev_pull_from_repo::' + item.id + ";" + item.source + "/" + item.subfolder
@@ -89,7 +111,49 @@ class LoadConfiguration(Gtk.Box):
             menu_button.set_menu_model(menu_model=menu_model)
             menu_button.set_valign(3)
             row.add_suffix(menu_button)
+
+            del_btn = Gtk.Button()
+            del_btn.set_valign(3)
+            del_btn.set_icon_name("edit-delete-symbolic")
+            del_btn.connect("clicked",self.delete_dotfiles,item.id)
+            row.add_suffix(del_btn)
+
         return row
+
+    def delete_dotfiles(self,widget,id):
+        dialog = Adw.AlertDialog(
+            heading="Delete dotfiles?",
+            body="Do you really want to delete " + id + "? Please note that only the configuration will be removed but NO packages.",
+            close_response="cancel",
+        )
+
+        dialog.add_response("cancel", "Cancel")
+        dialog.add_response("delete", "Delete")
+
+        # Use DESTRUCTIVE appearance to draw attention to the potentially damaging consequences of this action
+        dialog.set_response_appearance("delete", Adw.ResponseAppearance.DESTRUCTIVE)
+
+        dialog.choose(self.props, None, self.on_delete_dotfiles,id)
+
+    def on_delete_dotfiles(self,_dialog, task, param):
+        response = _dialog.choose_finish(task)
+        if response == "delete":
+            printLog("Deleting " + param)
+            if os.path.exists(get_dotfiles_folder(param)):
+                shutil.rmtree(get_dotfiles_folder(param))
+                printLog(get_dotfiles_folder(param) + " deleted")
+
+            if os.path.exists(download_folder + param):
+                shutil.rmtree(download_folder + param)
+                printLog(download_folder + param + " deleted")
+
+            if os.path.exists(prepared_folder + param):
+                shutil.rmtree(prepared_folder + param)
+                printLog(prepared_folder + param + " deleted")
+
+            if os.path.exists(original_folder + param):
+                shutil.rmtree(original_folder + param)
+                printLog(original_folder + param + " deleted")
 
     def on_preferences_action(self, action, param):
         print('Action `app.preferences` was active.')
@@ -112,10 +176,22 @@ class LoadConfiguration(Gtk.Box):
                 dot_json = json.load(open(get_installed_dotfiles_folder() + f + "/config.dotinst"))
                 printLog(dot_json["id"] + " installed")
                 item = DotfilesItem()
+                if "type" in dot_json and "dotinst" in dot_json and dot_json["type"] == "local":
+                    if os.path.exists(home_folder + dot_json["dotinst"]):
+                        printLog("Using local dotinst file: " + home_folder + dot_json["dotinst"])
+                        item.dotinst = home_folder + dot_json["dotinst"]
+                        dot_json = json.load(open(home_folder + dot_json["dotinst"]))
+                    else:
+                        printLog("Local dotinst file not exists")
+
+                if "type" in dot_json and "dotinst" in dot_json and dot_json["type"] == "remote":
+                    item.dotinst = dot_json["dotinst"]
+
                 item.name = dot_json["name"]
                 item.id = dot_json["id"]
                 item.source = dot_json["source"]
                 item.subfolder = dot_json["subfolder"]
+
                 self.installed_dotfiles_store.append(item)
                 counter = counter + 1
         if counter > 0:
@@ -131,16 +207,20 @@ class LoadConfiguration(Gtk.Box):
     def load_configuration(self,_):
         self.props.wizzard_next_btn.set_sensitive(False)
         self.config_source = self.entry_dotinst.get_text()
+        self.props.source_dotinst = self.entry_dotinst.get_text()
 
         # Load from Url
         if "https://" in self.config_source:
             printLog("Load remote configuration from " + self.config_source)
             self._load_json_from_url()
+            self.props.source_type = "remote"
 
         # Load from File
         else:
             printLog("Load local configuration from " + self.config_source)
             self._load_json_from_local_file()
+            self.props.source = self.config_source
+            self.props.source_type = "local"
 
     # Loads JSON content from a local file in the user's home directory asynchronously.
     def _load_json_from_local_file(self):

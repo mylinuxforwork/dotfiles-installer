@@ -53,7 +53,9 @@ class Preferences(Adw.PreferencesDialog):
     def change_dev(self, switch, GParamBoolean):
         if switch.get_active():
             self.settings.set_boolean("my-enable-dev",True)
+            self.props.btn_add_project.set_visible(True)
         else:
             self.settings.set_boolean("my-enable-dev",False)
+            self.props.btn_add_project.set_visible(False)
         self.props.config_configuration.load_installed_dotfiles()
 

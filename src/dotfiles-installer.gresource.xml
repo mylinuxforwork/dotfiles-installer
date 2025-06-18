@@ -12,5 +12,6 @@
     <file preprocess="xml-stripblanks">ui/finish.ui</file>
     <file preprocess="xml-stripblanks">ui/preferences.ui</file>
     <file preprocess="xml-stripblanks">ui/help-overlay.ui</file>
+    <file preprocess="xml-stripblanks">ui/addproject.ui</file>
   </gresource>
 </gresources>

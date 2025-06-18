@@ -18,7 +18,8 @@ action_icons = [
     join_paths(action_dir, 'verified-checkmark-symbolic.svg'),
     join_paths(action_dir, 'playback-symbolic.svg'),
     join_paths(action_dir, 'help-website-symbolic.svg'),
-    join_paths(action_dir, 'document-edit-symbolic.svg')
+    join_paths(action_dir, 'document-edit-symbolic.svg'),
+    join_paths(action_dir, 'edit-delete-symbolic.svg')
 ]
 
 install_data(
