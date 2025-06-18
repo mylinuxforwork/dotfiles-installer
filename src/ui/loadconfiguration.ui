@@ -63,12 +63,11 @@
             <property name="title">Installed Dotfiles</property>
             <property name="description" translatable="yes">The following dotfiles are already installed on your system.</property>
             <child type="header-suffix">
-              <object class="GtkButton" id="btn_add_configuration">
-                <property name="visible">false</property>
+              <object class="GtkButton" id="btn_refresh_dotfiles">
+                <property name="visible">true</property>
                 <property name="halign">3</property>
                 <property name="valign">3</property>
-                <property name="visible">false</property>
-                <property name="icon-name">plus-symbolic</property>
+                <property name="icon-name">view-refresh-symbolic</property>
               </object>
             </child>
           </object>

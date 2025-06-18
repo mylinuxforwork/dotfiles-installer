@@ -33,7 +33,7 @@ class LoadConfiguration(Gtk.Box):
     entry_dotinst = Gtk.Template.Child()
     installed_dotfiles_group = Gtk.Template.Child()
     installed_dotfiles_box = Gtk.Template.Child()
-    btn_add_configuration = Gtk.Template.Child()
+    btn_refresh_dotfiles = Gtk.Template.Child()
     props = {}
     json_response = ""
     config_source = ""
@@ -56,6 +56,13 @@ class LoadConfiguration(Gtk.Box):
         self.settings = Gio.Settings(schema_id=app_id)
         self.cancellable = Gio.Cancellable.new()
         self.installed_dotfiles_group.bind_model(self.installed_dotfiles_store,self.create_row)
+
+        self.btn_refresh_dotfiles.connect("clicked", self._on_refresh_dotfiles)
+
+        self.load_installed_dotfiles()
+
+    def _on_refresh_dotfiles(self, widget):
+        printLog("Refresh Dotfiles List")
         self.load_installed_dotfiles()
 
     def _on_input_changed(self, entry, pspec):
