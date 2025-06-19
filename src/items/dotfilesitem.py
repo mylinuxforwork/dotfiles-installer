@@ -24,6 +24,7 @@ class DotfilesItem(GObject.GObject):
     source = GObject.property(type = str)
     subfolder = GObject.property(type = str)
     dotinst = GObject.property(type = str)
+    settings = GObject.property(type = bool,default=False)
 
     def __init__(self):
         GObject.GObject.__init__(self)

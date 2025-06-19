@@ -121,11 +121,18 @@ class LoadConfiguration(Gtk.Box):
             menu_button.set_valign(3)
             row.add_suffix(menu_button)
 
+        if item.settings:
             del_btn = Gtk.Button()
             del_btn.set_valign(3)
-            del_btn.set_icon_name("edit-delete-symbolic")
+            del_btn.set_icon_name("org.gnome.Settings-symbolic")
             del_btn.connect("clicked",self.delete_dotfiles,item.id)
             row.add_suffix(del_btn)
+
+        del_btn = Gtk.Button()
+        del_btn.set_valign(3)
+        del_btn.set_icon_name("edit-delete-symbolic")
+        del_btn.connect("clicked",self.delete_dotfiles,item.id)
+        row.add_suffix(del_btn)
 
         return row
 
@@ -195,6 +202,10 @@ class LoadConfiguration(Gtk.Box):
 
                 if "type" in dot_json and "dotinst" in dot_json and dot_json["type"] == "remote":
                     item.dotinst = dot_json["dotinst"]
+
+                if "settings" in dot_json:
+                    print("Settings")
+                    item.settings = True
 
                 item.name = dot_json["name"]
                 item.id = dot_json["id"]
