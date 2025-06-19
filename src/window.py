@@ -225,13 +225,24 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
             p = param.get_string()
             id = p.split(";")[0]
             project = p.split(";")[1]
+            dotinst = p.split(";")[2]
+            ignore_str = '*.dotinst'
+            if os.path.exists(dotinst):
+                dot_json = json.load(open(dotinst))
+                if "dev" in dot_json:
+                    if "ignore" in dot_json["dev"]:
+                        ignore_str = ignore_str + "," + dot_json["dev"]["ignore"]
+
+
+            ignore_patterns_list = [pattern.strip() for pattern in ignore_str.split(',')]
             printLog("Copy " + get_dotfiles_folder(id) + "/" + " to " +  home_folder + project + "/")
-            shutil.copytree(get_dotfiles_folder(id) + "/", home_folder + project + "/", dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.dotinst'))
+            shutil.copytree(get_dotfiles_folder(id) + "/", home_folder + project + "/", dirs_exist_ok=True, ignore=shutil.ignore_patterns(*ignore_patterns_list))
 
     def on_dev_pull_from_repo(self, widget, param):
         p = param.get_string()
         id = p.split(";")[0]
         project = p.split(";")[1]
+        dotinst = p.split(";")[2]
         dialog = Adw.AlertDialog(
             heading="Pull from Project Folder",
             body="Do you really want to pull all files and folders from " + project + " to the dotfiles folder " + id + "?",

@@ -96,26 +96,28 @@ class LoadConfiguration(Gtk.Box):
         row.add_suffix(btn)
 
         if get_dev_enabled():
-            menu_model = Gio.Menu()
-
-            menu_model.append(
-                label='Open Dotfiles Folder', detailed_action='win.dev_open_dotfiles_folder::' + item.id
-            )
+            main_menu = Gio.Menu.new()
+            file_section = Gio.Menu.new()
+            file_section.append(label='Open Dotfiles Folder', detailed_action='win.dev_open_dotfiles_folder::' + item.id)
             if not item.dotinst == "":
-                menu_model.append(
+                file_section.append(
                     label='Open .dotinst file', detailed_action='win.dev_open_dotinst::' + item.dotinst
                 )
+            main_menu.append_section(None, file_section)
 
+            dev_section = Gio.Menu.new()
             if not ".git" in item.source:
-                menu_model.append(
+                dev_section.append(
+                    label='Push to project repository', detailed_action='win.dev_push_to_repo::' + item.id + ";" + item.source + "/" + item.subfolder + ";" + item.dotinst
+                )
+                dev_section.append(
                     label='Pull from project repository', detailed_action='win.dev_pull_from_repo::' + item.id + ";" + item.source + "/" + item.subfolder
                 )
-                menu_model.append(
-                    label='Push to project repository', detailed_action='win.dev_push_to_repo::' + item.id + ";" + item.source + "/" + item.subfolder
-                )
+            main_menu.append_section(None, dev_section)
+
             menu_button = Gtk.MenuButton.new()
             menu_button.set_label("Dev")
-            menu_button.set_menu_model(menu_model=menu_model)
+            menu_button.set_menu_model(main_menu)
             menu_button.set_valign(3)
             row.add_suffix(menu_button)
 
