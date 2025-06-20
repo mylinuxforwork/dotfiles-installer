@@ -43,6 +43,9 @@ class Restore(Gtk.Box):
             item.title = i["title"]
             item.source = i["source"]
             item.value = i["value"]
+
+            if "restoreexclude" in self.props.local_json and i["source"] in self.props.local_json["restoreexclude"]:
+                item.value = False
             self.restore_store.append(item)
         self.props.wizzard_stack.set_visible_child_name("page_restore")
 
@@ -55,6 +58,7 @@ class Restore(Gtk.Box):
         return row
 
     def start_restore(self):
+        self.props.local_json["restoreexclude"] = []
         for i in range(self.restore_store.get_n_items()):
             v = self.restore_store.get_item(i)
             if v.value == True:
@@ -65,4 +69,8 @@ class Restore(Gtk.Box):
                     if os.path.isdir(self.props.prepared_folder + "/" + v.source):
                         shutil.rmtree(self.props.prepared_folder + "/" + v.source)
                         printLog("Restored folder: " + self.props.prepared_folder + "/" + v.source)
+            else:
+                self.props.local_json["restoreexclude"].append(v.source)
 
+        with open(config_folder + self.props.id + '.json', 'w', encoding='utf-8') as f:
+            json.dump(self.props.local_json, f, ensure_ascii=False, indent=4)

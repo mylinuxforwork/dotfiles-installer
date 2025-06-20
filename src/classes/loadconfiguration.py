@@ -126,7 +126,7 @@ class LoadConfiguration(Gtk.Box):
             del_btn.set_valign(3)
             del_btn.set_icon_name("org.gnome.Settings-symbolic")
             del_btn.connect("clicked",self.delete_dotfiles,item.id)
-            row.add_suffix(del_btn)
+            # row.add_suffix(del_btn)
 
         del_btn = Gtk.Button()
         del_btn.set_valign(3)

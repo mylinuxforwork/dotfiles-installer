@@ -188,8 +188,8 @@ class Information(Gtk.Box):
         command_box.append(copy_button)
         dialog.set_extra_child(command_box)
 
-        dialog.add_response("cancel", "Cancel")
-        dialog.add_response("open", "Open file")
+        dialog.add_response("cancel", "Skip Setup")
+        dialog.add_response("open", "Open Setup Script")
         dialog.add_response("run", "Run Setup")
 
         # Use DESTRUCTIVE appearance to draw attention to the potentially damaging consequences of this action

@@ -100,6 +100,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.create_action("reboot_system",self.on_reboot_system)
         self.create_action("dev_push_to_repo",self.on_dev_push_to_repo)
         self.create_action("dev_pull_from_repo",self.on_dev_pull_from_repo)
+        self.create_action("run_setup_script",self.on_run_setup_script)
 
         self.open_dotfiles_action = Gio.SimpleAction.new("dev_open_dotfiles_folder", GLib.VariantType.new('s'))
         self.open_dotfiles_action.connect("activate", self.on_dev_open_dotfiles_folder)
@@ -180,8 +181,8 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     def on_open_homepage_action(self, widget, _):
         self.config_information.openHomepage()
 
-    def on_run_setupscript(self, widget, _):
-        self.config_information.runSetupScript()
+    def on_run_setup_script(self, widget, _):
+        self.config_information.create_runsetup_dialog()
 
     def on_dotfiles_folder(self, widget):
         self.settings.set_string("my-dotfiles-folder",widget.get_text())

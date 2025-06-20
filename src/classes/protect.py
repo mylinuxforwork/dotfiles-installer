@@ -43,23 +43,28 @@ class Protect(Gtk.Box):
                     item = ProtectItem()
                     item.source = home_folder + f
                     item.target = f
+                    if "protect" in self.props.local_json and f in self.props.local_json["protect"]:
+                        item.value = True
                     self.protect_store.append(item)
         for f in os.listdir(self.props.prepared_folder + "/.config"):
             if os.path.exists(home_folder + ".config/" + f):
                 item = ProtectItem()
                 item.source = home_folder + ".config/" + f
                 item.target = ".config/" + f
+                if "protect" in self.props.local_json and ".config/" + f in self.props.local_json["protect"]:
+                    item.value = True
                 self.protect_store.append(item)
         self.props.wizzard_stack.set_visible_child_name("page_protect")
-
 
     def create_row(self,item):
         row = Adw.SwitchRow()
         row.set_title(item.source)
+        row.set_active(item.value)
         row.bind_property("active", item, "value", GObject.BindingFlags.BIDIRECTIONAL)
         return row
 
     def start_protect(self):
+        self.props.local_json["protect"] = []
         for i in range(self.protect_store.get_n_items()):
             v = self.protect_store.get_item(i)
             if v.value == True:
@@ -70,4 +75,8 @@ class Protect(Gtk.Box):
                     if os.path.isdir(self.props.prepared_folder + "/" + v.target):
                         shutil.rmtree(self.props.prepared_folder + "/" + v.target)
                         printLog("Protected folder: " + self.props.prepared_folder + "/" + v.target)
+                    printLog("Protecting " + v.target)
+                    self.props.local_json["protect"].append(v.target)
 
+        with open(config_folder + self.props.id + '.json', 'w', encoding='utf-8') as f:
+            json.dump(self.props.local_json, f, ensure_ascii=False, indent=4)
