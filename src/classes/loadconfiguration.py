@@ -87,8 +87,20 @@ class LoadConfiguration(Gtk.Box):
             row.set_icon_name("folder-symbolic")
         else:
             row.set_icon_name("help-website-symbolic")
+
         row.set_title(item.name)
+        if item.active:
+            row.set_title(item.name + " [ACTIVE]")
+
         row.set_subtitle(item.id)
+
+        if ".git" in item.source and item.dotinst:
+            btn = Gtk.Button()
+            btn.set_valign(3)
+            btn.set_icon_name("update-symbolic")
+            btn.connect("clicked",self.update_dotfiles,item.dotinst)
+            row.add_suffix(btn)
+
         btn = Gtk.Button()
         btn.set_valign(3)
         btn.set_label("Activate")
@@ -171,8 +183,16 @@ class LoadConfiguration(Gtk.Box):
                 shutil.rmtree(original_folder + param)
                 printLog(original_folder + param + " deleted")
 
+        self.load_installed_dotfiles()
+
     def on_preferences_action(self, action, param):
         print('Action `app.preferences` was active.')
+
+    # Update selected dotfiles
+    def update_dotfiles(self,widget,source):
+        self.props.install_mode = "update"
+        self.entry_dotinst.set_text(source)
+        self.load_configuration(widget)
 
     # Install selected dotfiles
     def install_dotfiles(self,widget,id):
@@ -211,6 +231,12 @@ class LoadConfiguration(Gtk.Box):
                 item.id = dot_json["id"]
                 item.source = dot_json["source"]
                 item.subfolder = dot_json["subfolder"]
+
+                print(get_installed_dotfiles_folder() + "dotfiles.json")
+                if os.path.exists(get_installed_dotfiles_folder() + "dotfiles.json"):
+                    installed_json = json.load(open(get_installed_dotfiles_folder() + "/dotfiles.json"))
+                    if installed_json["active"] == dot_json["id"]:
+                        item.active = True
 
                 self.installed_dotfiles_store.append(item)
                 counter = counter + 1

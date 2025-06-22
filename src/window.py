@@ -52,12 +52,14 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     btn_add_project = Gtk.Template.Child()
     update_banner = Gtk.Template.Child()
     progress_bar = Gtk.Template.Child()
+    install_mode = "install"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
         config_name = Gtk.Template.Child()
         
+
         # Load props to stack pages
         self.config_configuration.props = self
         self.config_information.props = self
@@ -120,12 +122,13 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def on_wizzard_back_action(self, widget):
+        self.reset_app()
 
-        # Add Cancel Dialog
+    def reset_app(self):
+        self.wizzard_stack.set_visible_child_name("page_load")
         self.wizzard_back_btn.set_visible(False)
         self.wizzard_next_btn.set_visible(False)
         self.wizzard_next_btn.set_label("Next")
-        self.wizzard_stack.set_visible_child_name("page_load")
         self.config_information.clear_page()
         self.config_settings.settings_store.remove_all()
         self.config_restore.restore_store.remove_all()
@@ -133,6 +136,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.config_protect.protect_store.remove_all()
         self.config_configuration.load_installed_dotfiles()
         self.updateProgressBar(0.0)
+        self.install_mode = "install"
         self.progress_bar.set_visible(False)
 
     @Gtk.Template.Callback()
@@ -155,10 +159,13 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
                 self.config_protect.start_protect()
                 self.config_installation.load()
             case "page_installation":
-                self.config_installation.install_dotfiles()
-                self.config_finish.load()
+                if self.config_installation.activate_now.get_active():
+                    self.config_installation.install_dotfiles()
+                    self.config_finish.load()
+                else:
+                    self.reset_app()
             case "page_finish":
-                self.close()
+                self.reset_app()
 
     @Gtk.Template.Callback()
     def on_add_project_action(self, widget):

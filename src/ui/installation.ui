@@ -6,7 +6,7 @@
     <property name="margin-start">20</property>
     <property name="spacing">10</property>
     <child>
-      <object class="GtkLabel">
+      <object class="GtkLabel" id="page_title">
         <property name="label">Installation</property>
         <style>
           <class name="title-1"/>
@@ -15,11 +15,24 @@
     </child>
     <!-- Description -->
     <child>
-      <object class="GtkLabel">
-        <property name="label">The dotfiles are now prepared for installation.</property>
+      <object class="GtkLabel" id="page_subtitle">
+        <property name="label">The dotfiles are now prepared for the installation.</property>
         <property name="margin-bottom">2</property>
         <property name="justify">2</property>
         <property name="wrap">1</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkListBox">
+      <property name="selection-mode">0</property>
+      <style>
+        <class name="boxed-list"/>
+      </style>
+      <child>
+        <object class="AdwSwitchRow" id="activate_now">
+          <property name="title" translatable="yes">Do you want to activate the dotfiles now?</property>
+        </object>
+      </child>
       </object>
     </child>
   </template>

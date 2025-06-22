@@ -6,7 +6,8 @@
 	"author": "Stephan Raabe",
 	"homepage": "https://github.com/mylinuxforwork/dotfiles",
 	"dependencies": "https://github.com/mylinuxforwork/dotfiles",
-	"source": ".ml4w-hyprland/dotfiles",
+	"source": "https://github.com/mylinuxforwork/dotfiles.git",
+	"branches":"main,dev",
 	"subfolder": "share/dotfiles",
 	"setupscript":"setup.sh",
 	"restore":[

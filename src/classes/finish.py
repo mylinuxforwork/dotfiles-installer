@@ -28,9 +28,13 @@ class Finish(Gtk.Box):
     dotfiles = ""
     props = {}
 
+    page_title = Gtk.Template.Child()
+
     def load(self):
         printLog("Show finish page")
-        self.props.wizzard_next_btn.set_label("Close")
+        if self.props.install_mode == "update":
+            self.page_title.set_label("Update complete")
+        self.props.wizzard_next_btn.set_label("Done")
         self.props.progress_bar.set_fraction(1.0)
         self.props.wizzard_stack.set_visible_child_name("page_finish")
 

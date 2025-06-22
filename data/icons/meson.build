@@ -20,7 +20,8 @@ action_icons = [
     join_paths(action_dir, 'help-website-symbolic.svg'),
     join_paths(action_dir, 'document-edit-symbolic.svg'),
     join_paths(action_dir, 'edit-delete-symbolic.svg'),
-    join_paths(action_dir, 'org.gnome.Settings-symbolic.svg')
+    join_paths(action_dir, 'org.gnome.Settings-symbolic.svg'),
+    join_paths(action_dir, 'update-symbolic.svg')
 ]
 
 install_data(

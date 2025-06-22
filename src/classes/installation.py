@@ -30,15 +30,42 @@ class Installation(Gtk.Box):
     time_stamp = ""
     activate = False
 
+    page_title = Gtk.Template.Child()
+    page_subtitle = Gtk.Template.Child()
+    activate_now = Gtk.Template.Child()
+
+    def __init__(self, **kwargs):
+        self.activate_now.connect("notify::active",self.change_activate_now)
+
     def load(self):
         printLog("Show installation page")
-        self.props.updateProgressBar(0.8)
+        if self.props.install_mode == "update":
+            self.page_title.set_label("Update")
+            self.page_subtitle.set_label("The dotfiles are now prepared for the update.")
+
+        self.activate_now.set_active(True)
+
+        if not get_symlink_enabled():
+            self.activate_now.set_active(False)
+
         self.props.config_json = self.props.config_json
         self.props.wizzard_next_btn.set_label("Install Now")
-        if self.activate:
+        if self.activate_now.get_active():
             self.props.wizzard_next_btn.set_label("Activate Now")
+            self.props.updateProgressBar(0.8)
+        else:
+            self.props.wizzard_next_btn.set_label("Done")
+            self.props.updateProgressBar(1.0)
         self.props.dotfiles_folder = get_dotfiles_folder(self.props.id)
         self.props.wizzard_stack.set_visible_child_name("page_installation")
+
+    def change_activate_now(self, switch, GParamBoolean):
+        if switch.get_active():
+            self.props.updateProgressBar(0.8)
+            self.props.wizzard_next_btn.set_label("Activate Now")
+        else:
+            self.props.updateProgressBar(1.0)
+            self.props.wizzard_next_btn.set_label("Done")
 
     def install_dotfiles(self):
 

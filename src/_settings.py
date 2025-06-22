@@ -49,7 +49,8 @@ logging.getLogger().setLevel(logging.INFO)
 # Development
 # test_url = "https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/examples/hyprland-starter.dotinst"
 test_url = "https://raw.githubusercontent.com/mylinuxforwork/hyprland-starter/main/hyprland-starter.dotinst"
-#test_path = "Projects/dotfiles-installer/examples/hyprland-starter-dev.dotinst"
+# test_path = "Projects/dotfiles-installer/examples/hyprland-dotfiles.dotinst"
+# test_path = "Projects/dotfiles-installer/examples/hyprland-starter-dev.dotinst"
 test_path = "Projects/hyprland-starter/dev/hyprland-starter.dotinst"
 
 # Get Settings

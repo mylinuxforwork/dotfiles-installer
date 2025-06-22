@@ -6,7 +6,7 @@
     <property name="margin-start">20</property>
     <property name="spacing">10</property>
     <child>
-      <object class="GtkLabel">
+      <object class="GtkLabel" id="page_title">
         <property name="label">Installation complete</property>
         <style>
           <class name="title-1"/>
