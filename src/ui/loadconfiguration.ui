@@ -58,10 +58,12 @@
       <object class="GtkBox" id="installed_dotfiles_box">
         <property name="visible">false</property>
         <property name="orientation">vertical</property>
+
         <child>
-          <object class="AdwPreferencesGroup">
-            <property name="title">Installed Dotfiles</property>
-            <property name="description" translatable="yes">The following dotfiles are already installed on your system.</property>
+          <object class="AdwPreferencesGroup" id="active_dotfiles_header">
+            <property name="title">Active Dotfiles</property>
+            <property name="description" translatable="yes">The following dotfiles are activated on your system.</property>
+            <property name="visible">false</property>
             <child type="header-suffix">
               <object class="GtkButton" id="btn_refresh_dotfiles">
                 <property name="visible">true</property>
@@ -73,16 +75,38 @@
           </object>
         </child>
 
-        <!-- listbox for installed dotfiles -->
+        <!-- listbox for active dotfiles -->
         <child>
-          <object class="GtkListBox" id="installed_dotfiles_group">
+          <object class="GtkListBox" id="active_dotfiles_group">
             <property name="selection-mode">0</property>
             <property name="margin-bottom">20</property>
+            <property name="visible">false</property>
             <style>
               <class name="boxed-list"/>
             </style>
           </object>
         </child>
+
+        <child>
+          <object class="AdwPreferencesGroup" id="installed_dotfiles_header">
+            <property name="title">Installed Dotfiles</property>
+            <property name="description" translatable="yes">The following dotfiles are already installed on your system.</property>
+            <property name="visible">false</property>
+          </object>
+        </child>
+
+        <!-- listbox for installed dotfiles -->
+        <child>
+          <object class="GtkListBox" id="installed_dotfiles_group">
+            <property name="selection-mode">0</property>
+            <property name="margin-bottom">20</property>
+            <property name="visible">false</property>
+            <style>
+              <class name="boxed-list"/>
+            </style>
+          </object>
+        </child>
+
       </object>
 
     </child>

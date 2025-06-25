@@ -31,13 +31,19 @@ class LoadConfiguration(Gtk.Box):
     __gtype_name__ = 'Loadconfiguration'
 
     entry_dotinst = Gtk.Template.Child()
-    installed_dotfiles_group = Gtk.Template.Child()
     installed_dotfiles_box = Gtk.Template.Child()
     btn_refresh_dotfiles = Gtk.Template.Child()
     props = {}
     json_response = ""
     config_source = ""
+
+    installed_dotfiles_group = Gtk.Template.Child()
+    installed_dotfiles_header = Gtk.Template.Child()
+    active_dotfiles_group = Gtk.Template.Child()
+    active_dotfiles_header = Gtk.Template.Child()
     installed_dotfiles_store = Gio.ListStore()
+    active_dotfiles_store = Gio.ListStore()
+
     load_btn = Gtk.Button()
 
     def __init__(self, **kwargs):
@@ -55,6 +61,7 @@ class LoadConfiguration(Gtk.Box):
         self.http_session = Soup.Session.new()
         self.settings = Gio.Settings(schema_id=app_id)
         self.cancellable = Gio.Cancellable.new()
+        self.active_dotfiles_group.bind_model(self.active_dotfiles_store,self.create_row)
         self.installed_dotfiles_group.bind_model(self.installed_dotfiles_store,self.create_row)
 
         self.btn_refresh_dotfiles.connect("clicked", self._on_refresh_dotfiles)
@@ -89,9 +96,6 @@ class LoadConfiguration(Gtk.Box):
             row.set_icon_name("help-website-symbolic")
 
         row.set_title(item.name)
-        if item.active:
-            row.set_title(item.name + " [ACTIVE]")
-
         row.set_subtitle(item.id)
 
         if ".git" in item.source and item.dotinst:
@@ -108,6 +112,12 @@ class LoadConfiguration(Gtk.Box):
         row.add_suffix(btn)
 
         if get_dev_enabled():
+            btn = Gtk.Button()
+            btn.set_valign(3)
+            btn.set_icon_name("arrow3-left-symbolic")
+            btn.connect("clicked",self.sync_dotfiles, item.id + ";" + item.source + "/" + item.subfolder + ";" + item.dotinst)
+            row.add_suffix(btn)
+
             main_menu = Gio.Menu.new()
             file_section = Gio.Menu.new()
             file_section.append(label='Open Dotfiles Folder', detailed_action='win.dev_open_dotfiles_folder::' + item.id)
@@ -119,11 +129,11 @@ class LoadConfiguration(Gtk.Box):
 
             dev_section = Gio.Menu.new()
             if not ".git" in item.source:
+                # dev_section.append(
+                #     label='Push to project folder', detailed_action='win.dev_push_to_repo::' + item.id + ";" + item.source + "/" + item.subfolder + ";" + item.dotinst
+                # )
                 dev_section.append(
-                    label='Push to project repository', detailed_action='win.dev_push_to_repo::' + item.id + ";" + item.source + "/" + item.subfolder + ";" + item.dotinst
-                )
-                dev_section.append(
-                    label='Pull from project repository', detailed_action='win.dev_pull_from_repo::' + item.id + ";" + item.source + "/" + item.subfolder
+                    label='Pull from project folder', detailed_action='win.dev_pull_from_repo::' + item.id + ";" + item.source + "/" + item.subfolder + ";" + item.dotinst
                 )
             main_menu.append_section(None, dev_section)
 
@@ -147,6 +157,9 @@ class LoadConfiguration(Gtk.Box):
         row.add_suffix(del_btn)
 
         return row
+
+    def sync_dotfiles(self,widget,p):
+        self.props.dev_pull_from_repo(p)
 
     def delete_dotfiles(self,widget,id):
         dialog = Adw.AlertDialog(
@@ -206,7 +219,11 @@ class LoadConfiguration(Gtk.Box):
 
     def load_installed_dotfiles(self):
         self.installed_dotfiles_store.remove_all()
-        counter = 0
+        self.active_dotfiles_store.remove_all()
+
+        counter_active = 0
+        counter_installed = 0
+
         for f in os.listdir(get_installed_dotfiles_folder()):
             if os.path.exists(get_installed_dotfiles_folder() + f + "/config.dotinst"):
                 dot_json = json.load(open(get_installed_dotfiles_folder() + f + "/config.dotinst"))
@@ -224,7 +241,6 @@ class LoadConfiguration(Gtk.Box):
                     item.dotinst = dot_json["dotinst"]
 
                 if "settings" in dot_json:
-                    print("Settings")
                     item.settings = True
 
                 item.name = dot_json["name"]
@@ -232,16 +248,27 @@ class LoadConfiguration(Gtk.Box):
                 item.source = dot_json["source"]
                 item.subfolder = dot_json["subfolder"]
 
-                print(get_installed_dotfiles_folder() + "dotfiles.json")
                 if os.path.exists(get_installed_dotfiles_folder() + "dotfiles.json"):
                     installed_json = json.load(open(get_installed_dotfiles_folder() + "/dotfiles.json"))
                     if installed_json["active"] == dot_json["id"]:
                         item.active = True
 
-                self.installed_dotfiles_store.append(item)
-                counter = counter + 1
-        if counter > 0:
+                if item.active:
+                    self.active_dotfiles_store.append(item)
+                    counter_active = counter_active + 1
+                else:
+                    self.installed_dotfiles_store.append(item)
+                    counter_installed = counter_installed + 1
+
+        if counter_installed > 0:
             self.installed_dotfiles_box.set_visible(True)
+            self.installed_dotfiles_group.set_visible(True)
+            self.installed_dotfiles_header.set_visible(True)
+
+        if counter_active > 0:
+            self.installed_dotfiles_box.set_visible(True)
+            self.active_dotfiles_group.set_visible(True)
+            self.active_dotfiles_header.set_visible(True)
 
     # Load local configuration file
     def load_local_configuration(self):

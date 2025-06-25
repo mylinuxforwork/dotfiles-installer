@@ -241,7 +241,6 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
                     if "ignore" in dot_json["dev"]:
                         ignore_str = ignore_str + "," + dot_json["dev"]["ignore"]
 
-
             ignore_patterns_list = [pattern.strip() for pattern in ignore_str.split(',')]
             printLog("Copy " + get_dotfiles_folder(id) + "/" + " to " +  home_folder + project + "/")
             shutil.copytree(get_dotfiles_folder(id) + "/", home_folder + project + "/", dirs_exist_ok=True, ignore=shutil.ignore_patterns(*ignore_patterns_list))
@@ -265,10 +264,22 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         response = _dialog.choose_finish(task)
         if response == "pull":
             p = param.get_string()
-            id = p.split(";")[0]
-            project = p.split(";")[1]
-            printLog("Copy " + home_folder + project + "/" + " to " + get_dotfiles_folder(id) + "/")
-            shutil.copytree(home_folder + project + "/", get_dotfiles_folder(id) + "/", dirs_exist_ok=True, ignore=shutil.ignore_patterns('*.dotinst'))
+            self.dev_pull_from_repo(p)
+
+    def dev_pull_from_repo(self,p):
+        id = p.split(";")[0]
+        project = p.split(";")[1]
+        dotinst = p.split(";")[2]
+        ignore_str = '*.dotinst'
+        if os.path.exists(dotinst):
+            dot_json = json.load(open(dotinst))
+            if "dev" in dot_json:
+                if "ignore" in dot_json["dev"]:
+                    ignore_str = ignore_str + "," + dot_json["dev"]["ignore"]
+
+        ignore_patterns_list = [pattern.strip() for pattern in ignore_str.split(',')]
+        printLog("Copy " + home_folder + project + "/" + " to " + get_dotfiles_folder(id) + "/")
+        shutil.copytree(home_folder + project + "/", get_dotfiles_folder(id) + "/", dirs_exist_ok=True, ignore=shutil.ignore_patterns(*ignore_patterns_list))
 
     def on_dev_open_dotfiles_folder(self, widget, param):
         open_folder(get_dotfiles_folder(param.get_string()))
