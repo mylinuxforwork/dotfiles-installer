@@ -250,15 +250,18 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         id = p.split(";")[0]
         project = p.split(";")[1]
         dotinst = p.split(";")[2]
-        dialog = Adw.AlertDialog(
-            heading="Pull from Project Folder",
-            body="Do you really want to pull all files and folders from " + project + " to the dotfiles folder " + id + "?",
-            close_response="cancel",
-        )
-        dialog.add_response("cancel", "Cancel")
-        dialog.add_response("pull", "Pull")
-        dialog.set_response_appearance("pull", Adw.ResponseAppearance.DESTRUCTIVE)
-        dialog.choose(self, None, self.on_confirm_dev_pull_from_repo, param)
+        if get_dev_sync_confirm():
+            dialog = Adw.AlertDialog(
+                heading="Pull from Project Folder",
+                body="Do you really want to pull all files and folders from " + project + " to the dotfiles folder " + id + "?",
+                close_response="cancel",
+            )
+            dialog.add_response("cancel", "Cancel")
+            dialog.add_response("pull", "Pull")
+            dialog.set_response_appearance("pull", Adw.ResponseAppearance.DESTRUCTIVE)
+            dialog.choose(self, None, self.on_confirm_dev_pull_from_repo, param)
+        else:
+            self.dev_pull_from_repo(p)
 
     def on_confirm_dev_pull_from_repo(self,_dialog, task, param):
         response = _dialog.choose_finish(task)
@@ -266,7 +269,29 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
             p = param.get_string()
             self.dev_pull_from_repo(p)
 
-    def dev_pull_from_repo(self,p):
+    def on_btn_dev_pull_from_repo(self,p):
+        id = p.split(";")[0]
+        project = p.split(";")[1]
+        dotinst = p.split(";")[2]
+        if get_dev_sync_confirm():
+            dialog = Adw.AlertDialog(
+                heading="Pull from Project Folder",
+                body="Do you really want to pull all files and folders from " + project + " to the dotfiles folder " + id + "?",
+                close_response="cancel",
+            )
+            dialog.add_response("cancel", "Cancel")
+            dialog.add_response("pull", "Pull")
+            dialog.set_response_appearance("pull", Adw.ResponseAppearance.DESTRUCTIVE)
+            dialog.choose(self, None, self.on_btn_confirm_dev_pull_from_repo, p)
+        else:
+            self.dev_pull_from_repo(p)
+
+    def on_btn_confirm_dev_pull_from_repo(self,_dialog, task, p):
+        response = _dialog.choose_finish(task)
+        if response == "pull":
+            self.dev_pull_from_repo(p)
+
+    def dev_pull_from_repo(self,p,*args):
         id = p.split(";")[0]
         project = p.split(";")[1]
         dotinst = p.split(";")[2]

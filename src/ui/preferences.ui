@@ -35,6 +35,12 @@
                 <property name="subtitle">Activate the development tools if you want to develop on your own dotfiles.</property>
               </object>
             </child>
+            <child>
+              <object class="AdwSwitchRow" id="dev_sync_confirm">
+                <property name="title">Confirm Synchronization</property>
+                <property name="subtitle">Ask for confirmation before copy from project folder.</property>
+              </object>
+            </child>
           </object>
         </child>
       </object>

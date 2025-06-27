@@ -27,6 +27,7 @@ class Preferences(Adw.PreferencesDialog):
     default_terminal = Gtk.Template.Child()
     symlink_enabled = Gtk.Template.Child()
     dev_enabled = Gtk.Template.Child()
+    dev_sync_confirm = Gtk.Template.Child()
     my_settings = Gio.Settings(schema_id=app_id)
 
     props = {}
@@ -43,12 +44,20 @@ class Preferences(Adw.PreferencesDialog):
         self.symlink_enabled.connect("notify::active",self.change_symlink)
         self.dev_enabled.set_active(self.settings.get_boolean("my-enable-dev"))
         self.dev_enabled.connect("notify::active",self.change_dev)
+        self.dev_sync_confirm.set_active(self.settings.get_boolean("my-dev-sync-confirm"))
+        self.dev_sync_confirm.connect("notify::active",self.change_dev_sync_confirm)
 
     def change_symlink(self, switch, GParamBoolean):
         if switch.get_active():
             self.settings.set_boolean("my-enable-symlinks",True)
         else:
             self.settings.set_boolean("my-enable-symlinks",False)
+
+    def change_dev_sync_confirm(self, switch, GParamBoolean):
+        if switch.get_active():
+            self.settings.set_boolean("my-dev-sync-confirm",True)
+        else:
+            self.settings.set_boolean("my-dev-sync-confirm",False)
 
     def change_dev(self, switch, GParamBoolean):
         if switch.get_active():

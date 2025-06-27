@@ -22,7 +22,7 @@ from gi.repository import Gtk, Gdk, Gio, GLib, Adw
 app_id = "com.ml4w.dotfilesinstaller"
 app_name = "Dotfiles Installer"
 app_developer = "Stephan Raabe"
-app_version = "0.8.2"
+app_version = "0.8.3"
 app_homepage = "https://github.com/mylinuxforwork/dotfiles-installer"
 app_github_api_tags = "https://api.github.com/repos/mylinuxforwork/dotfiles-installer/tags"
 
@@ -75,6 +75,10 @@ def get_symlink_enabled():
 def get_dev_enabled():
     my_settings = Gio.Settings(schema_id=app_id)
     return my_settings.get_boolean('my-enable-dev');
+
+def get_dev_sync_confirm():
+    my_settings = Gio.Settings(schema_id=app_id)
+    return my_settings.get_boolean('my-dev-sync-confirm');
 
 # Create folder structure
 def run_setup():

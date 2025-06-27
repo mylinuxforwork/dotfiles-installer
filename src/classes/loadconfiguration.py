@@ -159,7 +159,7 @@ class LoadConfiguration(Gtk.Box):
         return row
 
     def sync_dotfiles(self,widget,p):
-        self.props.dev_pull_from_repo(p)
+        self.props.on_btn_dev_pull_from_repo(p)
 
     def delete_dotfiles(self,widget,id):
         dialog = Adw.AlertDialog(
