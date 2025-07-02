@@ -106,7 +106,8 @@ class Installation(Gtk.Box):
             os.remove(target)
         elif os.path.isdir(target):
             printLog("Remove Folder: " + target)
-            shutil.rmtree(target, ignore_errors=True)
+            subprocess.Popen(["flatpak-spawn", "--host", "rm", "-rf", target])
+            # shutil.rmtree(target, ignore_errors=True)
 
         # Create symlink
         if os.path.isfile(source):
