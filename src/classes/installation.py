@@ -100,20 +100,45 @@ class Installation(Gtk.Box):
         # Delete target if exists
         if os.path.islink(target):
             printLog("Remove Symlink: " + target)
-            os.unlink(target)
+            try:
+                os.unlink(target)
+                printLog(target + " removed successfully")
+            except:
+                printLog("Error: " + target + " not removed")
         elif os.path.isfile(target):
             printLog("Remove File: " + target)
-            os.remove(target)
+            try:
+                os.remove(target)
+                printLog(target + " removed successfully")
+            except:
+                printLog("Error: " + target + " not removed")
+
         elif os.path.isdir(target):
             printLog("Remove Folder: " + target)
-            subprocess.Popen(["flatpak-spawn", "--host", "rm", "-rf", target])
-            # shutil.rmtree(target, ignore_errors=True)
+            try:
+                subprocess.run(["flatpak-spawn", "--host", "rm", "-rf", target], check=True)
+                printLog(target + " removed successfully")
+            except subprocess.CalledProcessError as e:
+                printLog("Error: " + target + " not removed: " + e)
 
         # Create symlink
         if os.path.isfile(source):
-            printLog("Add Symlink File: " + source + "->" + target)
-            os.symlink(source, target)
+            printLog("Adding Symlink File: " + source + "->" + target)
+            try:
+                os.symlink(source, target)
+                printLog("Symlink File: " + source + "->" + target + " created successfully")
+                return true
+            except:
+                printLog("Error: Symlink File " + source + "->" + target + " not created")
+                return false
+
         elif os.path.isdir(source):
-            printLog("Add Symlink Folder: " + source + "->" + target)
-            os.symlink(source, target, target_is_directory=True)
+            printLog("Adding Symlink Folder: " + source + "->" + target)
+            try:
+                os.symlink(source, target, target_is_directory=True)
+                printLog("Symlink Folder: " + source + "->" + target + " created successfully")
+                return true
+            except:
+                printLog("Error: Symlink Folder " + source + "->" + target + " not created")
+                return false
 
