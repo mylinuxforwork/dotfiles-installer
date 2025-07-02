@@ -127,18 +127,18 @@ class Installation(Gtk.Box):
             try:
                 os.symlink(source, target)
                 printLog("Symlink File: " + source + "->" + target + " created successfully")
-                return true
+                return True
             except:
                 printLog("Error: Symlink File " + source + "->" + target + " not created")
-                return false
+                return False
 
         elif os.path.isdir(source):
             printLog("Adding Symlink Folder: " + source + "->" + target)
             try:
                 os.symlink(source, target, target_is_directory=True)
                 printLog("Symlink Folder: " + source + "->" + target + " created successfully")
-                return true
+                return True
             except:
                 printLog("Error: Symlink Folder " + source + "->" + target + " not created")
-                return false
+                return False
 
