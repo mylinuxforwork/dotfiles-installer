@@ -15,7 +15,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import gi, json, pathlib, os, shutil, time
+import gi, json, pathlib, os, shutil, time, subprocess
 from gi.repository import Adw, Gtk, Gio, GObject
 from .._settings import *
 
