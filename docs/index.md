@@ -8,7 +8,7 @@ hero:
     src: /com.ml4w.dotfilesinstaller.svg
     alt: Linux logo
     style: "width: 200px; height: auto;"  
-  tagline: Installation wizzard for dotfiles and dev tool for everyone
+  tagline: Install dotfiles easy, fast and secure. 
   actions:
     - theme: brand
       text: Get Started
@@ -22,16 +22,14 @@ hero:
 
 features:
   - title: Installation Wizzard
-    details: Easy and guided installation of multiple dotfiles in parallel
+    details: Easy to use and guided installation w of multiple dotfiles in parallel
   - title: Backup and Protection
     details: Backup of existing configuration and protection of your personal customization
-  - title: Integrated Development Workflow
-    details: You can create and publish your personal dotfiles easily for everyone
+  - title: Publish your own dotfiles
+    details: The integrated development workflow supports you to You can create and publish your personal dotfiles for everyone
 ---
 
-<div align="center">
-
-### Setup 
+### 1. Installation
 
 Install the Dotfiles Installer by running the following command in your terminal:
 
@@ -39,7 +37,9 @@ Install the Dotfiles Installer by running the following command in your terminal
 bash -c "$(curl -s https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/setup.sh)"
 
 ```
-</div>
+### 2. Load the .dotinst
+
+Copy the path to the .dotinst file into the Load Configuration entry field, click on Load and follow the installation wizzard.
 
 <img
   src="/mainscreen.jpg"

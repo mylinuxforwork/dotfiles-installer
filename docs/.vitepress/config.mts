@@ -22,11 +22,6 @@ export default {
     nav: [
       { text: "Home", link: "/" },
       { text: "About", link: "/getting-started/overview" },
-      {
-        text: "Examples",
-        link: "/examples",
-        activeMatch: "/examples/",
-      },
      {
         text: "0.8.4",
         items: [
@@ -89,84 +84,34 @@ export default {
           items: [
             { text: "Overview", link: "/getting-started/overview" },
             { text: "Install", link: "/getting-started/install" },
-            { text: "Dependencies", link: "/getting-started/dependencies" },
-            { text: "Install Options", link: "/getting-started/options" },
-            { text: "Install in VM (KVM)", link: "/getting-started/vm-install" },
-            { text: "Update", link: "/getting-started/update" },
           ],
         },
         {
-          text: "Configuration",
-          collapsed: true,
-          items: [
-            { text: "Preserve Config & Customize", link: "/configuration/preserve-config" },
-            { text: "Auto Setup & Update", link: "/configuration/auto-setup" },
-            { text: "Use on Other Distros", link: "/configuration/distros" },
-            { text: "Monitor Setup", link: "/configuration/monitor-setup" },
-            { text: "Hyprland + NVIDIA", link: "/configuration/hypr-nvidia" },
-            { text: "Switch SDL (X11/Wayland)", link: "/configuration/xwayland" },
-          ],
-        },
-        {
-          text: "Usage",
-          collapsed: true,
-          items: [
-            { text: "Launch Hyprland", link: "/usage/launch" },
-            { text: "Keybindings", link: "/usage/keybindings" },
-            { text: "Screenshots", link: "/usage/screenshots" },
-            { text: "Game Mode", link: "/usage/game-mode" },
-            { text: "Wallpapers", link: "/usage/wallpapers" },
-            { text: "Power & Screenlock", link: "/usage/power-lock" },
-          ],
-        },
-        {
-          text: "Customization",
-          collapsed: true,
-          items: [
-            { text: "Dotfiles Customization", link: "/customization/dotfiles" },
-            { text: "Config Variants", link: "/customization/variants" },
-            { text: "Customize Waybar", link: "/customization/waybar" },
-            { text: "Shell (Zsh & Bash)", link: "/customization/shell" },
-            { text: "Default Terminal", link: "/customization/terminal" },
-            { text: "Default Browser", link: "/customization/browser" },
-          ],
-        },
-        {
-          text: "ML4W Apps",
-          collapsed: true,
-          items: [
-            { text: "Welcome App", link: "/ml4w-apps/welcome" },
-            { text: "Sidebar App", link: "/ml4w-apps/sidebar" },
-            { text: "Dotfiles Settings", link: "/ml4w-apps/dotfiles-app" },
-            { text: "Hyprland Settings", link: "/ml4w-apps/hyprland-app" },
-          ],
-        },
-        {
-          text: "Help",
+          text: "Install Dotfiles",
           // collapsed: false,
           items: [
-            { text: "Troubleshooting", link: "/help/troubleshooting" },
+            { text: "Load a .dotinst File", link: "/install/load-dotinst" },
+            { text: "Backup your configuration", link: "/install/backup" },
+            { text: "Define Settings", link: "/install/settings" },
+            { text: "Run the Installation", link: "/install/installation" },
           ],
         },
         {
-          text: "Development",
-          collapsed: true,
+          text: "For Developers",
+          // collapsed: false,
           items: [
-            { text: "Contributing to wiki", link: "development/wiki" },
-          ]
+            { text: "Create a project", link: "/dev/create-project" },
+            { text: "Prepare a GitHub repository", link: "/dev/prepare-git-repository" },
+            { text: "Sync files", link: "/dev/sync-files" },
+            { text: "Publish your Dotfiles", link: "/dev/publish-dotfiles" },
+            { text: "Example .dotinst files", link: "/dev/examples" },
+          ],
         },
       ],
     },
 
     socialLinks: [
-      { icon: "discord", link: "https://discord.gg/c4fJK7Za3g" },
       { icon: "github", link: "https://github.com/mylinuxforwork" },
-      { 
-        icon: {
-        svg: '<img src="https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/refs/heads/master/data/icons/hicolor/scalable/apps/com.ml4w.dotfilesinstaller.svg" width="24" height="24" alt="dots installer" />'
-      }, 
-        link: "https://github.com/mylinuxforwork/dotfiles-installer" 
-      },
     ],
 
     footer: {
