@@ -1,5 +1,8 @@
 # Installation
 
+> [!IMPORTANT]
+> The Dotfiles Installer requires a Desktop Environment (Gnome, KDE Plasma, etc.) or a Window Manager (Hyprland, Qtile, etc.). On a minimal system, please install e.g. Hyprland and a terminal first and then execute the installation command in your terminal.
+
 The ML4W Hyprland Settings App requires flatpak, wget and git:
 
 ```

@@ -3,17 +3,16 @@
 > [!IMPORTANT]
 > The application is currently in development. Errors may occur. Please open an issue.
 
-Install dotfiles easily with the Dotfiles Installer. Or if you want to publish your dotfiles with an easy to use installer, provide and share a configuration for the Dotfile Installer.
+Simply install dotfiles with the Dotfiles Installer. Or if you want to publish your dotfiles with an easy to use installer, provide and share a configuration for the Dotfile Installer.
 
 ![image](https://github.com/user-attachments/assets/d0fd7f30-bcf3-47a9-b1d8-0f7d9eabae9c)
 
-Features:
+# Documentation
 
-- Install a local or remote configuration
-- Backup of your current configuration in your .config folder
-- Protect your current customizations
+Please have a look at the Wiki to learn how to use and configure the Dotfiles Installer:
+https://mylinuxforwork.github.io/dotfiles-installer/
 
-# Installation & Update
+# Installation
 
 The ML4W Hyprland Settings App requires Flatpak & git:
 
@@ -28,11 +27,10 @@ sudo zypper install git # for openSuse
 # etc.
 
 ```
-
 > [!IMPORTANT]
 > A reboot after installing Flatpak is recommended to see application in your app launcher.
 
-Copy the following command into your terminal to install or update the app:
+Copy the following command into your terminal to install the app:
 
 ```
 bash -c "$(curl -s https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/setup.sh)"
@@ -46,7 +44,3 @@ After the installation you can start the app from your application launcher or w
 ```
 flatpak run com.ml4w.dotfilesinstaller
 ```
-# Wiki
-
-Please have a look at the Wiki to learn how to configure the Dotfiles Installer:
-https://github.com/mylinuxforwork/dotfiles-installer/wiki/01-Installation
