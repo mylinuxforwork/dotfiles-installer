@@ -8,7 +8,7 @@ hero:
     src: /com.ml4w.dotfilesinstaller.svg
     alt: Linux logo
     style: "width: 200px; height: auto;"  
-  tagline: Install Dotfiles easy, fast and secure. 
+  tagline: Install Dotfiles easily, fast and secure. 
   actions:
     - theme: brand
       text: Get Started

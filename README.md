@@ -1,4 +1,4 @@
-# Dotfiles Installer
+# ML4W Dotfiles Installer
 
 > [!IMPORTANT]
 > The application is currently in development. Errors may occur. Please open an issue.

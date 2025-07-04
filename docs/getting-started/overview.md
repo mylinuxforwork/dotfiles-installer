@@ -2,7 +2,7 @@
 
 <div class="tip custom-block" style="padding-top: 8px">
 
-**Install dotfiles easy, fast and secure. Or provide an installation application for your dotfiles.**
+**Install dotfiles easily, quickly and securely. Or provide an installation application for your dotfiles.**
 
 </div>
 
