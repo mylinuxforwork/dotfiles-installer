@@ -93,6 +93,8 @@ export default {
             { text: "Load a .dotinst File", link: "/install/load-dotinst" },
             { text: "Backup your configuration", link: "/install/backup" },
             { text: "Define Settings", link: "/install/settings" },
+            { text: "Restore your Dotfiles Settings", link: "/install/restore" },
+            { text: "Protect your Customization", link: "/install/protect" },
             { text: "Run the Installation", link: "/install/installation" },
           ],
         },
