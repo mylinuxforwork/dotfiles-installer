@@ -5,7 +5,7 @@
 
 Simply install dotfiles with the Dotfiles Installer. Or if you want to publish your dotfiles with an easy to use installer, provide and share a configuration for the Dotfile Installer.
 
-![image](https://github.com/user-attachments/assets/d0fd7f30-bcf3-47a9-b1d8-0f7d9eabae9c)
+![image](https://github.com/user-attachments/assets/8d88fbed-5467-499b-a732-c7268d8375d3)
 
 # Documentation
 
