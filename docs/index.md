@@ -8,7 +8,7 @@ hero:
     src: /com.ml4w.dotfilesinstaller.svg
     alt: Linux logo
     style: "width: 200px; height: auto;"  
-  tagline: Install dotfiles easy, fast and secure. 
+  tagline: Install Dotfiles easy, fast and secure. 
   actions:
     - theme: brand
       text: Get Started
@@ -23,9 +23,9 @@ hero:
 features:
   - title: Installation Wizzard
     details: Easy to use and guided installation w of multiple dotfiles in parallel
-  - title: Backup and Protection
+  - title: Backup and Protect
     details: Backup of existing configuration and protection of your personal customization
-  - title: Publish your own dotfiles
+  - title: Publish your Dotfiles
     details: The integrated development workflow supports you to You can create and publish your personal dotfiles for everyone
 ---
 
