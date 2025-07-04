@@ -29,14 +29,20 @@ features:
     details: The integrated development workflow supports you to You can create and publish your personal dotfiles for everyone
 ---
 
-### 1. Installation
+### 1. Install the Dotfile Installer App
 
-Install the Dotfiles Installer by running the following command in your terminal:
+Install the Dotfiles Installer App by running the following command in your terminal:
 
 ```sh
 bash -c "$(curl -s https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/setup.sh)"
 
 ```
+You can run the Dotfiles Installer from your application launcher or wih
+
+```sh
+flatpak run com.ml4w.dotfilesinstaller
+```
+
 ### 2. Load the .dotinst
 
 Copy the path to the .dotinst file into the Load Configuration entry field, click on Load and follow the installation wizzard.
