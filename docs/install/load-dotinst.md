@@ -6,7 +6,7 @@ Copy the url to the .dotinst file and click on Load. The Dotfiles Installer will
 
 # Run the Setup Script
 
-Dotfiles developers can incöude a setup script to install all dependencies for the dotfiles before installing them. If such a script is available, the Dotfiles Installer will asked how to proceed.
+Dotfiles developers can include a setup script to install all dependencies for the dotfiles before installing them. If such a script is available, the Dotfiles Installer will asked how to proceed.
 
 ![image](/setupscreen.jpg)
 
