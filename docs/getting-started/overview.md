@@ -10,7 +10,15 @@
 
 You can easily install Dotfiles configurations by downloading the url to a .dotinst file and following the app's instructions.
 
-The Dotfiles Installer automatically creates an update of the existing configuration for you. In addition, the app can protect your personal customizations so that they are not overwritten during an update.
+The Dotfiles Installer automatically creates a backup of the existing configuration for you. In addition, the app can protect your personal customizations so that they are not overwritten during an update.
+
+# Dotfiles Installer Folders
+
+.myfotfiles:
+
+Dotfiles will be stored in the .mydotfiles folder within your home directory. You can change the folder in preferences.
+
+.local
 
 ## For Developers
 
