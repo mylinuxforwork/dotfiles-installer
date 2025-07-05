@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: "The ML4W Dotfiles Installer"
+  name: "The Dotfiles Installer"
   image:
     src: /com.ml4w.dotfilesinstaller.svg
     alt: Linux logo
