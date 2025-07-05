@@ -26,6 +26,7 @@ export default {
         text: "0.8.4",
         items: [
           {
+            // todo; add CHANGELOG.md in dotfiles-installer repo 
             text: 'Changelog',
             link: 'https://github.com/mylinuxforwork/dotfiles-installer/blob/master/CHANGELOG.md'
           },
