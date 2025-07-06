@@ -1,6 +1,6 @@
 ---
-# https://vitepress.dev/reference/default-theme-home-page
 layout: home
+pageClass: home-page
 
 hero:
   name: "The Dotfiles Installer"
@@ -22,11 +22,11 @@ hero:
 
 features:
   - title: Installation Wizzard
-    details: Easy to use and guided installation w of multiple dotfiles in parallel
+    details: Easy to use and guided installation wizzard of multiple dotfiles in parallel
   - title: Backup and Protect
     details: Backup of existing configuration and protection of your personal customization
   - title: Publish your Dotfiles
-    details: The integrated development workflow supports you to You can create and publish your personal dotfiles for everyone
+    details: The integrated development workflow supports you to create and publish your personal dotfiles for everyone
 ---
 
 ### 1. Install the Dotfile Installer App
@@ -37,7 +37,7 @@ Install the Dotfiles Installer App by running the following command in your term
 bash -c "$(curl -s https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/setup.sh)"
 
 ```
-You can run the Dotfiles Installer from your application launcher or wih
+You can run the Dotfiles Installer from your application launcher or with:
 
 ```sh
 flatpak run com.ml4w.dotfilesinstaller
@@ -45,7 +45,7 @@ flatpak run com.ml4w.dotfilesinstaller
 
 ### 2. Load the .dotinst
 
-Copy the path to the .dotinst file into the Load Configuration entry field, click on Load and follow the installation wizzard.
+Copy the path to the `.dotinst` file into the Load Configuration entry field, click on Load and follow the installation wizzard.
 
 <img
   src="/mainscreen.jpg"

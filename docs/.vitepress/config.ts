@@ -26,6 +26,7 @@ export default {
         text: "0.8.4",
         items: [
           {
+            // todo; add CHANGELOG.md in dotfiles-installer repo 
             text: 'Changelog',
             link: 'https://github.com/mylinuxforwork/dotfiles-installer/blob/master/CHANGELOG.md'
           },
@@ -48,12 +49,13 @@ export default {
           },
           {
            text: 'Contributing to wiki →',
-           link: '/development/wiki'
+           link: '/dev/contributing'
           },
-          {
-           text: 'Troubleshooting →',
-           link: '/help/troubleshooting'
-          },
+          // we will add this in future.
+          // {
+          //  text: 'Troubleshooting →',
+          //  link: '/help/troubleshooting'
+          // },
         ],
       },
     ],
@@ -107,6 +109,7 @@ export default {
             { text: "Sync files", link: "/dev/sync-files" },
             { text: "Publish your Dotfiles", link: "/dev/publish-dotfiles" },
             { text: "Example .dotinst files", link: "/dev/examples" },
+            { text: "Contributing to wiki", link: "/dev/contributing" },
           ],
         },
       ],
@@ -119,7 +122,7 @@ export default {
     footer: {
       message: "Released under the GPL License",
       copyright: `<a href="https://ml4w.com" target="_blank">
-        <img src="/dotfiles/ml4w.png" alt="ML4W" />
+        <img src="/dotfiles-installer/ml4w.png" alt="ML4W" />
         Copyright © 2025 Stephan Raabe
       </a>`,
     },
