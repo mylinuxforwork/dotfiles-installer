@@ -95,31 +95,28 @@ class Installation(Gtk.Box):
 
         self.activated = False
 
+    # Delete existing symlink, file or folder
+    def delete_file_in_sandbox(self,filepath):
+        try:
+            if os.path.islink(filepath):
+                os.unlink(filepath)
+                printLog(filepath + " removed successfully")
+            elif os.path.isfile(filepath):
+                os.remove(filepath)
+                printLog(filepath + " file removed successfully")
+            elif os.path.isdir(filepath):
+                shutil.rmtree(filepath) # For deleting non-empty directories
+                printLog(filepath + " folder removed successfully")
+            else:
+                printLog(filepath + " does not exist")
+        except OSError as e:
+            print(f"Error deleting {filepath}: {e}")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+
+    # Create a symlink
     def createSymlink(self,source,target):
-
-        # Delete target if exists
-        if os.path.islink(target):
-            printLog("Remove Symlink: " + target)
-            try:
-                os.unlink(target)
-                printLog(target + " removed successfully")
-            except:
-                printLog("Error: " + target + " not removed")
-        elif os.path.isfile(target):
-            printLog("Remove File: " + target)
-            try:
-                os.remove(target)
-                printLog(target + " removed successfully")
-            except:
-                printLog("Error: " + target + " not removed")
-
-        elif os.path.isdir(target):
-            printLog("Remove Folder: " + target)
-            try:
-                subprocess.run(["flatpak-spawn", "--host", "rm", "-rf", target], check=True)
-                printLog(target + " removed successfully")
-            except subprocess.CalledProcessError as e:
-                printLog("Error: " + target + " not removed: " + e)
+        self.delete_file_in_sandbox(target)
 
         # Create symlink
         if os.path.isfile(source):

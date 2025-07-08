@@ -101,7 +101,7 @@ class Information(Gtk.Box):
     # Clone the the source from git repository
     def clone_source_sepository(self, task, source_object, task_data, cancellable):
         printLog("Clone source repository")
-        command = ["flatpak-spawn", "--host", "git", "clone", "--depth", "1", self.props.config_json["source"], self.props.download_folder]
+        command = ["git", "clone", "--depth", "1", self.props.config_json["source"], self.props.download_folder]
         printLog("Executing command: " + " ".join(command))
         try:
             subprocess.call(command)
@@ -154,7 +154,7 @@ class Information(Gtk.Box):
 
     # Show setup dialog
     def create_runsetup_dialog(self,*_args):
-        dialog = Adw.AlertDialog(
+        self.dialog = Adw.AlertDialog(
             heading="Run Setup?",
             body="The dotfiles include a setup script to install or update required dependencies. You can copy the path and execute it in your preferred terminal",
             close_response="cancel",
@@ -177,7 +177,7 @@ class Information(Gtk.Box):
         command_box.append(command_label)
 
         # Copy to clipboard button
-        copy_button = Gtk.Button(label="Copy Command")
+        copy_button = Gtk.Button(label="Copy")
         copy_button.set_icon_name("edit-copy-symbolic")
         copy_button.set_halign(Gtk.Align.END) # Align button to the end (right)
         copy_button.set_margin_end(12)
@@ -186,37 +186,33 @@ class Information(Gtk.Box):
         # Connect the copy button to a handler
         copy_button.connect("clicked", self.on_copy_button_clicked)
         command_box.append(copy_button)
-        dialog.set_extra_child(command_box)
+        self.dialog.set_extra_child(command_box)
 
-        dialog.add_response("cancel", "Skip Setup")
-        dialog.add_response("open", "Open Setup Script")
-        dialog.add_response("run", "Run Setup")
+        self.dialog.add_response("open", "Open Setup Script")
+        self.dialog.set_default_response("open")
+
+        self.dialog.add_response("cancel", "Cancel")
 
         # Use DESTRUCTIVE appearance to draw attention to the potentially damaging consequences of this action
-        dialog.set_response_appearance("run", Adw.ResponseAppearance.DESTRUCTIVE)
+        self.dialog.set_response_appearance("cancel", Adw.ResponseAppearance.DESTRUCTIVE)
 
-        dialog.choose(self.props, None, self.on_runsetup_selected)
+        self.dialog.choose(self.props, None, self.on_runsetup_selected)
 
+    # Callback copy button
     def on_copy_button_clicked(self, button):
         self.copy_to_clipboard()
+        self.dialog.close()
 
     # run setup callback
     def on_runsetup_selected(self,_dialog, task):
         response = _dialog.choose_finish(task)
-        if response == "run":
-            self.run_setup_script()
-        elif response == "open":
+        if response == "open":
             subprocess.Popen(["xdg-open",self.props.download_folder + "/" + self.props.config_json["setupscript"]])
 
     def copy_to_clipboard(self):
         clipboard = Gdk.Display.get_default().get_clipboard()
         clipboard.set(self.props.download_folder + "/" + self.props.config_json["setupscript"])
         print("Copied to clipboard: " + self.props.download_folder + "/" + self.props.config_json["setupscript"])
-
-    # Run setup script in terminal
-    def run_setup_script(self):
-        printLog(self.props.download_folder + "/" + self.props.config_json["setupscript"])
-        subprocess.Popen(["flatpak-spawn", "--host", get_default_terminal(), "-e", self.props.download_folder + "/" + self.props.config_json["setupscript"]])
 
     # Show dotfiles folder
     def on_show_dotfiles(self, widget, _):

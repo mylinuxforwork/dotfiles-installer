@@ -99,7 +99,6 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.create_action("open_dotfiles_homepage",self.config_information.on_open_homepage)
         self.create_action("open_dotfiles_dependencies",self.config_information.on_open_dependencies)
         self.create_action("show_dotfiles",self.config_information.on_show_dotfiles)
-        self.create_action("reboot_system",self.on_reboot_system)
         self.create_action("dev_push_to_repo",self.on_dev_push_to_repo)
         self.create_action("dev_pull_from_repo",self.on_dev_pull_from_repo)
         self.create_action("run_setup_script",self.on_run_setup_script)
@@ -176,7 +175,6 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 
     def on_preferences_action(self, widget, _):
         self.preferences.dotfiles_folder.connect("apply", self.on_dotfiles_folder)
-        self.preferences.default_terminal.connect("apply", self.on_default_terminal)
         self.preferences.present(self)
 
     def on_show_dotfiles_action(self, widget, _):
@@ -193,14 +191,6 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 
     def on_dotfiles_folder(self, widget):
         self.settings.set_string("my-dotfiles-folder",widget.get_text())
-
-    def on_default_terminal(self, widget):
-        self.settings.set_string("my-default-terminal",widget.get_text())
-
-    def on_reboot_system(self, widget, _):
-        printLog("Rebooting now...")
-        time.sleep(0.5)
-        subprocess.Popen(["flatpak-spawn", "--host", "reboot"])
 
 # --------------------------------------------
 # Dev Actions

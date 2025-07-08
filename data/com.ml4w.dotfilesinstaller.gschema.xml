@@ -4,9 +4,6 @@
   	  <key name="my-dotfiles-folder" type="s">
 	    <default>'.mydotfiles'</default>
 	  </key>
-  	  <key name="my-default-terminal" type="s">
-	    <default>''</default>
-	  </key>
   	  <key name="my-enable-symlinks" type="b">
 	    <default>true</default>
 	  </key>

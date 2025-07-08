@@ -24,7 +24,6 @@ class Preferences(Adw.PreferencesDialog):
     __gtype_name__ = 'Preferences'
 
     dotfiles_folder = Gtk.Template.Child()
-    default_terminal = Gtk.Template.Child()
     symlink_enabled = Gtk.Template.Child()
     dev_enabled = Gtk.Template.Child()
     dev_sync_confirm = Gtk.Template.Child()
@@ -35,11 +34,9 @@ class Preferences(Adw.PreferencesDialog):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.dotfiles_folder.set_show_apply_button(True)
-        self.default_terminal.set_show_apply_button(True)
 
         self.settings = Gio.Settings(schema_id="com.ml4w.dotfilesinstaller")
         self.dotfiles_folder.set_text(self.settings.get_string("my-dotfiles-folder"))
-        self.default_terminal.set_text(self.settings.get_string("my-default-terminal"))
         self.symlink_enabled.set_active(self.settings.get_boolean("my-enable-symlinks"))
         self.symlink_enabled.connect("notify::active",self.change_symlink)
         self.dev_enabled.set_active(self.settings.get_boolean("my-enable-dev"))

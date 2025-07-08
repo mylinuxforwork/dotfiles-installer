@@ -19,11 +19,6 @@
               </object>
             </child>
             <child>
-              <object class="AdwEntryRow" id="default_terminal">
-                <property name="title">Default Terminal</property>
-              </object>
-            </child>
-            <child>
               <object class="AdwSwitchRow" id="symlink_enabled">
                 <property name="title">Generate Symbolic Links</property>
                 <property name="subtitle">Dotfiles will be installed by generating symbolic links from the dotfiles folder to the target directories. Disable it for testing purposes.</property>
