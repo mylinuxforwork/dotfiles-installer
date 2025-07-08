@@ -1,20 +1,5 @@
 [default]
 locale = "en-us"
-
-# Python-specific configuration - ignore "wizzard" in Python files
-[type.py]
-extend-identifiers = { 
-    wizzard = "wizzard",
-    wizzard_stack = "wizzard_stack",
-    wizzard_next_btn = "wizzard_next_btn",
-    wizzard_back_btn = "wizzard_back_btn"
-}
-
-# UI files (GTK) - ignore "wizzard" in .ui files
-[type.ui]
-extend-identifiers = { 
-    wizzard = "wizzard",
-    wizzard_stack = "wizzard_stack", 
-    wizzard_next_btn = "wizzard_next_btn",
-    wizzard_back_btn = "wizzard_back_btn"
-}
+extend-ignore-re = [
+    "(?i)wizzard" 
+]
