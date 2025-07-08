@@ -1,5 +1,26 @@
+# typos.toml - configuration for the typos spellchecker
+# More info: https://github.com/crate-ci/typos
+# Also: https://cocalc.com/github/bevyengine/bevy/blob/main/typos.toml
+
 [default]
 locale = "en-us"
 extend-ignore-re = [
     "(?i)wizzard" 
 ]
+
+# [default.extend-words]
+
+# [default.extend-identifiers]
+
+# [default.extend-ignore-re] # Uncomment to ignore words via regex patterns
+# "\\bNDKs\\b",               # e.g., acronym or brand names
+
+# [files]
+# ignore-hidden = false # Include hidden files
+
+# extend-exclude = [
+#  "*.pbxproj",  # Ignore Xcode project metadata
+#  "*.patch",    # Ignore patch files
+#  "*.bin",      # Ignore binary files
+#  ".git/",      # Ignore Git metadata
+# ]
