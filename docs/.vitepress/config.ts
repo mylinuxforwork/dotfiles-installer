@@ -23,12 +23,12 @@ export default {
       { text: "Home", link: "/" },
       { text: "About", link: "/getting-started/overview" },
      {
-        text: "0.8.4",
+        text: "0.8.5",
         items: [
           {
             // todo; add CHANGELOG.md in dotfiles-installer repo 
             text: 'Changelog',
-            link: 'https://github.com/mylinuxforwork/dotfiles-installer/blob/master/CHANGELOG.md'
+            link: '/changelog.md'
           },
         ],
       },
