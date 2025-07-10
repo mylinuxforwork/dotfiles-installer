@@ -54,10 +54,10 @@
   </screenshots>
 
   <releases>
-    <release version="0.8.5" date="2025-07-08">
+    <release version="0.8.6" date="2025-07-10">
       <url type="details">https://mylinuxforwork.github.io/dotfiles-installer/changelog</url>
       <description translate="no">
-        <p>Release 0.8.5</p>
+        <p>Release 0.8.6</p>
         <ul>
           <li>Include git dependency</li>
         </ul>

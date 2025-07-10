@@ -6,9 +6,6 @@
     <property name="title" translatable="yes">Dotfiles Installer</property>
     <property name="default-width">800</property>
     <property name="default-height">600</property>
-    <style>
-      <class name="devel"/>
-    </style>
     <property name="content">
       <object class="AdwToolbarView">
         <child type="top">
