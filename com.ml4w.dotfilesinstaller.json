@@ -10,8 +10,8 @@
         "--socket=fallback-x11",
         "--device=dri",
         "--socket=wayland",
-	    "--persist=.config/com.ml4w.dotfilesinstaller",
-    	"--persist=.local/share/com.ml4w.dotfilesinstaller"
+        "--filesystem=home",
+        "--filesystem=xdg-config/gtk-4.0"
     ],
     "cleanup" : [
         "/include",
