@@ -10,8 +10,7 @@
         "--socket=fallback-x11",
         "--device=dri",
         "--socket=wayland",
-        "--filesystem=home",
-        "--filesystem=xdg-config/gtk-4.0"
+        "--filesystem=home"
     ],
     "cleanup" : [
         "/include",
