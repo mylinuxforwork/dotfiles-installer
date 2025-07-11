@@ -104,8 +104,9 @@ export default {
           text: "For Developers",
           // collapsed: false,
           items: [
-            { text: "Create a project", link: "/dev/create-project" },
+            { text: "Overview", link: "/dev/overview" },
             { text: "Prepare a GitHub repository", link: "/dev/prepare-git-repository" },
+            { text: "Create a project", link: "/dev/create-project" },
             { text: "Sync files", link: "/dev/sync-files" },
             { text: "Publish your Dotfiles", link: "/dev/publish-dotfiles" },
             { text: "Example .dotinst files", link: "/dev/examples" },
