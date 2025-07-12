@@ -42,8 +42,6 @@ original_folder = share_folder + original_folder_name + "/"
 prepared_folder = share_folder + prepared_folder_name + "/"
 backup_folder = share_folder + backup_folder_name + "/"
 
-print(share_folder)
-
 # Logging
 logging.getLogger().setLevel(logging.INFO)
 
