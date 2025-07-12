@@ -5,9 +5,9 @@
   <project_license>GPL-3.0-or-later</project_license>
 
   <name>Dotfiles Installer</name>
-  <summary>Install Dotfiles easily, fast and secure.</summary>
+  <summary>Install Dotfiles easily, fast and secure. Or publish your own.</summary>
   <description>
-    <p>Install dotfiles easily, quickly and securely. Or publish your own dotfiles and offer an intuitive installation application.</p>
+    <p>Take control of your dotfiles configurations with Dotfiles Installer, designed to make dotfile management seamless. You can install dotfiles easily, quickly, and securely with an intuitive installation wizard that guides you through every step. The app prioritizes your data safety, offering robust backup functionality and protection for your existing customizations during the installation process.</p><p>Furthermore, the app allows you to publish your own dotfiles and offer others a straightforward, intuitive way to install your preferred setup.</p>
   </description>
 
   <developer id="tld.vendor">
