@@ -23,7 +23,7 @@ export default {
       { text: "Home", link: "/" },
       { text: "About", link: "/getting-started/overview" },
      {
-        text: "0.8.6",
+        text: "0.8.7",
         items: [
           {
             // todo; add CHANGELOG.md in dotfiles-installer repo 

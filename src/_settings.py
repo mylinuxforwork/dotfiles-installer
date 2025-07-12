@@ -22,7 +22,7 @@ from gi.repository import Gtk, Gdk, Gio, GLib, Adw
 app_id = "com.ml4w.dotfilesinstaller"
 app_name = "Dotfiles Installer"
 app_developer = "Stephan Raabe"
-app_version = "0.8.6"
+app_version = "0.8.7"
 app_homepage = "https://github.com/mylinuxforwork/dotfiles-installer"
 app_github_api_tags = "https://api.github.com/repos/mylinuxforwork/dotfiles-installer/tags"
 
@@ -32,16 +32,17 @@ original_folder_name = "original"
 prepared_folder_name = "prepared"
 backup_folder_name = "backup"
 dotfiles_folder_name = ".mydotfiles"
-share_folder_name = ".local/share"
 
 # Folders
 home_folder = GLib.get_home_dir() + "/"
-share_folder = home_folder + share_folder_name + "/" + app_id + "/"
+config_folder = os.environ.get('XDG_CONFIG_HOME', os.path.expanduser('~/.config') + "/" + app_id) + "/"
+share_folder = os.environ.get('XDG_DATA_HOME', os.path.expanduser('~/.local/share') + "/" + app_id) + "/"
 download_folder = share_folder + download_folder_name + "/"
 original_folder = share_folder + original_folder_name + "/"
 prepared_folder = share_folder + prepared_folder_name + "/"
 backup_folder = share_folder + backup_folder_name + "/"
-config_folder = home_folder + ".config/" + app_id + "/"
+
+print(share_folder)
 
 # Logging
 logging.getLogger().setLevel(logging.INFO)
