@@ -29,7 +29,7 @@ features:
     details: The integrated development workflow supports you to create and publish your personal dotfiles for everyone
 ---
 
-### 1. Install the Dotfile Installer App
+### 1. Install the Dotfiles Installer App
 
 Install the Dotfiles Installer App from Flathub:
 
