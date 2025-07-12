@@ -31,17 +31,11 @@ features:
 
 ### 1. Install the Dotfile Installer App
 
-Install the Dotfiles Installer App by running the following command in your terminal:
+Install the Dotfiles Installer App from Flathub:
 
-```sh
-bash -c "$(curl -s https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/setup.sh)"
-
-```
-You can run the Dotfiles Installer from your application launcher or with:
-
-```sh
-flatpak run com.ml4w.dotfilesinstaller
-```
+<a href='https://flathub.org/apps/com.ml4w.dotfilesinstaller' target="_blank">
+    <img width='240' alt='Get it on Flathub' src='https://flathub.org/api/badge?locale=en'/>
+</a>
 
 ### 2. Load the .dotinst
 

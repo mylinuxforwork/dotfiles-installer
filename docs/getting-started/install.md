@@ -3,24 +3,11 @@
 > [!IMPORTANT]
 > The Dotfiles Installer requires a Desktop Environment (Gnome, KDE Plasma, etc.) or a Window Manager (Hyprland, Qtile, etc.). On a minimal system, please install e.g. Hyprland and a terminal first and then execute the installation command in your terminal.
 
-The ML4W Hyprland Settings App requires `flatpak`,`wget` and `curl`:
+Install the Dotfiles Installer App from Flathub:
 
-**First Install [Flatpak](https://flatpak.org/setup/) and [Git](https://github.com/git/git) for your distribution.**
-
-> [!IMPORTANT]
-> A reboot after installing Flatpak is recommended to see application in your app launcher.
-
-Copy the following command into your terminal to install the app:
-
-```sh
-bash -c "$(curl -s https://raw.githubusercontent.com/mylinuxforwork/dotfiles-installer/master/setup.sh)"
-
-```
-After the installation you can start the app from your application launcher or with:
-
-```sh
-flatpak run com.ml4w.dotfilesinstaller
-```
+<a href='https://flathub.org/apps/com.ml4w.dotfilesinstaller' target="_blank">
+    <img width='240' alt='Get it on Flathub' src='https://flathub.org/api/badge?locale=en'/>
+</a>
 
 ## Update
 
