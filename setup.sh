@@ -69,6 +69,15 @@ _is_flatpak_installed_user() {
 }
 
 # ----------------------------------------------------------
+# Check if git is already installed
+# ----------------------------------------------------------
+
+if ! _commandExists "git"; then
+	echo "ERROR: Please install git first."
+	exit
+fi
+
+# ----------------------------------------------------------
 # Check if flatpak is already installed
 # ----------------------------------------------------------
 
