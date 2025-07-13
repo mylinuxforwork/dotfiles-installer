@@ -20,7 +20,7 @@ Install the Dotfiles Installer App from Flathub:
 </a>
 
 > [!IMPORTANT]
-> The Dotfiles Installer requires a Desktop Environment (Gnome, KDE Plasma, etc.) or a Window Manager (Hyprland, Qtile, etc.). On a minimal system, please install e.g. Hyprland and a terminal first and then execute the installation command in your terminal.
+> The Dotfiles Installer requires a Desktop Environment (Gnome, KDE Plasma, etc.) or a Window Manager (Hyprland, Qtile, etc.). On a minimal system, please install e.g. Hyprland, a browser and a terminal first and then install the app from Flathub.
 
 After the installation you can start the app from your application launcher or with:
 
