@@ -42,7 +42,7 @@ Install the Dotfiles Installer App from Flathub:
 Copy the path to the `.dotinst` file into the Load Configuration entry field, click on Load and follow the installation wizzard.
 
 <img
-  src="/mainscreen.jpg"
+  src="/mainscreen-dark.png"
   alt="preview"
   style="max-width: 900px; width: 100%; border-radius: 12px; margin: 2rem auto; display: block;"
 />

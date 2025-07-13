@@ -4,6 +4,6 @@ The Dotfiles Installer will add symlinks into your `home` and `.config` folder. 
 
 In this dialog, you can create a backup of existing files.
 
-![image](/backupscreen.jpg)
+![image](/backupscreen-dark.png)
 
 You can open the backup folder from the main menu on the upper right side of the Dotfiles Installer.

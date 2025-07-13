@@ -40,15 +40,19 @@
 
   <screenshots>
     <screenshot type="default">
-      <image>https://mylinuxforwork.github.io/dotfiles-installer/mainscreen.jpg</image>
+      <image>https://mylinuxforwork.github.io/dotfiles-installer/mainscreen.png</image>
       <caption>Welcome Screen</caption>
     </screenshot>
     <screenshot>
-      <image>https://mylinuxforwork.github.io/dotfiles-installer/backupscreen.jpg</image>
+      <image>https://mylinuxforwork.github.io/dotfiles-installer/infoscreen.png</image>
+      <caption>Information Screen</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://mylinuxforwork.github.io/dotfiles-installer/backupscreen.png</image>
       <caption>Backup Screen</caption>
     </screenshot>
     <screenshot>
-      <image>https://mylinuxforwork.github.io/dotfiles-installer/mainscreen-dev.jpg</image>
+      <image>https://mylinuxforwork.github.io/dotfiles-installer/mainscreen-dev.png</image>
       <caption>Development Workflow Support</caption>
     </screenshot>
   </screenshots>

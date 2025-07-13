@@ -6,7 +6,7 @@
 
 </div>
 
-![image](/mainscreen.jpg)
+![image](/mainscreen-dark.png)
 
 You can easily install Dotfiles configurations by downloading the url to a `.dotinst` file and following the app's instructions.
 

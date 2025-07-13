@@ -2,7 +2,7 @@
 
 Copy the url to the `.dotinst` file and click on Load. The Dotfiles Installer will read the configuration and show up information about the Dotfiles. Based on that, you can decide if you want to proceed or cancel the setup.
 
-![image](/infoscreen.jpg)
+![image](/infoscreen-dark.png)
 
 ## Run the Setup Script
 
