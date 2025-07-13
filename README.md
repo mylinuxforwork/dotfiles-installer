@@ -5,7 +5,7 @@
 
 Simply install dotfiles with the Dotfiles Installer. Or if you want to publish your dotfiles with an easy to use installer, provide and share a configuration for the Dotfile Installer.
 
-![image](https://github.com/user-attachments/assets/8d88fbed-5467-499b-a732-c7268d8375d3)
+![image](https://mylinuxforwork.github.io/dotfiles-installer/mainscreen-dark.png)
 
 # Documentation
 
