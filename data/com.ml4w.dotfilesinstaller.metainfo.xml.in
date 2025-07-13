@@ -41,19 +41,19 @@
   <screenshots>
     <screenshot type="default">
       <image>https://mylinuxforwork.github.io/dotfiles-installer/mainscreen.png</image>
-      <caption>Welcome Screen</caption>
+      <caption xml:lang="en">Welcome Screen</caption>
     </screenshot>
     <screenshot>
       <image>https://mylinuxforwork.github.io/dotfiles-installer/infoscreen.png</image>
-      <caption>Information Screen</caption>
+      <caption xml:lang="en">Information Screen</caption>
     </screenshot>
     <screenshot>
       <image>https://mylinuxforwork.github.io/dotfiles-installer/backupscreen.png</image>
-      <caption>Backup Screen</caption>
+      <caption xml:lang="en">Backup Screen</caption>
     </screenshot>
     <screenshot>
       <image>https://mylinuxforwork.github.io/dotfiles-installer/mainscreen-dev.png</image>
-      <caption>Development Workflow Support</caption>
+      <caption xml:lang="en">Development Workflow Support</caption>
     </screenshot>
   </screenshots>
 
@@ -63,7 +63,7 @@
       <description translate="no">
         <p>Release 0.8.7</p>
         <ul>
-          <li>Include git dependency</li>
+          <li>git dependency included</li>
         </ul>
       </description>
     </release>
