@@ -1,13 +1,13 @@
 {
-	"name": "{name}",
-	"id": "{id}",
+	"name": "{name} DEV",
+	"id": "{id}.dev",
 	"description": "{description}",
-	"version":"{version}",
+	"version":"0.1",
 	"author": "{author}",
 	"homepage": "",
 	"dependencies": "",
 	"source": "{source}",
-	"subfolder": "{subfolder}",
+	"subfolder": "dotfiles",
 	"setupscript":"setup.sh",
 	"restore":[],
 	"settings":[]

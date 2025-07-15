@@ -104,6 +104,12 @@ class LoadConfiguration(Gtk.Box):
             btn.set_icon_name("update-symbolic")
             btn.connect("clicked",self.update_dotfiles,item.dotinst)
             row.add_suffix(btn)
+        else:
+            btn = Gtk.Button()
+            btn.set_valign(3)
+            btn.set_icon_name("arrow3-left-symbolic")
+            btn.connect("clicked",self.sync_dotfiles, item.id + ";" + item.source + "/" + item.subfolder + ";" + item.dotinst)
+            row.add_suffix(btn)
 
         btn = Gtk.Button()
         btn.set_valign(3)
@@ -112,19 +118,18 @@ class LoadConfiguration(Gtk.Box):
         row.add_suffix(btn)
 
         if get_dev_enabled():
-            btn = Gtk.Button()
-            btn.set_valign(3)
-            btn.set_icon_name("arrow3-left-symbolic")
-            btn.connect("clicked",self.sync_dotfiles, item.id + ";" + item.source + "/" + item.subfolder + ";" + item.dotinst)
-            row.add_suffix(btn)
-
             main_menu = Gio.Menu.new()
             file_section = Gio.Menu.new()
             file_section.append(label='Open Dotfiles Folder', detailed_action='win.dev_open_dotfiles_folder::' + item.id)
+            if not ".git" in item.source:
+                file_section.append(label='Open Project Folder', detailed_action='win.dev_open_project_folder::' + item.source)
+
             if not item.dotinst == "":
-                file_section.append(
-                    label='Open .dotinst file', detailed_action='win.dev_open_dotinst::' + item.dotinst
-                )
+                if not ".git" in item.source:
+                    file_section.append(label='Open local .dotinst file', detailed_action='win.dev_open_dotinst::' + item.dotinst)
+                else:
+                    file_section.append(label='Show remote .dotinst file', detailed_action='win.dev_open_dotinst::' + item.dotinst)
+
             main_menu.append_section(None, file_section)
 
             dev_section = Gio.Menu.new()
@@ -132,10 +137,9 @@ class LoadConfiguration(Gtk.Box):
                 # dev_section.append(
                 #     label='Push to project folder', detailed_action='win.dev_push_to_repo::' + item.id + ";" + item.source + "/" + item.subfolder + ";" + item.dotinst
                 # )
-                dev_section.append(
-                    label='Pull from project folder', detailed_action='win.dev_pull_from_repo::' + item.id + ";" + item.source + "/" + item.subfolder + ";" + item.dotinst
-                )
-            main_menu.append_section(None, dev_section)
+                dev_section.append(label='Reinstall dotfiles', detailed_action='win.dev_reinstall_dotfiles::' + item.dotinst)
+                dev_section.append(label='Pull from project folder', detailed_action='win.dev_pull_from_repo::' + item.id + ";" + item.source + "/" + item.subfolder + ";" + item.dotinst)
+                main_menu.append_section(None, dev_section)
 
             menu_button = Gtk.MenuButton.new()
             menu_button.set_label("Dev")

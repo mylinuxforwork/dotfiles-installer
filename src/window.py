@@ -107,6 +107,10 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.open_dotfiles_action.connect("activate", self.on_dev_open_dotfiles_folder)
         self.add_action(self.open_dotfiles_action) # Add the action to the window
 
+        self.open_project_action = Gio.SimpleAction.new("dev_open_project_folder", GLib.VariantType.new('s'))
+        self.open_project_action.connect("activate", self.on_dev_open_project_folder)
+        self.add_action(self.open_project_action) # Add the action to the window
+
         self.dev_push_to_repo_action = Gio.SimpleAction.new("dev_push_to_repo", GLib.VariantType.new('s'))
         self.dev_push_to_repo_action.connect("activate", self.on_dev_push_to_repo)
         self.add_action(self.dev_push_to_repo_action) # Add the action to the window
@@ -118,6 +122,11 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.dev_open_dotinst_action = Gio.SimpleAction.new("dev_open_dotinst", GLib.VariantType.new('s'))
         self.dev_open_dotinst_action.connect("activate", self.on_dev_open_dotinst)
         self.add_action(self.dev_open_dotinst_action) # Add the action to the window
+
+        self.dev_reinstall_dotfiles_action = Gio.SimpleAction.new("dev_reinstall_dotfiles", GLib.VariantType.new('s'))
+        self.dev_reinstall_dotfiles_action.connect("activate", self.on_dev_reinstall_dotfiles)
+        self.add_action(self.dev_reinstall_dotfiles_action) # Add the action to the window
+
 
     @Gtk.Template.Callback()
     def on_wizzard_back_action(self, widget):
@@ -298,6 +307,16 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 
     def on_dev_open_dotfiles_folder(self, widget, param):
         open_folder(get_dotfiles_folder(param.get_string()))
+
+    def on_dev_open_project_folder(self, widget, param):
+        open_folder(get_project_folder(param.get_string()))
+
+    def on_dev_reinstall_dotfiles(self, widget, param):
+        self.install_mode = "update"
+        local_dotinst = param.get_string().replace(home_folder,"")
+        self.config_configuration.entry_dotinst.set_text(local_dotinst)
+        self.config_configuration.load_configuration(widget)
+
 
 # --------------------------------------------
 # Menu Actions

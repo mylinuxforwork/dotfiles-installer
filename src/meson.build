@@ -46,7 +46,7 @@ dotfiles_installer_sources = [
   'items/protectitem.py',
   'items/backupitem.py',
   'items/dotfilesitem.py',
-  'templates/tpl.dotinst',
+  'templates/tpl_dev.dotinst',
 ]
 
 install_data(dotfiles_installer_sources, install_dir: moduledir)
