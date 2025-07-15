@@ -58,6 +58,17 @@
   </screenshots>
 
   <releases>
+    <release version="0.8.8" date="2025-07-15">
+      <url type="details">https://mylinuxforwork.github.io/dotfiles-installer/changelog</url>
+      <description translate="no">
+        <p>Release 0.8.8</p>
+        <ul>
+          <li>Update of development workflow</li>
+          <li>Minor buffixes</li>
+          <li>Update of Flathub meta information</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.8.7" date="2025-07-12">
       <url type="details">https://mylinuxforwork.github.io/dotfiles-installer/changelog</url>
       <description translate="no">
