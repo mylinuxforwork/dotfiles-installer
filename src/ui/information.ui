@@ -133,7 +133,15 @@
             <property name="title" translatable="yes">Source</property>
           </object>
         </child>
-
+        <child>
+          <object class="AdwActionRow" id="config_tag">
+            <style>
+              <class name="property"/>
+            </style>
+            <property name="title" translatable="yes">Tag</property>
+            <property name="visible">false</property>
+          </object>
+        </child>
         <child>
           <object class="AdwActionRow" id="config_subfolder">
             <style>
