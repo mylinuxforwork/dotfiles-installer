@@ -1,5 +1,15 @@
 # Changelog
 
-## Version 0.8.5
+## Version 0.8.9
 
-- Including git dependency into flatpak
+- Add git tag support for remote .dotinst files
+
+## Version 0.8.8
+
+- Update of development workflow
+- Minor buffixes
+- Update of Flathub meta information
+
+## Version 0.8.7
+
+- git dependency included
