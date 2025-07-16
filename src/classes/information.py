@@ -34,6 +34,7 @@ class Information(Gtk.Box):
     config_dependencies = Gtk.Template.Child()
     config_setupscript = Gtk.Template.Child()
     config_source = Gtk.Template.Child()
+    config_tag = Gtk.Template.Child()
     config_subfolder = Gtk.Template.Child()
     open_dotfiles_content = Gtk.Template.Child()
     show_replacement = False
@@ -51,13 +52,17 @@ class Information(Gtk.Box):
         self.config_name.set_subtitle(self.props.config_json["name"])
         self.config_id.set_subtitle(self.props.config_json["id"])
         self.config_version.set_subtitle(self.props.config_json["version"])
+        self.config_author.set_subtitle(self.props.config_json["author"])
+
+        self.config_tag.set_visible(False)
+        self.config_description.set_visible(True)
+        self.config_homepage.set_visible(True)
+        self.config_dependencies.set_visible(True)
 
         if not "description" in self.props.config_json:
             self.config_description.set_visible(False)
         else:
             self.config_description.set_subtitle(self.props.config_json["description"])
-
-        self.config_author.set_subtitle(self.props.config_json["author"])
 
         if not "homepage" in self.props.config_json:
             self.config_homepage.set_visible(False)
@@ -71,6 +76,12 @@ class Information(Gtk.Box):
 
         self.config_source.set_subtitle(self.props.config_json["source"])
         self.config_subfolder.set_subtitle(self.props.config_json["subfolder"])
+
+        if ".git" in self.props.config_json["source"]:
+            if "tag" in self.props.config_json and not self.props.config_json["tag"] == "":
+                self.config_tag.set_visible(True)
+                self.config_tag.set_subtitle(self.props.config_json["tag"])
+
         self.props.wizzard_next_btn.set_label("Download Dotfiles")
         self.show_replacement = False
         self.props.updateProgressBar(0.1)
@@ -101,7 +112,10 @@ class Information(Gtk.Box):
     # Clone the the source from git repository
     def clone_source_sepository(self, task, source_object, task_data, cancellable):
         printLog("Clone source repository")
-        command = ["git", "clone", "--depth", "1", self.props.config_json["source"], self.props.download_folder]
+        if self.config_tag.get_subtitle() == "":
+            command = ["git", "clone", "--depth", "1", self.props.config_json["source"], self.props.download_folder]
+        else:
+            command = ["git", "clone", "--depth", "1", "--branch", self.config_tag.get_subtitle(), self.props.config_json["source"], self.props.download_folder]
         printLog("Executing command: " + " ".join(command))
         try:
             subprocess.call(command)
