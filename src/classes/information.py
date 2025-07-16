@@ -107,7 +107,9 @@ class Information(Gtk.Box):
             # task.set_task_data("task_data", None) # Pass our custom data instance to the task
             task.run_in_thread(self.clone_source_sepository)
         else:
-            self.copySourceFolder()
+            task = Gio.Task.new(self, self.current_cancellable, self.on_copy_source_folder_completed, None)
+            # task.set_task_data("task_data", None) # Pass our custom data instance to the task
+            task.run_in_thread(self.copy_source_folder)
 
     # Clone the the source from git repository
     def clone_source_sepository(self, task, source_object, task_data, cancellable):
@@ -127,9 +129,15 @@ class Information(Gtk.Box):
         self.on_get_source_completed()
 
     # Copy source folder from local directory
-    def copySourceFolder(self):
+    def copy_source_folder(self, task, source_object, task_data, cancellable):
         printLog("Copy source folder")
-        shutil.copytree(home_folder + self.props.config_json["source"], self.props.download_folder, dirs_exist_ok=True)
+        try:
+            shutil.copytree(home_folder + self.props.config_json["source"], self.props.download_folder, dirs_exist_ok=True)
+        except:
+            self._show_error_and_reset("Source couldn't be copied successfully. Please check the source and subfolder.")
+
+    # Copy is completed
+    def on_copy_source_folder_completed(self, source_object, result, _):
         self.on_get_source_completed()
 
     # Distribute source to
