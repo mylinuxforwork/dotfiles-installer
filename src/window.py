@@ -127,6 +127,18 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.dev_reinstall_dotfiles_action.connect("activate", self.on_dev_reinstall_dotfiles)
         self.add_action(self.dev_reinstall_dotfiles_action) # Add the action to the window
 
+        self.dev_open_download_folder_action = Gio.SimpleAction.new("open_download_folder", GLib.VariantType.new('s'))
+        self.dev_open_download_folder_action.connect("activate", self.on_open_download_folder)
+        self.add_action(self.dev_open_download_folder_action) # Add the action to the window
+
+        self.dev_open_prepared_folder_action = Gio.SimpleAction.new("open_prepared_folder", GLib.VariantType.new('s'))
+        self.dev_open_prepared_folder_action.connect("activate", self.on_open_prepared_folder)
+        self.add_action(self.dev_open_prepared_folder_action) # Add the action to the window
+
+        self.dev_open_backup_folder_action = Gio.SimpleAction.new("open_backup_folder", GLib.VariantType.new('s'))
+        self.dev_open_backup_folder_action.connect("activate", self.on_open_backup_folder)
+        self.add_action(self.dev_open_backup_folder_action) # Add the action to the window
+
 
     @Gtk.Template.Callback()
     def on_wizzard_back_action(self, widget):
@@ -143,6 +155,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.config_backup.backup_store.remove_all()
         self.config_protect.protect_store.remove_all()
         self.config_configuration.load_installed_dotfiles()
+        self.config_information.folder_menu.set_visible(False)
         self.updateProgressBar(0.0)
         self.install_mode = "install"
         self.progress_bar.set_visible(False)
@@ -330,6 +343,22 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 
     def on_github_action(self, widget, _):
         Gtk.UriLauncher(uri="https://github.com/mylinuxforwork/dotfiles-installer").launch()
+
+# --------------------------------------------
+# Folder Menu Actions
+# --------------------------------------------
+
+    def on_open_download_folder(self, widget, param):
+        p = param.get_string()
+        open_folder(download_folder + p)
+
+    def on_open_prepared_folder(self, widget, param):
+        p = param.get_string()
+        open_folder(prepared_folder + p)
+
+    def on_open_backup_folder(self, widget, param):
+        p = param.get_string()
+        open_folder(backup_folder + p)
 
 # --------------------------------------------
 # Updates

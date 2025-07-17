@@ -36,6 +36,7 @@ class Information(Gtk.Box):
     config_source = Gtk.Template.Child()
     config_tag = Gtk.Template.Child()
     config_subfolder = Gtk.Template.Child()
+    folder_menu = Gtk.Template.Child()
     open_dotfiles_content = Gtk.Template.Child()
     show_replacement = False
 
@@ -153,6 +154,18 @@ class Information(Gtk.Box):
 
         # Write config.dotinst into original folder
         self.writeProjectConfig()
+
+        # Update Folder Menu
+
+        self.folder_menu.set_visible(True)
+
+        fm = Gio.Menu.new()
+        folder_section = Gio.Menu.new()
+        folder_section.append(label='Open Download Folder', detailed_action='win.open_download_folder::' + self.props.id)
+        folder_section.append(label='Open Prepared Folder', detailed_action='win.open_prepared_folder::' + self.props.id)
+        folder_section.append(label='Open Backup Folder', detailed_action='win.open_backup_folder::' + self.props.id)
+        fm.append_section(None, folder_section)
+        self.folder_menu.set_menu_model(fm)
 
         # Check for setup script
         if "setupscript" in self.props.config_json:
