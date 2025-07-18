@@ -102,6 +102,10 @@ class Backup(Gtk.Box):
 
     def create_row(self,item):
         row = Adw.SwitchRow()
+        if os.path.isdir(item.source + item.file):
+            row.set_icon_name("folder-symbolic")
+        else:
+            row.set_icon_name("paper-symbolic")
         row.set_title(item.file)
         row.set_subtitle("Backup from " + item.source)
         row.set_active(item.value)

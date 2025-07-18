@@ -59,6 +59,10 @@ class Protect(Gtk.Box):
 
     def create_row(self,item):
         row = Adw.SwitchRow()
+        if os.path.isdir(self.props.prepared_folder + "/" + item.target):
+            row.set_icon_name("folder-symbolic")
+        else:
+            row.set_icon_name("paper-symbolic")
         row.set_title(item.source)
         row.set_active(item.value)
         row.bind_property("active", item, "value", GObject.BindingFlags.BIDIRECTIONAL)

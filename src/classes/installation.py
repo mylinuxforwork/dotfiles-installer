@@ -69,31 +69,35 @@ class Installation(Gtk.Box):
 
     def install_dotfiles(self):
 
+        printLog("Installing dotfiles " + self.props.id)
         if not os.path.exists(self.props.dotfiles_folder):
             pathlib.Path(self.props.dotfiles_folder).mkdir(parents=True, exist_ok=True)
 
         if not self.activate:
             # Copy prepared folder to the dotfiles folder
             shutil.copytree(self.props.prepared_folder, self.props.dotfiles_folder, dirs_exist_ok=True)
+            printLog("Installing dotfiles " + self.props.prepared_folder + " to " + self.props.dotfiles_folder)
 
-        if get_symlink_enabled():
+        if get_symlink_enabled() and self.activate_now.get_active():
             # Create symlinks for all files and folders except for .dotinst files
+            printLog("Creating symlinks...")
             for f in os.listdir(self.props.dotfiles_folder):
                 if f != ".config" and ".dotinst" not in f:
                     self.createSymlink(self.props.dotfiles_folder + "/" + f, home_folder + f)
             for f in os.listdir(self.props.dotfiles_folder + "/.config"):
                 if ".dotinst" not in f:
                     self.createSymlink(self.props.dotfiles_folder + "/.config/" + f, home_folder + ".config/" + f)
+
+            # Write dotfiles config file to dotfiles folder
+            dotfiles_json = {}
+            dotfiles_json["active"] = self.props.id
+            with open(get_installed_dotfiles_folder() + 'dotfiles.json', 'w', encoding='utf-8') as f:
+                json.dump(dotfiles_json, f, ensure_ascii=False, indent=4)
+
         else:
             printLog("Creating of symlinks disabled in preferences. Installation has been skipped.")
 
-        # Write dotfiles config file to dotfiles folder
-        dotfiles_json = {}
-        dotfiles_json["active"] = self.props.id
-        with open(get_installed_dotfiles_folder() + 'dotfiles.json', 'w', encoding='utf-8') as f:
-            json.dump(dotfiles_json, f, ensure_ascii=False, indent=4)
-
-        self.activated = False
+        self.activate = False
 
     # Delete existing symlink, file or folder
     def delete_file_in_sandbox(self,filepath):

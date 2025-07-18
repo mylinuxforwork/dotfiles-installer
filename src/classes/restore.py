@@ -52,6 +52,10 @@ class Restore(Gtk.Box):
 
     def create_row(self,item):
         row = Adw.SwitchRow()
+        if os.path.isdir(self.props.prepared_folder + "/" + item.source):
+            row.set_icon_name("folder-symbolic")
+        else:
+            row.set_icon_name("paper-symbolic")
         row.set_title(item.title)
         row.set_active(item.value)
         row.set_subtitle(item.source)
