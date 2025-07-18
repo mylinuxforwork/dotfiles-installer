@@ -49,23 +49,20 @@ class Installation(Gtk.Box):
             self.activate_now.set_active(False)
 
         self.props.config_json = self.props.config_json
-        self.props.wizzard_next_btn.set_label("Install Now")
+        self.props.updateProgressBar(0.8)
         if self.activate_now.get_active():
-            self.props.wizzard_next_btn.set_label("Activate Now")
-            self.props.updateProgressBar(0.8)
+            self.props.wizzard_next_btn.set_label("Install and Activate Now")
         else:
-            self.props.wizzard_next_btn.set_label("Done")
-            self.props.updateProgressBar(1.0)
+            self.props.wizzard_next_btn.set_label("Install Now")
         self.props.dotfiles_folder = get_dotfiles_folder(self.props.id)
         self.props.wizzard_stack.set_visible_child_name("page_installation")
 
     def change_activate_now(self, switch, GParamBoolean):
+        self.props.updateProgressBar(0.8)
         if switch.get_active():
-            self.props.updateProgressBar(0.8)
-            self.props.wizzard_next_btn.set_label("Activate Now")
+            self.props.wizzard_next_btn.set_label("Install and Activate Now")
         else:
-            self.props.updateProgressBar(1.0)
-            self.props.wizzard_next_btn.set_label("Done")
+            self.props.wizzard_next_btn.set_label("Install Now")
 
     def install_dotfiles(self):
 

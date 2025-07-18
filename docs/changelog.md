@@ -1,8 +1,9 @@
 # Changelog
 
-## Version 0.9
+## Version 0.9.1
 
 - Access to all installation folders after got clone
+- Add migration feature to install dotfiles directly
 - Add icons to backup, restore and protect screen
 - Add select/unselect all toggle to backup, restore and protect screen
 
