@@ -58,6 +58,17 @@
   </screenshots>
 
   <releases>
+    <release version="0.9" date="2025-07-18">
+      <url type="details">https://mylinuxforwork.github.io/dotfiles-installer/changelog</url>
+      <description translate="no">
+        <p>Release 0.9</p>
+        <ul>
+          <li>Access to all installation folders after got clone</li>
+          <li>Add icons to backup, restore and protect screen</li>
+          <li>Add select/unselect all toggle to backup, restore and protect screen</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.8.9" date="2025-07-16">
       <url type="details">https://mylinuxforwork.github.io/dotfiles-installer/changelog</url>
       <description translate="no">
