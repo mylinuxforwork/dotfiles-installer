@@ -23,6 +23,27 @@
       </object>
     </child>
     <child>
+      <object class="GtkBox">
+        <property name="orientation">0</property> <!-- Horizontal orientation -->
+        <property name="spacing">10</property>
+        <property name="margin-top">10</property>
+        <property name="margin-bottom">10</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="label">Select All</property>
+            <property name="hexpand">1</property> <!-- Expand to push switch to the right -->
+            <property name="xalign">0</property> <!-- Align text to the start -->
+          </object>
+        </child>
+        <child>
+          <object class="GtkSwitch" id="select_all_switch">
+            <property name="valign">center</property>
+            <signal name="notify::active" handler="on_select_all_switch_toggled"/>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
       <object class="GtkListBox" id="restore_group">
         <property name="selection-mode">0</property>
         <property name="margin-bottom">20</property>

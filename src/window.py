@@ -180,11 +180,8 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
                 self.config_protect.start_protect()
                 self.config_installation.load()
             case "page_installation":
-                if self.config_installation.activate_now.get_active():
-                    self.config_installation.install_dotfiles()
-                    self.config_finish.load()
-                else:
-                    self.reset_app()
+                self.config_installation.install_dotfiles()
+                self.config_finish.load()
             case "page_finish":
                 self.reset_app()
 
