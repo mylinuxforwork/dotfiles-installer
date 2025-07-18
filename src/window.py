@@ -139,6 +139,10 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.dev_open_backup_folder_action.connect("activate", self.on_open_backup_folder)
         self.add_action(self.dev_open_backup_folder_action) # Add the action to the window
 
+        self.dev_start_migration_action = Gio.SimpleAction.new("start_migration", GLib.VariantType.new('s'))
+        self.dev_start_migration_action.connect("activate", self.on_start_migration)
+        self.add_action(self.dev_start_migration_action) # Add the action to the window
+
 
     @Gtk.Template.Callback()
     def on_wizzard_back_action(self, widget):
@@ -356,6 +360,9 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     def on_open_backup_folder(self, widget, param):
         p = param.get_string()
         open_folder(backup_folder + p)
+
+    def on_start_migration(self, widget, param):
+        self.config_protect.load()
 
 # --------------------------------------------
 # Updates

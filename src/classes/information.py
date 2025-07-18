@@ -58,6 +58,7 @@ class Information(Gtk.Box):
         self.config_description.set_visible(True)
         self.config_homepage.set_visible(True)
         self.config_dependencies.set_visible(True)
+        self.props.progress_bar.set_visible(True)
 
         if not "description" in self.props.config_json:
             self.config_description.set_visible(False)
@@ -164,6 +165,11 @@ class Information(Gtk.Box):
         folder_section.append(label='Open Prepared Folder', detailed_action='win.open_prepared_folder::' + self.props.id)
         folder_section.append(label='Open Backup Folder', detailed_action='win.open_backup_folder::' + self.props.id)
         fm.append_section(None, folder_section)
+
+        folder_section = Gio.Menu.new()
+        folder_section.append(label='Migrate from Prepared Folder', detailed_action='win.start_migration::' + self.props.id)
+        fm.append_section(None, folder_section)
+
         self.folder_menu.set_menu_model(fm)
 
         # Check for setup script
