@@ -18,7 +18,6 @@
     <child>
       <object class="GtkLabel">
         <property name="label">The following dotfiles can now be downloaded and installed.</property>
-        <property name="margin-bottom">2</property>
         <property name="justify">2</property>
         <property name="wrap">1</property>
       </object>
@@ -26,6 +25,7 @@
 
     <child>
       <object class="AdwPreferencesGroup">
+        <property name="margin-bottom">20</property>
         <child>
           <object class="AdwActionRow" id="config_name">
             <style>
@@ -107,13 +107,6 @@
           </object>
         </child>
         <child>
-          <object class="AdwButtonRow" id="open_dotfiles_content">
-            <property name="title" translatable="yes">Open Download Folder</property>
-            <property name="visible">false</property>
-            <property name="action-name">win.show_dotfiles</property>
-          </object>
-        </child>
-        <child>
           <object class="AdwButtonRow" id="config_setupscript">
             <property name="title" translatable="yes">Run Setup Script</property>
             <property name="visible">false</property>
@@ -125,6 +118,16 @@
     <child>
       <object class="AdwPreferencesGroup">
         <property name="title" translatable="yes">Dotfiles</property>
+        <property name="description" translatable="yes">Information about the sources of the dotfiles.</property>
+        <child type="header-suffix">
+          <object class="GtkMenuButton" id="folder_menu">
+            <property name="halign">3</property>
+            <property name="valign">3</property>
+            <property name="icon-name">folder-symbolic</property>
+            <property name="primary">true</property>
+            <property name="visible">false</property>
+          </object>
+        </child>
         <child>
           <object class="AdwActionRow" id="config_source">
             <style>
@@ -155,4 +158,5 @@
     </child>
 
   </template>
+
 </interface>

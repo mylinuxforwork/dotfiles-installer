@@ -36,7 +36,7 @@ class Information(Gtk.Box):
     config_source = Gtk.Template.Child()
     config_tag = Gtk.Template.Child()
     config_subfolder = Gtk.Template.Child()
-    open_dotfiles_content = Gtk.Template.Child()
+    folder_menu = Gtk.Template.Child()
     show_replacement = False
 
     props = {}
@@ -154,6 +154,18 @@ class Information(Gtk.Box):
         # Write config.dotinst into original folder
         self.writeProjectConfig()
 
+        # Update Folder Menu
+
+        self.folder_menu.set_visible(True)
+
+        fm = Gio.Menu.new()
+        folder_section = Gio.Menu.new()
+        folder_section.append(label='Open Download Folder', detailed_action='win.open_download_folder::' + self.props.id)
+        folder_section.append(label='Open Prepared Folder', detailed_action='win.open_prepared_folder::' + self.props.id)
+        folder_section.append(label='Open Backup Folder', detailed_action='win.open_backup_folder::' + self.props.id)
+        fm.append_section(None, folder_section)
+        self.folder_menu.set_menu_model(fm)
+
         # Check for setup script
         if "setupscript" in self.props.config_json:
             self.create_runsetup_dialog()
@@ -161,7 +173,6 @@ class Information(Gtk.Box):
 
         self.props.spinner.set_visible(False)
         self.props.wizzard_next_btn.set_sensitive(True)
-        self.open_dotfiles_content.set_visible(True)
         self.props.wizzard_next_btn.set_label("Next")
         self.show_replacement = True
         self.props.updateProgressBar(0.2)
@@ -250,7 +261,8 @@ class Information(Gtk.Box):
 
     # Clear page
     def clear_page(self):
-        self.open_dotfiles_content.set_visible(False)
+        self.folder_menu.set_visible(False)
+        self.config_setupscript.set_visible(False)
 
     # Show Error Message
     def _show_error_and_reset(self, message: str):
