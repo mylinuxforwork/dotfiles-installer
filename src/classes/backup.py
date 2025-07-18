@@ -36,6 +36,7 @@ class Backup(Gtk.Box):
         super().__init__(**kwargs)
         self.current_cancellable = None
         self.backup_group.bind_model(self.backup_store,self.create_row)
+        self.updating_switches = False
 
     # Init load backup
     def load(self):
@@ -131,4 +132,15 @@ class Backup(Gtk.Box):
         else:
             self.props.config_settings.load()
 
+    @Gtk.Template.Callback()
+    def on_select_all_switch_toggled(self, switch_widget, pspec):
+        if self.updating_switches:
+            return
 
+        is_active = switch_widget.get_active()
+
+        for i in range(self.backup_store.get_n_items()):
+            v = self.backup_store.get_item(i)
+            v.value = is_active
+
+        self.updating_switches = False # Reset the flag after updates are complete

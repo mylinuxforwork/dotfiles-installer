@@ -34,6 +34,7 @@ class Restore(Gtk.Box):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.restore_group.bind_model(self.restore_store,self.create_row)
+        self.updating_switches = False
 
     def load(self):
         printLog("Show restore page")
@@ -74,3 +75,16 @@ class Restore(Gtk.Box):
 
         with open(config_folder + self.props.id + '.json', 'w', encoding='utf-8') as f:
             json.dump(self.props.local_json, f, ensure_ascii=False, indent=4)
+
+    @Gtk.Template.Callback()
+    def on_select_all_switch_toggled(self, switch_widget, pspec):
+        if self.updating_switches:
+            return
+
+        is_active = switch_widget.get_active()
+
+        for i in range(self.restore_store.get_n_items()):
+            v = self.restore_store.get_item(i)
+            v.value = is_active
+
+        self.updating_switches = False # Reset the flag after updates are complete
