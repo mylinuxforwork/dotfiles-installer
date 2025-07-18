@@ -107,13 +107,6 @@
           </object>
         </child>
         <child>
-          <object class="AdwButtonRow" id="open_dotfiles_content">
-            <property name="title" translatable="yes">Open Download Folder</property>
-            <property name="visible">false</property>
-            <property name="action-name">win.show_dotfiles</property>
-          </object>
-        </child>
-        <child>
           <object class="AdwButtonRow" id="config_setupscript">
             <property name="title" translatable="yes">Run Setup Script</property>
             <property name="visible">false</property>
@@ -130,7 +123,7 @@
           <object class="GtkMenuButton" id="folder_menu">
             <property name="halign">3</property>
             <property name="valign">3</property>
-            <property name="icon-name">open-menu-symbolic</property>
+            <property name="icon-name">folder-symbolic</property>
             <property name="primary">true</property>
             <property name="visible">false</property>
           </object>
