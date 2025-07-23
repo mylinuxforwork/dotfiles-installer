@@ -5,7 +5,7 @@
   <project_license>GPL-3.0-or-later</project_license>
 
   <name>Dotfiles Installer</name>
-  <summary>Install Dotfiles easily, fast and secure. Or publish your own.</summary>
+  <summary>Install dotfiles fast and secure</summary>
   <description>
     <p>Take control of your dotfiles configurations with Dotfiles Installer, designed to make dotfile management seamless. You can install dotfiles easily, quickly, and securely with an intuitive installation wizard that guides you through every step. The app prioritizes your data safety, offering robust backup functionality and protection for your existing customizations during the installation process.</p>
     <p>Furthermore, the app allows you to publish your own dotfiles and offer others a straightforward, intuitive way to install your preferred setup.</p>
@@ -34,8 +34,8 @@
 
   <!-- Applications should set a brand color in both light and dark variants like so -->
   <branding>
-    <color type="primary" scheme_preference="light">#ff00ff</color>
-    <color type="primary" scheme_preference="dark">#993d3d</color>
+    <color type="primary" scheme_preference="light">#cbebff</color>
+    <color type="primary" scheme_preference="dark">#505c64</color>
   </branding>
 
   <screenshots>
@@ -58,6 +58,15 @@
   </screenshots>
 
   <releases>
+    <release version="0.9.2" date="2025-07-23">
+      <url type="details">https://mylinuxforwork.github.io/dotfiles-installer/changelog</url>
+      <description translate="no">
+        <p>Release 0.9.2</p>
+        <ul>
+          <li>Fixes for backup feature</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.9.1" date="2025-07-18">
       <url type="details">https://mylinuxforwork.github.io/dotfiles-installer/changelog</url>
       <description translate="no">
