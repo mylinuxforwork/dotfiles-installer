@@ -6,7 +6,7 @@
     <property name="title">Preferences</property>
 
     <child>
-      <object class="AdwPreferencesPage" id="waybar_page">
+      <object class="AdwPreferencesPage">
         <property name="title">Preferences</property>
         <property name="icon-name">settings-symbolic</property>
         <child>
@@ -16,12 +16,6 @@
             <child>
               <object class="AdwEntryRow" id="dotfiles_folder">
                 <property name="title">Dotfiles Folder</property>
-              </object>
-            </child>
-            <child>
-              <object class="AdwSwitchRow" id="symlink_enabled">
-                <property name="title">Generate Symbolic Links</property>
-                <property name="subtitle">Dotfiles will be installed by generating symbolic links from the dotfiles folder to the target directories. Disable it for testing purposes.</property>
               </object>
             </child>
             <child>
@@ -38,6 +32,26 @@
             </child>
           </object>
         </child>
+
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title">Debug Settings</property>
+            <property name="description">Define debug settings for the Dotfiles Installer.</property>
+            <child>
+              <object class="AdwSwitchRow" id="symlink_enabled">
+                <property name="title">Generate Symbolic Links</property>
+                <property name="subtitle">Dotfiles will be installed by generating symbolic links from the dotfiles folder to the target directories. Disable it for testing purposes.</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwSwitchRow" id="dev_log_file">
+                <property name="title">Write log file</property>
+                <property name="subtitle">This will create a log file ~/.var/app/com.ml4w.dotfilesinstaller/.dotfiles-installer.log for the Dotfiles Installer to debug the installation of dotfiles.</property>
+              </object>
+            </child>
+          </object>
+        </child>
+
       </object>
     </child>
   </template>

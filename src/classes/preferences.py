@@ -27,6 +27,7 @@ class Preferences(Adw.PreferencesDialog):
     symlink_enabled = Gtk.Template.Child()
     dev_enabled = Gtk.Template.Child()
     dev_sync_confirm = Gtk.Template.Child()
+    dev_log_file = Gtk.Template.Child()
     my_settings = Gio.Settings(schema_id=app_id)
 
     props = {}
@@ -37,12 +38,18 @@ class Preferences(Adw.PreferencesDialog):
 
         self.settings = Gio.Settings(schema_id="com.ml4w.dotfilesinstaller")
         self.dotfiles_folder.set_text(self.settings.get_string("my-dotfiles-folder"))
+
         self.symlink_enabled.set_active(self.settings.get_boolean("my-enable-symlinks"))
         self.symlink_enabled.connect("notify::active",self.change_symlink)
+
         self.dev_enabled.set_active(self.settings.get_boolean("my-enable-dev"))
         self.dev_enabled.connect("notify::active",self.change_dev)
+
         self.dev_sync_confirm.set_active(self.settings.get_boolean("my-dev-sync-confirm"))
         self.dev_sync_confirm.connect("notify::active",self.change_dev_sync_confirm)
+
+        self.dev_log_file.set_active(self.settings.get_boolean("my-dev-log-file"))
+        self.dev_log_file.connect("notify::active",self.change_dev_log_file)
 
     def change_symlink(self, switch, GParamBoolean):
         if switch.get_active():
@@ -55,6 +62,12 @@ class Preferences(Adw.PreferencesDialog):
             self.settings.set_boolean("my-dev-sync-confirm",True)
         else:
             self.settings.set_boolean("my-dev-sync-confirm",False)
+
+    def change_dev_log_file(self, switch, GParamBoolean):
+        if switch.get_active():
+            self.settings.set_boolean("my-dev-log-file",True)
+        else:
+            self.settings.set_boolean("my-dev-log-file",False)
 
     def change_dev(self, switch, GParamBoolean):
         if switch.get_active():

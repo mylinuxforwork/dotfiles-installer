@@ -22,7 +22,7 @@ from gi.repository import Gtk, Gdk, Gio, GLib, Adw
 app_id = "com.ml4w.dotfilesinstaller"
 app_name = "Dotfiles Installer"
 app_developer = "Stephan Raabe"
-app_version = "0.9.2"
+app_version = "0.9.3"
 app_homepage = "https://github.com/mylinuxforwork/dotfiles-installer"
 app_github_api_tags = "https://api.github.com/repos/mylinuxforwork/dotfiles-installer/tags"
 
@@ -36,6 +36,7 @@ dotfiles_folder_name = ".mydotfiles"
 # Folders
 home_folder = GLib.get_home_dir() + "/"
 config_folder = os.environ.get('XDG_CONFIG_HOME', os.path.expanduser('~/.config') + "/" + app_id) + "/"
+cache_folder = os.environ.get('XDG_CACHE_HOME', os.path.expanduser('~/.cache')) + "/"
 share_folder = os.environ.get('XDG_DATA_HOME', os.path.expanduser('~/.local/share') + "/" + app_id) + "/"
 download_folder = share_folder + download_folder_name + "/"
 original_folder = share_folder + original_folder_name + "/"
@@ -78,6 +79,10 @@ def get_dev_sync_confirm():
     my_settings = Gio.Settings(schema_id=app_id)
     return my_settings.get_boolean('my-dev-sync-confirm');
 
+def get_dev_log_file():
+    my_settings = Gio.Settings(schema_id=app_id)
+    return my_settings.get_boolean('my-dev-log-file');
+
 # Create folder structure
 def run_setup():
 
@@ -114,11 +119,14 @@ def printLog(msg,cat='m'):
             logging.warning(msg)
         case _:
             logging.info(msg)
-    try:
-        with open(home_folder + "/dotfiles-installer.log", 'a') as f:
-            f.write(msg + "\n")
-    except IOError as e:
-        print("Error writing to file " + home_folder + "/dotfiles-installer.log : " + e)
+
+    # Write to Logfile
+    if get_dev_log_file():
+        try:
+            with open(cache_folder + ".dotfiles-installer.log", 'a') as f:
+                f.write(msg + "\n")
+        except IOError as e:
+            print("Error writing to file " + cache_folder + ".dotfiles-installer.log : " + e)
 
 # Open Folder in file manager
 def open_folder(uri):

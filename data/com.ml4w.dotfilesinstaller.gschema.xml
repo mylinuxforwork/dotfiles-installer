@@ -13,5 +13,8 @@
 	  <key name="my-dev-sync-confirm" type="b">
 	    <default>true</default>
 	  </key>
+	  <key name="my-dev-log-file" type="b">
+	    <default>false</default>
+	  </key>
 	</schema>
 </schemalist>
