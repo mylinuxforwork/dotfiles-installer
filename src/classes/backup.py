@@ -86,7 +86,7 @@ class Backup(Gtk.Box):
                     if os.path.exists(self.props.dotfiles_folder + "/.config/" + f):
                         item = BackupItem()
                         item.file = f
-                        item.source = self.props.dotfiles_folder + "/.config/"
+                        item.source = self.props.dotfiles_folder + "/.config"
                         item.target = self.props.backup_folder + "/" + self.time_stamp + "/.config"
                         if "backupexclude" in self.props.local_json and f in self.props.local_json["backupexclude"]:
                             item.value = False
@@ -94,7 +94,7 @@ class Backup(Gtk.Box):
                 else:
                     item = BackupItem()
                     item.file = f
-                    item.source = home_folder + ".config/"
+                    item.source = home_folder + ".config"
                     item.target = self.props.backup_folder + "/" + self.time_stamp + "/.config"
                     if "backupexclude" in self.props.local_json and f in self.props.local_json["backupexclude"]:
                         item.value = False
@@ -121,10 +121,20 @@ class Backup(Gtk.Box):
             if not(v.value):
                 self.props.local_json["backupexclude"].append(v.file)
             if os.path.isfile(source):
-                shutil.copy(source, v.target)
-            elif os.path.isdir(source):
-                shutil.copytree(source, v.target + "/" + v.file, dirs_exist_ok=True)
+                try:
+                    shutil.copy(source, v.target)
+                    printLog("Backup File: " + source + " -> " + v.target)
+                except Exception as e:
+                    printLog("ERROR File backup: " + e)
 
+            elif os.path.isdir(source):
+                try:
+                    shutil.copytree(source, v.target + "/" + v.file, dirs_exist_ok=True)
+                    printLog("Backup folder: " + source + " -> " + v.target + "/" + v.file)
+                except Exception as e:
+                    printLog("ERROR Folder backup: " + e)
+
+        # Writing Backup excludes into config file
         with open(config_folder + self.props.id + '.json', 'w', encoding='utf-8') as f:
             json.dump(self.props.local_json, f, ensure_ascii=False, indent=4)
 

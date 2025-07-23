@@ -38,6 +38,7 @@
         <child>
           <object class="GtkSwitch" id="select_all_switch">
             <property name="valign">center</property>
+            <property name="active">true</property>
             <signal name="notify::active" handler="on_select_all_switch_toggled"/>
           </object>
         </child>
