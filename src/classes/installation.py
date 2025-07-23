@@ -70,10 +70,8 @@ class Installation(Gtk.Box):
         if not os.path.exists(self.props.dotfiles_folder):
             pathlib.Path(self.props.dotfiles_folder).mkdir(parents=True, exist_ok=True)
 
-        if not self.activate:
-            # Copy prepared folder to the dotfiles folder
-            shutil.copytree(self.props.prepared_folder, self.props.dotfiles_folder, dirs_exist_ok=True)
-            printLog("Installing dotfiles " + self.props.prepared_folder + " to " + self.props.dotfiles_folder)
+        shutil.copytree(self.props.prepared_folder, self.props.dotfiles_folder, dirs_exist_ok=True)
+        printLog("Installing dotfiles " + self.props.prepared_folder + " to " + self.props.dotfiles_folder)
 
         if get_symlink_enabled() and self.activate_now.get_active():
             # Write dotfiles config file to dotfiles folder
