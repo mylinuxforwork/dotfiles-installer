@@ -114,6 +114,11 @@ def printLog(msg,cat='m'):
             logging.warning(msg)
         case _:
             logging.info(msg)
+    try:
+        with open(home_folder + "/dotfiles-installer.log", 'a') as f:
+            f.write(msg + "\n")
+    except IOError as e:
+        print("Error writing to file " + home_folder + "/dotfiles-installer.log : " + e)
 
 # Open Folder in file manager
 def open_folder(uri):
