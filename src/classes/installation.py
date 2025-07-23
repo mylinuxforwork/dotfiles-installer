@@ -76,6 +76,13 @@ class Installation(Gtk.Box):
             printLog("Installing dotfiles " + self.props.prepared_folder + " to " + self.props.dotfiles_folder)
 
         if get_symlink_enabled() and self.activate_now.get_active():
+            # Write dotfiles config file to dotfiles folder
+            dotfiles_json = {}
+            dotfiles_json["active"] = self.props.id
+            with open(get_installed_dotfiles_folder() + 'dotfiles.json', 'w', encoding='utf-8') as f:
+                json.dump(dotfiles_json, f, ensure_ascii=False, indent=4)
+            printLog(self.props.id + " set as active dotfiles")
+
             # Create symlinks for all files and folders except for .dotinst files
             printLog("Creating symlinks...")
             for f in os.listdir(self.props.dotfiles_folder):
@@ -84,12 +91,6 @@ class Installation(Gtk.Box):
             for f in os.listdir(self.props.dotfiles_folder + "/.config"):
                 if ".dotinst" not in f:
                     self.createSymlink(self.props.dotfiles_folder + "/.config/" + f, home_folder + ".config/" + f)
-
-            # Write dotfiles config file to dotfiles folder
-            dotfiles_json = {}
-            dotfiles_json["active"] = self.props.id
-            with open(get_installed_dotfiles_folder() + 'dotfiles.json', 'w', encoding='utf-8') as f:
-                json.dump(dotfiles_json, f, ensure_ascii=False, indent=4)
 
         else:
             printLog("Creating of symlinks disabled in preferences. Installation has been skipped.")
