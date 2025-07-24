@@ -125,14 +125,14 @@ class Backup(Gtk.Box):
                     shutil.copy(source, v.target)
                     printLog("Backup File: " + source + " -> " + v.target)
                 except Exception as e:
-                    printLog("ERROR File backup: " + e)
+                    printLog("ERROR File backup: " + str(e))
 
             elif os.path.isdir(source):
                 try:
                     shutil.copytree(source, v.target + "/" + v.file, dirs_exist_ok=True)
                     printLog("Backup folder: " + source + " -> " + v.target + "/" + v.file)
                 except Exception as e:
-                    printLog("ERROR Folder backup: " + e)
+                    printLog("ERROR Folder backup: " + str(e))
 
         # Writing Backup excludes into config file
         with open(config_folder + self.props.id + '.json', 'w', encoding='utf-8') as f:

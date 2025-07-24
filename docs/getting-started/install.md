@@ -1,7 +1,7 @@
 # Installation
 
 > [!IMPORTANT]
-> The Dotfiles Installer requires a Desktop Environment (Gnome, KDE Plasma, etc.) or a Window Manager (Hyprland, Qtile, etc.). On a minimal system, please install e.g. Hyprland and a terminal first and then execute the installation command in your terminal.
+> The Dotfiles Installer requires a Desktop Environment (Gnome, KDE Plasma, etc.) or a Window Manager (Hyprland, Qtile, etc.). On a minimal system, please install e.g. Hyprland, Qtile, etc. and a terminal (e.g. alacritty, kitty, etc.) first.
 
 Install the Dotfiles Installer App from Flathub:
 
@@ -9,14 +9,8 @@ Install the Dotfiles Installer App from Flathub:
     <img width='240' alt='Get it on Flathub' src='https://flathub.org/api/badge?locale=en'/>
 </a>
 
-## Update
-
-The Dotfiles Installer will show a banner in case of an available update:
-
-![image](https://github.com/user-attachments/assets/e1f3c0b1-6993-4fca-8d40-ed8bc36a213a)
-
-In that case please run:
+Run the Dotfiles Installer with
 
 ```sh
-flatpak update com.ml4w.dotfilesinstaller
+flatpak run com.ml4w.dotfilesinstaller
 ```

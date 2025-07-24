@@ -1,5 +1,17 @@
 # Changelog
 
+## Version 0.9.4
+
+- Fixes for backup feature
+
+## Version 0.9.3
+
+- Write optional log file for debug purposes
+
+## Version 0.9.2
+
+- Fixes for backup feature
+
 ## Version 0.9.1
 
 - Access to all installation folders after got clone

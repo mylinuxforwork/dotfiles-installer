@@ -394,7 +394,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 
     # Open the homepage with update information
     def on_update_app(self, widget, _):
-        Gtk.UriLauncher(uri=app_homepage).launch()
+        Gtk.UriLauncher(uri="https://mylinuxforwork.github.io/dotfiles-installer/getting-started/update").launch()
         self.update_banner.set_revealed(False)
 
 # --------------------------------------------
@@ -407,7 +407,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
             application_icon=app_id,
             developer_name=app_developer,
             version=app_version,
-            website="https://github.com/mylinuxforwork/dotfiles-installer",
+            website="https://mylinuxforwork.github.io/dotfiles-installer",
             issue_url="https://github.com/mylinuxforwork/dotfiles-installer/issues",
             support_url="https://github.com/mylinuxforwork/dotfiles-installer/issues",
             copyright='© 2025 ' + app_developer,
