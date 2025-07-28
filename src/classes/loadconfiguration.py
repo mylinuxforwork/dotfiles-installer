@@ -252,8 +252,8 @@ class LoadConfiguration(Gtk.Box):
                 item.source = dot_json["source"]
                 item.subfolder = dot_json["subfolder"]
 
-                if os.path.exists(get_installed_dotfiles_folder() + "dotfiles.json"):
-                    installed_json = json.load(open(get_installed_dotfiles_folder() + "/dotfiles.json"))
+                if os.path.exists(config_folder + dotfiles_json_name):
+                    installed_json = json.load(open(config_folder + dotfiles_json_name))
                     if installed_json["active"] == dot_json["id"]:
                         item.active = True
 

@@ -15,7 +15,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import os, pathlib, logging
+import os, shutil, pathlib, logging
 from gi.repository import Gtk, Gdk, Gio, GLib, Adw
 
 # App Id
@@ -32,6 +32,7 @@ original_folder_name = "original"
 prepared_folder_name = "prepared"
 backup_folder_name = "backup"
 dotfiles_folder_name = ".mydotfiles"
+dotfiles_json_name = "dotfiles.json"
 
 # Folders
 home_folder = GLib.get_home_dir() + "/"
@@ -111,6 +112,12 @@ def run_setup():
     if not os.path.exists(config_folder):
         pathlib.Path(config_folder).mkdir(parents=True, exist_ok=True)
         printLog(config_folder + " created (if not exists)")
+
+    # Update from older versions
+    # Move dotfiles.json
+    if os.path.exists(get_installed_dotfiles_folder() + dotfiles_json_name):
+        shutil.move(get_installed_dotfiles_folder() + dotfiles_json_name, config_folder)
+        printLog("Legacy " + dotfiles_json_name + " found. Moved to " + config_folder)
 
 # Print log to the terminal
 def printLog(msg,cat='m'):

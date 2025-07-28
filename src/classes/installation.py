@@ -77,7 +77,7 @@ class Installation(Gtk.Box):
             # Write dotfiles config file to dotfiles folder
             dotfiles_json = {}
             dotfiles_json["active"] = self.props.id
-            with open(get_installed_dotfiles_folder() + 'dotfiles.json', 'w', encoding='utf-8') as f:
+            with open(config_folder + dotfiles_json_name, 'w', encoding='utf-8') as f:
                 json.dump(dotfiles_json, f, ensure_ascii=False, indent=4)
             printLog(self.props.id + " set as active dotfiles")
 
