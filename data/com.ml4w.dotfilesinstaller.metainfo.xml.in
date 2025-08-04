@@ -58,12 +58,12 @@
   </screenshots>
 
   <releases>
-    <release version="0.9.4" date="2025-07-24">
+    <release version="0.9.5" date="2025-07-24">
       <url type="details">https://mylinuxforwork.github.io/dotfiles-installer/changelog</url>
       <description translate="no">
-        <p>Release 0.9.4</p>
+        <p>Release 0.9.5</p>
         <ul>
-          <li>Fixes for backup feature</li>
+          <li>Configuration updates</li>
         </ul>
       </description>
     </release>

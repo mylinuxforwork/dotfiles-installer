@@ -331,7 +331,6 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.config_configuration.entry_dotinst.set_text(local_dotinst)
         self.config_configuration.load_configuration(widget)
 
-
 # --------------------------------------------
 # Menu Actions
 # --------------------------------------------
