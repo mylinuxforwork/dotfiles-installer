@@ -2,6 +2,10 @@
 
 ## Version 0.9.4
 
+- Configuration updates
+
+## Version 0.9.4
+
 - Fixes for backup feature
 
 ## Version 0.9.3
