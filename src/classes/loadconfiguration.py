@@ -76,7 +76,7 @@ class LoadConfiguration(Gtk.Box):
         self._check_input_validity()
 
     def _check_input_validity(self):
-        entry_source =  self.entry_dotinst.get_text().strip()
+        entry_source = self.entry_dotinst.get_text().strip()
         is_entry_source = bool(entry_source)
 
         # Apply/remove 'error' CSS class based on validation
@@ -96,7 +96,24 @@ class LoadConfiguration(Gtk.Box):
             row.set_icon_name("help-website-symbolic")
 
         row.set_title(item.name)
-        row.set_subtitle(item.id)
+        if not item.version == "":
+            row.set_subtitle(item.id + " - Version " + item.version)
+        else:
+            row.set_subtitle(item.id)
+
+        main_menu = Gio.Menu.new()
+        file_section = Gio.Menu.new()
+        if not item.homepage == "":
+            file_section.append(label='Open Homepage', detailed_action='win.open_homepage::' + item.homepage)
+        if ".git" in item.source:
+            file_section.append(label='Check for Updates', detailed_action='win.check_for_update::' + item.dotinst)
+        main_menu.append_section(None, file_section)
+
+        menu_button = Gtk.MenuButton.new()
+        menu_button.set_icon_name("info-outline-symbolic")
+        menu_button.set_menu_model(main_menu)
+        menu_button.set_valign(3)
+        row.add_suffix(menu_button)
 
         if ".git" in item.source and item.dotinst:
             btn = Gtk.Button()
@@ -142,7 +159,7 @@ class LoadConfiguration(Gtk.Box):
                 main_menu.append_section(None, dev_section)
 
             menu_button = Gtk.MenuButton.new()
-            menu_button.set_label("Dev")
+            menu_button.set_icon_name("code-symbolic")
             menu_button.set_menu_model(main_menu)
             menu_button.set_valign(3)
             row.add_suffix(menu_button)
@@ -243,9 +260,16 @@ class LoadConfiguration(Gtk.Box):
 
                 if "type" in dot_json and "dotinst" in dot_json and dot_json["type"] == "remote":
                     item.dotinst = dot_json["dotinst"]
+                    print(item.dotinst)
 
                 if "settings" in dot_json:
                     item.settings = True
+
+                if "version" in dot_json:
+                    item.version = dot_json["version"]
+
+                if "homepage" in dot_json:
+                    item.homepage = dot_json["homepage"]
 
                 item.name = dot_json["name"]
                 item.id = dot_json["id"]

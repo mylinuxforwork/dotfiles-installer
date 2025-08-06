@@ -23,7 +23,9 @@ action_icons = [
     join_paths(action_dir, 'org.gnome.Settings-symbolic.svg'),
     join_paths(action_dir, 'update-symbolic.svg'),
     join_paths(action_dir, 'arrow3-left-symbolic.svg'),
-    join_paths(action_dir, 'paper-symbolic.svg')
+    join_paths(action_dir, 'paper-symbolic.svg'),
+    join_paths(action_dir, 'code-symbolic.svg'),
+    join_paths(action_dir, 'info-outline-symbolic.svg')
 ]
 
 install_data(
