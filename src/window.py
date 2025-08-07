@@ -51,16 +51,13 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     config_configuration = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
     btn_add_project = Gtk.Template.Child()
+    toast_overlay = Gtk.Template.Child()
     update_banner = Gtk.Template.Child()
     progress_bar = Gtk.Template.Child()
     install_mode = "install"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
-        config_name = Gtk.Template.Child()
-        
-        self.toast_overlay = Adw.ToastOverlay()
 
         # Load props to stack pages
         self.config_configuration.props = self
@@ -349,7 +346,10 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         Gtk.UriLauncher(uri=p).launch()
 
     def on_check_for_update(self, widget, param):
-        url = param.get_string()
+        p = param.get_string()
+        url = p.split(";")[0]
+        version = p.split(";")[1]
+        printLog("Current version:" + version)
 
         try:
             # Step 1: Create a Request object (optional but good practice for headers)
@@ -366,13 +366,21 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 
                     # Step 5: Parse the JSON string into a Python object
                     data = json.loads(content)
+                    if "version" in data:
+                        printLog("Remote version:" + data["version"])
 
-                    printLog("Remote version:" + data["version"])
-
-                    toast = Adw.Toast.new("A new version is available.")
-                    toast.set_button_label("Update Now")
-                    toast.set_timeout(10)
-                    self.toast_overlay.add_toast(toast)
+                        if not version == "" and not data["version"] == "" and not version == data["version"]:
+                            toast = Adw.Toast.new("A new version is available.")
+                            toast.set_button_label("Update Now")
+                            toast.connect("button-clicked",self.config_configuration.update_dotfiles,url)
+                            toast.set_timeout(5)
+                            self.toast_overlay.add_toast(toast)
+                        else:
+                            toast = Adw.Toast.new("No update available or found.")
+                            toast.set_timeout(5)
+                            self.toast_overlay.add_toast(toast)
+                    else:
+                        printLog("Version not found in " + url)
                 else:
                     print(f"Error: Received status code {response.getcode()}")
                     return None

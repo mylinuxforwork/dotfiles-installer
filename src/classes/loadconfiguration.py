@@ -106,7 +106,7 @@ class LoadConfiguration(Gtk.Box):
         if not item.homepage == "":
             file_section.append(label='Open Homepage', detailed_action='win.open_homepage::' + item.homepage)
         if ".git" in item.source:
-            file_section.append(label='Check for Updates', detailed_action='win.check_for_update::' + item.dotinst)
+            file_section.append(label='Check for Updates', detailed_action='win.check_for_update::' + item.dotinst + ";" + item.version)
         main_menu.append_section(None, file_section)
 
         menu_button = Gtk.MenuButton.new()

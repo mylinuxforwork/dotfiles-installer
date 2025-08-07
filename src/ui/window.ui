@@ -7,7 +7,9 @@
     <property name="default-width">800</property>
     <property name="default-height">600</property>
     <property name="content">
-      <object class="AdwToolbarView">
+      <object class="AdwToastOverlay" id="toast_overlay">
+        <property name="child">
+          <object class="AdwToolbarView">
         <child type="top">
           <object class="AdwHeaderBar">
             <child type="start">
@@ -240,6 +242,8 @@
 
         </property>
       </object>
+          </property>
+        </object>
     </property>
   </template>
   <menu id="primary_menu">
