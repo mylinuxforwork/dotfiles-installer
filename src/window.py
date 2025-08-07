@@ -16,6 +16,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import gi, sys, json, pathlib, os, shutil, threading, subprocess, time
+import urllib.request
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Adw, Gtk
@@ -50,15 +51,13 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     config_configuration = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
     btn_add_project = Gtk.Template.Child()
+    toast_overlay = Gtk.Template.Child()
     update_banner = Gtk.Template.Child()
     progress_bar = Gtk.Template.Child()
     install_mode = "install"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
-        config_name = Gtk.Template.Child()
-        
 
         # Load props to stack pages
         self.config_configuration.props = self
@@ -143,6 +142,13 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.dev_start_migration_action.connect("activate", self.on_start_migration)
         self.add_action(self.dev_start_migration_action) # Add the action to the window
 
+        self.open_homepage_action = Gio.SimpleAction.new("open_homepage", GLib.VariantType.new('s'))
+        self.open_homepage_action.connect("activate", self.on_open_homepage)
+        self.add_action(self.open_homepage_action) # Add the action to the window
+
+        self.check_for_uodate_action = Gio.SimpleAction.new("check_for_update", GLib.VariantType.new('s'))
+        self.check_for_uodate_action.connect("activate", self.on_check_for_update)
+        self.add_action(self.check_for_uodate_action) # Add the action to the window
 
     @Gtk.Template.Callback()
     def on_wizzard_back_action(self, widget):
@@ -330,6 +336,67 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         local_dotinst = param.get_string().replace(home_folder,"")
         self.config_configuration.entry_dotinst.set_text(local_dotinst)
         self.config_configuration.load_configuration(widget)
+
+# --------------------------------------------
+# Info Menu Actions
+# --------------------------------------------
+
+    def on_open_homepage(self, widget, param):
+        p = param.get_string()
+        Gtk.UriLauncher(uri=p).launch()
+
+    def on_check_for_update(self, widget, param):
+        p = param.get_string()
+        url = p.split(";")[0]
+        version = p.split(";")[1]
+        printLog("Current version:" + version)
+
+        try:
+            # Step 1: Create a Request object (optional but good practice for headers)
+            headers = {'User-Agent': 'Mozilla/5.0'}  # Some servers require a user-agent
+            req = urllib.request.Request(url, headers=headers)
+
+            # Step 2: Open the URL and read the response
+            with urllib.request.urlopen(req) as response:
+                # Step 3: Check for a successful status code
+                if response.getcode() == 200:
+                    # Step 4: Read the content and decode it
+                    # The content is a bytes object, so we need to decode it to a string
+                    content = response.read().decode('utf-8')
+
+                    # Step 5: Parse the JSON string into a Python object
+                    data = json.loads(content)
+                    if "version" in data:
+                        printLog("Remote version:" + data["version"])
+
+                        if not version == "" and not data["version"] == "" and not version == data["version"]:
+                            toast = Adw.Toast.new("A new version is available.")
+                            toast.set_button_label("Update Now")
+                            toast.connect("button-clicked",self.config_configuration.update_dotfiles,url)
+                            toast.set_timeout(5)
+                            self.toast_overlay.add_toast(toast)
+                        else:
+                            toast = Adw.Toast.new("No update available or found.")
+                            toast.set_timeout(5)
+                            self.toast_overlay.add_toast(toast)
+                    else:
+                        printLog("Version not found in " + url)
+                else:
+                    print(f"Error: Received status code {response.getcode()}")
+                    return None
+
+        except urllib.error.URLError as e:
+            # This handles network-related errors like connection issues or invalid URLs
+            print(f"URL Error: {e.reason}")
+            return None
+        except urllib.error.HTTPError as e:
+            # This handles HTTP errors like 404, 500, etc.
+            print(f"HTTP Error: {e.code} - {e.reason}")
+            return None
+        except json.JSONDecodeError as e:
+            # This handles errors if the content is not valid JSON
+            print(f"JSON Decode Error: {e}")
+            return None
 
 # --------------------------------------------
 # Menu Actions

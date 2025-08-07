@@ -26,7 +26,12 @@ class DotfilesItem(GObject.GObject):
     dotinst = GObject.property(type = str)
     settings = GObject.property(type = bool,default=False)
     active = GObject.property(type = bool,default=False)
+    version = GObject.property(type = str)
+    homepage = GObject.property(type = str)
 
     def __init__(self):
         GObject.GObject.__init__(self)
         self.dotinst = ""
+        self.version = ""
+        self.homepage = ""
+
