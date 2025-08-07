@@ -7,7 +7,7 @@
     <property name="spacing">10</property>
     <child>
       <object class="GtkLabel">
-        <property name="label">Backup your configuration</property>
+        <property name="label">Back up your Configuration</property>
         <style>
           <class name="title-1"/>
         </style>
@@ -16,7 +16,7 @@
     <!-- Description -->
     <child>
       <object class="GtkLabel">
-        <property name="label">A backup of the existing configuration is strongly recommended. The following files and folders can be backed up.</property>
+        <property name="label">It is strongly recommended that you create a backup copy of the existing configuration. The following files and folders can be backed up.</property>
         <property name="margin-bottom">2</property>
         <property name="justify">2</property>
         <property name="wrap">1</property>

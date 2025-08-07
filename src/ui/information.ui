@@ -118,7 +118,7 @@
     <child>
       <object class="AdwPreferencesGroup">
         <property name="title" translatable="yes">Dotfiles</property>
-        <property name="description" translatable="yes">Information about the sources of the dotfiles.</property>
+        <property name="description" translatable="yes">Information about the source of the dotfiles.</property>
         <child type="header-suffix">
           <object class="GtkMenuButton" id="folder_menu">
             <property name="halign">3</property>

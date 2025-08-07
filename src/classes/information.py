@@ -194,8 +194,8 @@ class Information(Gtk.Box):
     # Show setup dialog
     def create_runsetup_dialog(self,*_args):
         self.dialog = Adw.AlertDialog(
-            heading="Run Setup?",
-            body="The dotfiles include a setup script to install or update required dependencies. You can copy the path and execute it in your preferred terminal",
+            heading="Setup script included",
+            body="The dotfiles contain a setup script for installing or updating the necessary dependencies. You can copy the path and run it in your preferred terminal.",
             close_response="cancel",
         )
 
@@ -227,7 +227,7 @@ class Information(Gtk.Box):
         command_box.append(copy_button)
         self.dialog.set_extra_child(command_box)
 
-        self.dialog.add_response("open", "Open Setup Script")
+        self.dialog.add_response("open", "View setup script")
         self.dialog.set_default_response("open")
 
         self.dialog.add_response("cancel", "Cancel")
