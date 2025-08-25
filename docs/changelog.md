@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.9.6
+
+- User interface updates
+- Check for available updates for remote sources from the load confifiguration screen
+
 ## Version 0.9.5
 
 - Configuration updates

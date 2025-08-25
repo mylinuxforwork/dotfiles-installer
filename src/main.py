@@ -18,7 +18,7 @@
 import gi, sys
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import GObject, Gtk, Gio, Adw
+from gi.repository import GObject, Gtk, Gio, Adw, GLib
 from .window import DotfilesInstallerWindow
 from ._settings import *
 
