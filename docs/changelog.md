@@ -1,5 +1,7 @@
 # Changelog
 
+## Version 0.9.7
+
 ## Version 0.9.6
 
 - User interface updates

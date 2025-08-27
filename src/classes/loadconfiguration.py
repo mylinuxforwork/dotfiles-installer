@@ -131,7 +131,7 @@ class LoadConfiguration(Gtk.Box):
         btn = Gtk.Button()
         btn.set_valign(3)
         btn.set_label("Activate")
-        btn.connect("clicked",self.install_dotfiles,item.id)
+        btn.connect("clicked",self.activate_dotfiles,item.id)
         row.add_suffix(btn)
 
         if get_dev_enabled():
@@ -229,7 +229,7 @@ class LoadConfiguration(Gtk.Box):
         self.load_configuration(widget)
 
     # Install selected dotfiles
-    def install_dotfiles(self,widget,id):
+    def activate_dotfiles(self,widget,id):
         self.props.config_json = json.load(open(get_installed_dotfiles_folder() + id + "/config.dotinst"))
         self.props.id = id
         self.props.wizzard_back_btn.set_visible(True)
