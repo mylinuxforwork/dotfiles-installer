@@ -87,16 +87,6 @@
           <object class="GtkBox">
             <property name="orientation">1</property>
 
-            <!-- Messages -->
-            <child>
-                <object class="AdwBanner" id="update_banner">
-                    <property name="button-label" translatable="true">Update now</property>
-                    <property name="title">An update for the Dotfiles Installer is available!</property>
-                    <property name="revealed">false</property>
-                    <property name="action-name">win.update_app</property>
-                </object>
-            </child>
-
             <!-- Stack -->
             <child>
               <object class="GtkStack" id="wizzard_stack">

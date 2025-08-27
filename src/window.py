@@ -52,7 +52,6 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     spinner = Gtk.Template.Child()
     btn_add_project = Gtk.Template.Child()
     toast_overlay = Gtk.Template.Child()
-    update_banner = Gtk.Template.Child()
     progress_bar = Gtk.Template.Child()
     install_mode = "install"
 
@@ -77,7 +76,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.settings = Gio.Settings(schema_id=app_id)
 
         self.create_actions()
-        self.check_for_update()
+        self.check_for_update(True)
         self.progress_bar.set_visible(False)
 
         if get_dev_enabled():
@@ -436,32 +435,40 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 
     # Check for Updates menu action
     def on_check_updates_action(self, widget, _):
-        self.check_for_update()
+        self.check_for_update(False)
 
     # Start Update Thread
-    def check_for_update(self):
+    def check_for_update(self,init):
         printLog("Checking for updates...")
-        thread = threading.Thread(target=self.check_latest_version)
+        thread = threading.Thread(target=self.check_latest_version, args=(init,))
         thread.daemon = True
         thread.start()
 
     # Check Latest Tag
-    def check_latest_version(self):
+    def check_latest_version(self,args):
         try:
             response = urlopen(app_github_api_tags)
             tags = json.load(response)
             if not tags[0]["name"] == app_version:
                 printLog("Update is available")
-                self.update_banner.set_revealed(True)
+                toast = Adw.Toast.new("A new version of the Dotfiles Installer is available.")
+                toast.set_button_label("Update Now")
+                toast.connect("button-clicked",self.on_update_app)
+                toast.set_timeout(5)
+                self.toast_overlay.add_toast(toast)
             else:
-                printLog("No update available")
+                if not args:
+                    printLog("No Update available")
+                    toast = Adw.Toast.new("You're using already the latest version of the Dotfiles Installer.")
+                    toast.set_timeout(5)
+                    self.toast_overlay.add_toast(toast)
+
         except:
             printLog("Check for updates failed","e")
 
     # Open the homepage with update information
-    def on_update_app(self, widget, _):
+    def on_update_app(self, widget):
         Gtk.UriLauncher(uri="https://mylinuxforwork.github.io/dotfiles-installer/getting-started/update").launch()
-        self.update_banner.set_revealed(False)
 
 # --------------------------------------------
 # About Dialog
