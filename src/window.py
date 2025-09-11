@@ -50,9 +50,10 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     config_finish = Gtk.Template.Child()
     config_configuration = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
-    btn_add_project = Gtk.Template.Child()
     toast_overlay = Gtk.Template.Child()
     progress_bar = Gtk.Template.Child()
+    btn_dev_menu = Gtk.Template.Child()
+
     install_mode = "install"
 
     def __init__(self, **kwargs):
@@ -80,7 +81,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.progress_bar.set_visible(False)
 
         if get_dev_enabled():
-            self.btn_add_project.set_visible(True)
+            self.btn_dev_menu.set_visible(True)
 
         # self.config_finish.load()
         # self.wizzard_stack.set_visible_child_name("page_finish")
@@ -100,6 +101,8 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.create_action("dev_push_to_repo",self.on_dev_push_to_repo)
         self.create_action("dev_pull_from_repo",self.on_dev_pull_from_repo)
         self.create_action("run_setup_script",self.on_run_setup_script)
+        self.create_action("create_project",self.on_create_project)
+        self.create_action("load_project",self.on_load_project)
 
         self.open_dotfiles_action = Gio.SimpleAction.new("dev_open_dotfiles_folder", GLib.VariantType.new('s'))
         self.open_dotfiles_action.connect("activate", self.on_dev_open_dotfiles_folder)
@@ -168,6 +171,8 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.updateProgressBar(0.0)
         self.install_mode = "install"
         self.progress_bar.set_visible(False)
+        if get_dev_enabled():
+            self.btn_dev_menu.set_visible(True)
 
     @Gtk.Template.Callback()
     def on_wizzard_next_action(self, widget):
@@ -176,7 +181,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
                 if self.config_information.show_replacement == False:
                     self.config_information.get_source()
                 else:
-                    self.config_backup.load()
+                    self.config_information.get_next()
             case "page_backup":
                 self.config_backup.create_backup()
             case "page_settings":
@@ -194,9 +199,49 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
             case "page_finish":
                 self.reset_app()
 
-    @Gtk.Template.Callback()
-    def on_add_project_action(self, widget):
+    def on_create_project(self, widget, _):
         self.add_project.present(self)
+
+    def on_load_project(self, widget, _):
+        self.file_chooser = Gtk.FileChooserNative.new(
+            title="Open .dotinst File",
+            parent=None,
+            action=Gtk.FileChooserAction.OPEN,
+            accept_label="Open",
+            cancel_label="Cancel"
+        )
+
+        # Add a file filter for .dotinst extension
+        file_filter = Gtk.FileFilter()
+        file_filter.set_name(".dotinst Files")
+        file_filter.add_pattern("*.dotinst")
+        self.file_chooser.add_filter(file_filter)
+
+        # Add an "All Files" filter
+        all_files_filter = Gtk.FileFilter()
+        all_files_filter.set_name("All Files")
+        all_files_filter.add_pattern("*")
+        self.file_chooser.add_filter(all_files_filter)
+
+        self.file_chooser.connect("response", self.on_dialog_response)
+        self.file_chooser.show()
+
+    def on_dialog_response(self, dialog, response):
+        if response == Gtk.ResponseType.ACCEPT:
+            # Get the GFile object
+            file = dialog.get_file()
+            if file:
+                # Get the path from the GFile object
+                file_path = file.get_path()
+                if file_path:
+                    print(f"Selected file path: {file_path}")
+                    self.config_configuration.entry_dotinst.set_text(file_path)
+                    self.config_configuration.load_configuration(None)
+                else:
+                    print("Could not get local path for selected file.")
+
+        dialog.destroy()
+        self.file_chooser = None
 
     def updateProgressBar(self,v):
         self.progress_bar.set_fraction(v)
@@ -332,7 +377,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
 
     def on_dev_reinstall_dotfiles(self, widget, param):
         self.install_mode = "update"
-        local_dotinst = param.get_string().replace(home_folder,"")
+        local_dotinst = param.get_string()
         self.config_configuration.entry_dotinst.set_text(local_dotinst)
         self.config_configuration.load_configuration(widget)
 

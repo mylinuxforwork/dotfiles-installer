@@ -37,6 +37,7 @@ class Installation(Gtk.Box):
     def __init__(self, **kwargs):
         self.activate_now.connect("notify::active",self.change_activate_now)
 
+
     def load(self):
         printLog("Show installation page")
         if self.props.install_mode == "update":
@@ -44,6 +45,7 @@ class Installation(Gtk.Box):
             self.page_subtitle.set_label("The dotfiles are now prepared for the update.")
 
         self.activate_now.set_active(True)
+        self.props.btn_dev_menu.set_visible(False)
 
         if not get_symlink_enabled():
             self.activate_now.set_active(False)

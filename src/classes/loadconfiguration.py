@@ -113,7 +113,7 @@ class LoadConfiguration(Gtk.Box):
         menu_button.set_icon_name("info-outline-symbolic")
         menu_button.set_menu_model(main_menu)
         menu_button.set_valign(3)
-        row.add_suffix(menu_button)
+        row.add_prefix(menu_button)
 
         if ".git" in item.source and item.dotinst:
             btn = Gtk.Button()
@@ -125,14 +125,10 @@ class LoadConfiguration(Gtk.Box):
             btn = Gtk.Button()
             btn.set_valign(3)
             btn.set_icon_name("arrow3-left-symbolic")
+            btn.get_style_context().add_class("suggested-action")
+
             btn.connect("clicked",self.sync_dotfiles, item.id + ";" + item.source + "/" + item.subfolder + ";" + item.dotinst)
             row.add_suffix(btn)
-
-        btn = Gtk.Button()
-        btn.set_valign(3)
-        btn.set_label("Activate")
-        btn.connect("clicked",self.activate_dotfiles,item.id)
-        row.add_suffix(btn)
 
         if get_dev_enabled():
             main_menu = Gio.Menu.new()
@@ -159,10 +155,18 @@ class LoadConfiguration(Gtk.Box):
                 main_menu.append_section(None, dev_section)
 
             menu_button = Gtk.MenuButton.new()
-            menu_button.set_icon_name("code-symbolic")
+            menu_button.set_label("Dev")
+            menu_button.get_style_context().add_class("suggested-action")
+            # menu_button.set_icon_name("code-symbolic")
             menu_button.set_menu_model(main_menu)
             menu_button.set_valign(3)
             row.add_suffix(menu_button)
+
+        btn = Gtk.Button()
+        btn.set_valign(3)
+        btn.set_label("Activate")
+        btn.connect("clicked",self.activate_dotfiles,item.id)
+        row.add_suffix(btn)
 
         if item.settings:
             del_btn = Gtk.Button()
@@ -251,16 +255,15 @@ class LoadConfiguration(Gtk.Box):
                 printLog(dot_json["id"] + " installed")
                 item = DotfilesItem()
                 if "type" in dot_json and "dotinst" in dot_json and dot_json["type"] == "local":
-                    if os.path.exists(home_folder + dot_json["dotinst"]):
-                        printLog("Using local dotinst file: " + home_folder + dot_json["dotinst"])
-                        item.dotinst = home_folder + dot_json["dotinst"]
-                        dot_json = json.load(open(home_folder + dot_json["dotinst"]))
+                    if os.path.exists(dot_json["dotinst"]):
+                        printLog("Using local dotinst file: " + dot_json["dotinst"])
+                        item.dotinst = dot_json["dotinst"]
+                        dot_json = json.load(open(dot_json["dotinst"]))
                     else:
                         printLog("Local dotinst file not exists")
 
                 if "type" in dot_json and "dotinst" in dot_json and dot_json["type"] == "remote":
                     item.dotinst = dot_json["dotinst"]
-                    print(item.dotinst)
 
                 if "settings" in dot_json:
                     item.settings = True
@@ -325,7 +328,9 @@ class LoadConfiguration(Gtk.Box):
 
     # Loads JSON content from a local file in the user's home directory asynchronously.
     def _load_json_from_local_file(self):
-        file_path = home_folder + self.config_source
+        file_path = self.config_source
+        #####
+        print(file_path)
         local_file = Gio.File.new_for_path(file_path)
         printLog("Attempting to load file from: " + file_path)
 

@@ -59,6 +59,8 @@ class Information(Gtk.Box):
         self.config_homepage.set_visible(True)
         self.config_dependencies.set_visible(True)
         self.props.progress_bar.set_visible(True)
+        self.props.progress_bar.set_visible(True)
+        self.props.btn_dev_menu.set_visible(False)
 
         if not "description" in self.props.config_json:
             self.config_description.set_visible(False)
@@ -75,8 +77,12 @@ class Information(Gtk.Box):
         else:
             self.config_dependencies.set_subtitle(self.props.config_json["dependencies"])
 
-        self.config_source.set_subtitle(self.props.config_json["source"])
-        self.config_subfolder.set_subtitle(self.props.config_json["subfolder"])
+        if ".git" in self.props.config_json["source"]:
+            self.config_source.set_subtitle(self.props.config_json["source"])
+            self.config_subfolder.set_subtitle(self.props.config_json["subfolder"])
+        else:
+            self.config_source.set_subtitle(home_folder + self.props.config_json["source"])
+            self.config_subfolder.set_subtitle(self.props.config_json["subfolder"])
 
         if ".git" in self.props.config_json["source"]:
             if "tag" in self.props.config_json and not self.props.config_json["tag"] == "":
@@ -103,7 +109,7 @@ class Information(Gtk.Box):
             shutil.rmtree(self.props.original_folder)
 
         # Download or copy source into downloads folder
-        if ".git" in self.config_source.get_subtitle():
+        if ".git" in self.props.config_json["source"]:
             task = Gio.Task.new(self, self.current_cancellable, self.on_clone_source_sepository_completed, None)
             # task.set_task_data("task_data", None) # Pass our custom data instance to the task
             task.run_in_thread(self.clone_source_sepository)
@@ -182,6 +188,15 @@ class Information(Gtk.Box):
         self.props.wizzard_next_btn.set_label("Next")
         self.show_replacement = True
         self.props.updateProgressBar(0.2)
+
+    def get_next(self):
+        self.props.config_backup.load()
+
+    def clean_install(self):
+        printLog("Clean installation for " + self.props.config_json["id"])
+        if os.path.exists(self.props.dotfiles_folder):
+            # shutil.rmtree(self.props.dotfiles_folder) # For deleting non-empty directories
+            printLog(self.props.dotfiles_folder + " folder removed successfully")
 
     def writeProjectConfig(self):
         # Add additional information to config.dotinst

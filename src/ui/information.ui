@@ -153,10 +153,8 @@
             <property name="title" translatable="yes">Subfolder</property>
           </object>
         </child>
-
       </object>
     </child>
-
   </template>
 
 </interface>

@@ -12,20 +12,23 @@
           <object class="AdwToolbarView">
         <child type="top">
           <object class="AdwHeaderBar">
-            <child type="start">
-              <object class="GtkButton" id="btn_add_project">
-                <property name="label" translatable="yes">Create Project</property>
-                <property name="visible">false</property>
-                <property name="css-classes">suggested-action</property>
-                <signal name="clicked" handler="on_add_project_action"/>
-              </object>
-            </child>
             <child type="end">
               <object class="GtkMenuButton">
                 <property name="primary">True</property>
                 <property name="icon-name">open-menu-symbolic</property>
                 <property name="tooltip-text" translatable="yes">Main Menu</property>
                 <property name="menu-model">primary_menu</property>
+              </object>
+            </child>
+            <child type="start">
+              <object class="GtkMenuButton" id="btn_dev_menu">
+                <property name="visible">false</property>
+                <property name="label">Dev</property>
+                <property name="tooltip-text" translatable="yes">Main Menu</property>
+                <property name="menu-model">dev_menu</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
               </object>
             </child>
           </object>
@@ -236,6 +239,20 @@
         </object>
     </property>
   </template>
+  <menu id="dev_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Create Project</attribute>
+        <attribute name="action">win.create_project</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Load Project</attribute>
+        <attribute name="action">win.load_project</attribute>
+      </item>
+    </section>
+  </menu>
   <menu id="primary_menu">
     <section>
       <item>
@@ -275,3 +292,4 @@
     </section>
   </menu>
 </interface>
+
