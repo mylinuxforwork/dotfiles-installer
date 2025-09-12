@@ -186,7 +186,7 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
                 self.config_backup.create_backup()
             case "page_settings":
                 self.config_settings.replace_settings()
-                self.config_installation.load()
+                self.config_protect.load()
             case "page_restore":
                 self.config_restore.start_restore()
                 self.config_protect.load()

@@ -1,5 +1,5 @@
 project('dotfiles-installer',
-          version: '0.9.8',
+          version: '0.9.9',
     meson_version: '>= 1.0.0',
   default_options: [ 'warning_level=2', 'werror=false', ],
 )

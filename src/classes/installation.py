@@ -87,12 +87,15 @@ class Installation(Gtk.Box):
 
             # Create symlinks for all files and folders except for .dotinst files
             printLog("Creating symlinks...")
+
             for f in os.listdir(self.props.dotfiles_folder):
                 if f != ".config" and ".dotinst" not in f:
-                    self.createSymlink(self.props.dotfiles_folder + "/" + f, home_folder + f)
+                    if os.path.exists(self.props.prepared_folder + "/" + f):
+                        self.createSymlink(self.props.dotfiles_folder + "/" + f, home_folder + f)
             for f in os.listdir(self.props.dotfiles_folder + "/.config"):
                 if ".dotinst" not in f:
-                    self.createSymlink(self.props.dotfiles_folder + "/.config/" + f, home_folder + ".config/" + f)
+                    if os.path.exists(self.props.prepared_folder + "/.config/" + f):
+                        self.createSymlink(self.props.dotfiles_folder + "/.config/" + f, home_folder + ".config/" + f)
 
         else:
             printLog("Creating of symlinks disabled in preferences. Installation has been skipped.")

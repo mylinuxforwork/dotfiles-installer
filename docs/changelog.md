@@ -1,6 +1,10 @@
 # Changelog
 
-## Version 0.9.7
+## Version 0.9.9
+
+- Fix protect files and folder issues
+- Add more developer tools
+- Add "Info" menu button to load configuration overview to installed dotfiles with "Open Homepage" and "Check for Updates" if remote source.
 
 ## Version 0.9.6
 
