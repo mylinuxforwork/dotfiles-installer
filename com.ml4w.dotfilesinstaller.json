@@ -48,6 +48,17 @@
                 }
             ]
         },
+	{
+            "name": "rsync",
+            "buildsystem": "autotools",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.samba.org/pub/rsync/rsync-3.4.1.tar.gz",
+                    "sha256": "2924bcb3a1ed8b551fc101f740b9f0fe0a202b115027647cf69850d65fd88c52"
+                }
+            ]
+        },
         {
             "name" : "dotfiles-installer",
             "builddir" : true,
@@ -56,7 +67,7 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/mylinuxforwork/dotfiles-installer",
-                    "tag": "0.9.9"
+                    "tag": "0.10.0"
                 }
             ]
         }

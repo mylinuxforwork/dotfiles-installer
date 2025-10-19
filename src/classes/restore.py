@@ -69,11 +69,12 @@ class Restore(Gtk.Box):
             if v.value == True:
                 if os.path.exists(self.props.prepared_folder + "/" + v.source):
                     if os.path.isfile(self.props.prepared_folder + "/" + v.source):
-                        os.remove(self.props.prepared_folder + "/" + v.source)
-                        printLog("Restored file: " + self.props.prepared_folder + "/" + v.source)
+                        shutil.copy(self.props.dotfiles_folder + "/" + v.source, self.props.prepared_folder + "/" + v.source)
+                        printLog("Restored file: " + self.props.dotfiles_folder + "/" + v.source + " -> " + self.props.prepared_folder + "/" + v.source)
+
                     if os.path.isdir(self.props.prepared_folder + "/" + v.source):
-                        shutil.rmtree(self.props.prepared_folder + "/" + v.source)
-                        printLog("Restored folder: " + self.props.prepared_folder + "/" + v.source)
+                        shutil.copytree(self.props.dotfiles_folder + "/" + v.source, self.props.prepared_folder + "/" + v.source, dirs_exist_ok=True)
+                        printLog("Restored folder: " + self.props.dotfiles_folder + "/" + v.source + " -> " + self.props.prepared_folder + "/" + v.source)
             else:
                 self.props.local_json["restoreexclude"].append(v.source)
 

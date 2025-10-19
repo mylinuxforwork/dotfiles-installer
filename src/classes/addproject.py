@@ -132,6 +132,10 @@ class AddProject(Adw.Dialog):
                 f.write(self.project_dotinst)
             printLog(dotinst_file + " created")
 
+        # Copy sync.sh
+        if not os.path.exists(project_folder + "/dev/sync.sh"):
+            shutil.copy(self.path_name + "/templates/sync.sh", project_folder + "/dev/sync.sh")
+
     def on_folder_selected(self, file_dialog, result, user_data):
         try:
             folder = file_dialog.select_folder_finish(result)

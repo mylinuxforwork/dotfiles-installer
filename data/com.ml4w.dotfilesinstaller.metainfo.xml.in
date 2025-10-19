@@ -58,14 +58,12 @@
   </screenshots>
 
   <releases>
-    <release version="0.9.9" date="2025-09-12">
+    <release version="0.10.0" date="2025-10-19">
       <url type="details">https://mylinuxforwork.github.io/dotfiles-installer/changelog</url>
       <description translate="no">
-        <p>Release 0.9.9</p>
+        <p>Release 0.10.0</p>
         <ul>
-          <li>Fix protect files and folder issues</li>
-          <li>Add more developer tools</li>
-          <li>Add "Info" menu button to load configuration overview to installed dotfiles with "Open Homepage" and "Check for Updates" if remote source.</li>
+          <li>Fix configuration restore</li>
         </ul>
       </description>
     </release>
