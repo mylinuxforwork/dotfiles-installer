@@ -127,7 +127,7 @@ class LoadConfiguration(Gtk.Box):
             btn.set_icon_name("arrow3-left-symbolic")
             btn.get_style_context().add_class("suggested-action")
 
-            btn.connect("clicked",self.sync_dotfiles, item.id + ";" + item.source + "/" + item.subfolder + ";" + item.dotinst)
+            btn.connect("clicked",self.sync_dotfiles, item.id + ";" + item.source + "/" + item.subfolder + ";" + item.dotinst + ";" + item.source + "/dev")
             row.add_suffix(btn)
 
         if get_dev_enabled():
@@ -236,6 +236,7 @@ class LoadConfiguration(Gtk.Box):
     def activate_dotfiles(self,widget,id):
         self.props.config_json = json.load(open(get_installed_dotfiles_folder() + id + "/config.dotinst"))
         self.props.id = id
+        self.props.prepared_folder = prepared_folder + self.props.id
         self.props.wizzard_back_btn.set_visible(True)
         self.props.wizzard_next_btn.set_visible(True)
         self.props.progress_bar.set_visible(True)

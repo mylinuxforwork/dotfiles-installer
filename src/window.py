@@ -103,54 +103,18 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.create_action("run_setup_script",self.on_run_setup_script)
         self.create_action("create_project",self.on_create_project)
         self.create_action("load_project",self.on_load_project)
-
-        self.open_dotfiles_action = Gio.SimpleAction.new("dev_open_dotfiles_folder", GLib.VariantType.new('s'))
-        self.open_dotfiles_action.connect("activate", self.on_dev_open_dotfiles_folder)
-        self.add_action(self.open_dotfiles_action) # Add the action to the window
-
-        self.open_project_action = Gio.SimpleAction.new("dev_open_project_folder", GLib.VariantType.new('s'))
-        self.open_project_action.connect("activate", self.on_dev_open_project_folder)
-        self.add_action(self.open_project_action) # Add the action to the window
-
-        self.dev_push_to_repo_action = Gio.SimpleAction.new("dev_push_to_repo", GLib.VariantType.new('s'))
-        self.dev_push_to_repo_action.connect("activate", self.on_dev_push_to_repo)
-        self.add_action(self.dev_push_to_repo_action) # Add the action to the window
-
-        self.dev_pull_from_repo_action = Gio.SimpleAction.new("dev_pull_from_repo", GLib.VariantType.new('s'))
-        self.dev_pull_from_repo_action.connect("activate", self.on_dev_pull_from_repo)
-        self.add_action(self.dev_pull_from_repo_action) # Add the action to the window
-
-        self.dev_open_dotinst_action = Gio.SimpleAction.new("dev_open_dotinst", GLib.VariantType.new('s'))
-        self.dev_open_dotinst_action.connect("activate", self.on_dev_open_dotinst)
-        self.add_action(self.dev_open_dotinst_action) # Add the action to the window
-
-        self.dev_reinstall_dotfiles_action = Gio.SimpleAction.new("dev_reinstall_dotfiles", GLib.VariantType.new('s'))
-        self.dev_reinstall_dotfiles_action.connect("activate", self.on_dev_reinstall_dotfiles)
-        self.add_action(self.dev_reinstall_dotfiles_action) # Add the action to the window
-
-        self.dev_open_download_folder_action = Gio.SimpleAction.new("open_download_folder", GLib.VariantType.new('s'))
-        self.dev_open_download_folder_action.connect("activate", self.on_open_download_folder)
-        self.add_action(self.dev_open_download_folder_action) # Add the action to the window
-
-        self.dev_open_prepared_folder_action = Gio.SimpleAction.new("open_prepared_folder", GLib.VariantType.new('s'))
-        self.dev_open_prepared_folder_action.connect("activate", self.on_open_prepared_folder)
-        self.add_action(self.dev_open_prepared_folder_action) # Add the action to the window
-
-        self.dev_open_backup_folder_action = Gio.SimpleAction.new("open_backup_folder", GLib.VariantType.new('s'))
-        self.dev_open_backup_folder_action.connect("activate", self.on_open_backup_folder)
-        self.add_action(self.dev_open_backup_folder_action) # Add the action to the window
-
-        self.dev_start_migration_action = Gio.SimpleAction.new("start_migration", GLib.VariantType.new('s'))
-        self.dev_start_migration_action.connect("activate", self.on_start_migration)
-        self.add_action(self.dev_start_migration_action) # Add the action to the window
-
-        self.open_homepage_action = Gio.SimpleAction.new("open_homepage", GLib.VariantType.new('s'))
-        self.open_homepage_action.connect("activate", self.on_open_homepage)
-        self.add_action(self.open_homepage_action) # Add the action to the window
-
-        self.check_for_uodate_action = Gio.SimpleAction.new("check_for_update", GLib.VariantType.new('s'))
-        self.check_for_uodate_action.connect("activate", self.on_check_for_update)
-        self.add_action(self.check_for_uodate_action) # Add the action to the window
+        self.create_menu_action("dev_open_dotfiles_folder",self.on_dev_open_dotfiles_folder)
+        self.create_menu_action("dev_open_project_folder",self.on_dev_open_project_folder)
+        self.create_menu_action("dev_push_to_repo",self.on_dev_push_to_repo)
+        self.create_menu_action("dev_pull_from_repo",self.on_dev_pull_from_repo)
+        self.create_menu_action("dev_open_dotinst",self.on_dev_open_dotinst)
+        self.create_menu_action("dev_reinstall_dotfiles",self.on_dev_reinstall_dotfiles)
+        self.create_menu_action("open_download_folder",self.on_open_download_folder)
+        self.create_menu_action("open_prepared_folder",self.on_open_prepared_folder)
+        self.create_menu_action("open_backup_folder",self.on_open_backup_folder)
+        self.create_menu_action("start_migration",self.on_start_migration)
+        self.create_menu_action("open_homepage",self.on_open_homepage)
+        self.create_menu_action("check_for_update",self.on_check_for_update)
 
     @Gtk.Template.Callback()
     def on_wizzard_back_action(self, widget):
@@ -358,16 +322,14 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         id = p.split(";")[0]
         project = p.split(";")[1]
         dotinst = p.split(";")[2]
-        ignore_str = '*.dotinst'
-        if os.path.exists(dotinst):
-            dot_json = json.load(open(dotinst))
-            if "dev" in dot_json:
-                if "ignore" in dot_json["dev"]:
-                    ignore_str = ignore_str + "," + dot_json["dev"]["ignore"]
-
-        ignore_patterns_list = [pattern.strip() for pattern in ignore_str.split(',')]
-        printLog("Copy " + home_folder + project + "/" + " to " + get_dotfiles_folder(id) + "/")
-        shutil.copytree(home_folder + project + "/", get_dotfiles_folder(id) + "/", dirs_exist_ok=True, ignore=shutil.ignore_patterns(*ignore_patterns_list))
+        devfolder = p.split(";")[3]
+        printLog("Sync " + home_folder + project + "/" + " with " + get_dotfiles_folder(id) + "/")
+        if os.path.exists(home_folder + devfolder + "/protected.txt"):
+            command = ["rsync", "-azv", "--delete", "--exclude=config.dotinst", "--exclude-from=" + home_folder + devfolder + "/protected.txt", home_folder + project + "/", get_dotfiles_folder(id) + "/"]
+        else:
+            command = ["rsync", "-azv", "--delete", "--exclude=config.dotinst", home_folder + project + "/", get_dotfiles_folder(id) + "/"]
+        printLog("Executing command: " + " ".join(command))
+        subprocess.call(command)
 
     def on_dev_open_dotfiles_folder(self, widget, param):
         open_folder(get_dotfiles_folder(param.get_string()))
@@ -540,4 +502,9 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.add_action(action)
         if shortcuts:
             self.set_accels_for_action(f"win.{name}", shortcuts)
+
+    def create_menu_action(self, name, callback):
+        action = Gio.SimpleAction.new(name, GLib.VariantType.new('s'))
+        action.connect("activate", callback)
+        self.add_action(action)
 

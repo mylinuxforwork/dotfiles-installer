@@ -110,13 +110,44 @@ class Information(Gtk.Box):
 
         # Download or copy source into downloads folder
         if ".git" in self.props.config_json["source"]:
-            task = Gio.Task.new(self, self.current_cancellable, self.on_clone_source_sepository_completed, None)
-            # task.set_task_data("task_data", None) # Pass our custom data instance to the task
-            task.run_in_thread(self.clone_source_sepository)
+            if self.github_repo_exists_ls_remote(self.props.config_json["source"]):
+                task = Gio.Task.new(self, self.current_cancellable, self.on_clone_source_sepository_completed, None)
+                # task.set_task_data("task_data", None) # Pass our custom data instance to the task
+                task.run_in_thread(self.clone_source_sepository)
+            else:
+                printLog("Repository " + self.props.config_json["source"] + "does NOT exist")
+                self._show_error_and_reset("Remote GitHub repository could NOT be found. Please check the .dotinst file.")
+                self.props.spinner.set_visible(False)
+                self.props.wizzard_next_btn.set_sensitive(True)
+
         else:
             task = Gio.Task.new(self, self.current_cancellable, self.on_copy_source_folder_completed, None)
             # task.set_task_data("task_data", None) # Pass our custom data instance to the task
             task.run_in_thread(self.copy_source_folder)
+
+    def github_repo_exists_ls_remote(self,repo_url):
+        """Checks if a GitHub repository exists by running 'git ls-remote'."""
+        # We use a limited set of environment variables to prevent git from prompting for credentials
+        # which can hang the subprocess call for public repos.
+        env = os.environ.copy()
+        env['GIT_TERMINAL_PROMPT'] = '0' # Disable prompt for credentials
+
+        try:
+            # We only check for one reference (HEAD) for a quick response
+            subprocess.run(
+                ['git', 'ls-remote', '--exit-code', '--quiet', repo_url, 'HEAD'],
+                check=True, # Raise CalledProcessError for non-zero exit codes
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                env=env
+            )
+            return True
+        except subprocess.CalledProcessError as e:
+            # The repository likely doesn't exist, or is private/inaccessible
+            return False
+        except FileNotFoundError:
+            print("Error: 'git' command not found. Make sure Git is installed and in your PATH.")
+            return None
 
     # Clone the the source from git repository
     def clone_source_sepository(self, task, source_object, task_data, cancellable):
