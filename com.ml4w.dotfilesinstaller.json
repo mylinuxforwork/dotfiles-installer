@@ -4,6 +4,7 @@
     "runtime-version" : "48",
     "sdk" : "org.gnome.Sdk",
     "command" : "dotfiles-installer",
+    /* "x-run-args": ["--install", "com.ml4w.dotfiles.stable"], */
     "finish-args" : [
         "--share=network",
         "--share=ipc",
@@ -67,7 +68,7 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/mylinuxforwork/dotfiles-installer",
-                    "tag": "0.11.0"
+                    "tag": "0.12.0"
                 }
             ]
         }

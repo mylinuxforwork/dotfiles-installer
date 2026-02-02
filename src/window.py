@@ -59,6 +59,8 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+        app = self.get_application()
+
         # Load props to stack pages
         self.config_configuration.props = self
         self.config_information.props = self
@@ -68,6 +70,14 @@ class DotfilesInstallerWindow(Adw.ApplicationWindow):
         self.config_protect.props = self
         self.config_installation.props = self
         self.config_finish.props = self
+
+        if (app.install_target != ""):
+            try:
+                dotinst_json = json.load(open(get_dotfiles_folder(app.install_target) + "/config.dotinst"))
+                self.config_configuration.entry_dotinst.set_text(dotinst_json["dotinst"])
+                self.config_configuration.load_configuration(self)
+            except:
+                self.config_configuration.entry_dotinst.set_text("")
 
         self.preferences = Preferences()
         self.preferences.props = self

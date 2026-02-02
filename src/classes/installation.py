@@ -126,23 +126,15 @@ class Installation(Gtk.Box):
         self.delete_file_in_sandbox(target)
 
         # Create symlink
-        if os.path.isfile(source):
-            printLog("Adding Symlink File: " + source + "->" + target)
-            try:
-                os.symlink(source, target)
-                printLog("Symlink File: " + source + "->" + target + " created successfully")
-                return True
-            except:
-                printLog("Error: Symlink File " + source + "->" + target + " not created")
-                return False
+        printLog("Adding Symlink: " + source + "->" + target)
+        try:
+            # os.symlink(source, target) # Old Python Version
+            # os.symlink(source, target, target_is_directory=True) # Old Python Version
 
-        elif os.path.isdir(source):
-            printLog("Adding Symlink Folder: " + source + "->" + target)
-            try:
-                os.symlink(source, target, target_is_directory=True)
-                printLog("Symlink Folder: " + source + "->" + target + " created successfully")
-                return True
-            except:
-                printLog("Error: Symlink Folder " + source + "->" + target + " not created")
-                return False
+            subprocess.run(['ln', '-sr', source, target])
+            printLog("Symlink: " + source + "->" + target + " created successfully")
+            return True
+        except:
+            printLog("Error: Symlink File " + source + "->" + target + " not created")
+            return False
 

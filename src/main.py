@@ -30,8 +30,33 @@ class DotfilesInstallerApplication(Adw.Application):
                          flags=Gio.ApplicationFlags.DEFAULT_FLAGS,
                          resource_base_path='/com/ml4w/dotfilesinstaller')
         self.win = None
+        self.install_target = ""
+        self.add_main_option(
+            "install",                # Long name (becomes --update)
+            0,                       # Short name (0 if none, or ord('u') for -u)
+            GLib.OptionFlags.NONE,
+            GLib.OptionArg.STRING,   # Expects a string after the flag
+            "Description",
+            None
+        )
+
+        self.connect("handle-local-options", self.on_handle_local_options)
+
         run_setup()
         self.create_actions()
+
+    def on_handle_local_options(self, app, options: GLib.VariantDict):
+        if options.contains("install"):
+            # We look up the value expecting a String ("s")
+            # .get_string() converts the GLib Variant to a Python string
+            value = options.lookup_value("install", GLib.VariantType.new("s")).get_string()
+            print(f"DEBUG: Update argument received: {value}")
+            # Store it in the class instance so 'on_activate' can see it later
+            self.install_target = value
+
+        # IMPORTANT: Return -1 to let the app continue to start up (triggering 'activate').
+        # If you return 0 or higher, the app will exit immediately (used for things like --version).
+        return -1
 
     # Create and show the main window when the application activates
     def do_activate(self):
