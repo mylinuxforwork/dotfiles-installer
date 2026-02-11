@@ -4,12 +4,12 @@ Take control of your dotfiles configurations with Dotfiles Installer, designed t
 
 Furthermore, the app allows you to publish your own dotfiles and offer others a straightforward, intuitive way to install your preferred setup.
 
-![image](https://mylinuxforwork.github.io/dotfiles-installer/mainscreen-dark.png)
+![image](https://ml4w.com/dotfiles-installer/mainscreen-dark.png)
 
 # Documentation
 
 Please have a look at the Wiki to learn how to use and configure the Dotfiles Installer:<br>
-https://mylinuxforwork.github.io/dotfiles-installer/
+https://ml4w.com/dotfiles-installer/
 
 # 1. Install the Dotfiles Installer App
 
