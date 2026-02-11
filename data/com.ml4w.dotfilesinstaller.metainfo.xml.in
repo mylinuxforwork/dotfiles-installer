@@ -16,15 +16,15 @@
   </developer>
 
   <!-- Required: Should be a link to the upstream homepage for the component -->
-  <url type="homepage">https://mylinuxforwork.github.io/dotfiles-installer/</url>
+  <url type="homepage">https://ml4w.com/dotfiles-installer/</url>
   <!-- Recommended: It is highly recommended for open-source projects to display the source code repository -->
   <url type="vcs-browser">https://github.com/mylinuxforwork/dotfiles-installer</url>
   <!-- Should point to the software's bug tracking system, for users to report new bugs -->
   <url type="bugtracker">https://github.com/mylinuxforwork/dotfiles-installer/issues</url>
   <!-- Should link a FAQ page for this software, to answer some of the most-asked questions in detail -->
-  <url type="faq">https://mylinuxforwork.github.io/dotfiles-installer/</url>
+  <url type="faq">https://ml4w.com/dotfiles-installer/</url>
   <!-- Should provide a web link to an online user's reference, a software manual or help page -->
-  <url type="help">https://mylinuxforwork.github.io/dotfiles-installer/</url>
+  <url type="help">https://ml4w.com/dotfiles-installer/</url>
   
   <!-- All graphical applications having a desktop file must have this tag in the MetaInfo.
      If this is present, appstreamcli compose will pull icons, keywords and categories from the desktop file. -->
@@ -40,30 +40,31 @@
 
   <screenshots>
     <screenshot type="default">
-      <image>https://mylinuxforwork.github.io/dotfiles-installer/mainscreen.png</image>
+      <image>https://ml4w.com/dotfiles-installer/mainscreen.png</image>
       <caption xml:lang="en">Welcome Screen</caption>
     </screenshot>
     <screenshot>
-      <image>https://mylinuxforwork.github.io/dotfiles-installer/infoscreen.png</image>
+      <image>https://ml4w.com/dotfiles-installer/infoscreen.png</image>
       <caption xml:lang="en">Information Screen</caption>
     </screenshot>
     <screenshot>
-      <image>https://mylinuxforwork.github.io/dotfiles-installer/backupscreen.png</image>
+      <image>https://ml4w.com/dotfiles-installer/backupscreen.png</image>
       <caption xml:lang="en">Backup Screen</caption>
     </screenshot>
     <screenshot>
-      <image>https://mylinuxforwork.github.io/dotfiles-installer/mainscreen-dev.png</image>
+      <image>https://ml4w.com/dotfiles-installer/mainscreen-dev.png</image>
       <caption xml:lang="en">Development Workflow Support</caption>
     </screenshot>
   </screenshots>
 
   <releases>
-    <release version="0.12.0" date="2026-02-01">
-      <url type="details">https://mylinuxforwork.github.io/dotfiles-installer/changelog</url>
+    <release version="0.12.1" date="2026-02-11">
+      <url type="details">https://ml4w.com/dotfiles-installer/changelog</url>
       <description translate="no">
-        <p>Release 0.12.0</p>
+        <p>Release 0.12.1</p>
         <ul>
           <li>Symlinks will be created with relative paths to enable portability</li>
+          <li>New documentation launched</li>
         </ul>
       </description>
     </release>

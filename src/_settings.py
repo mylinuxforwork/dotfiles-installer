@@ -22,8 +22,8 @@ from gi.repository import Gtk, Gdk, Gio, GLib, Adw
 app_id = "com.ml4w.dotfilesinstaller"
 app_name = "Dotfiles Installer"
 app_developer = "Stephan Raabe"
-app_version = "0.12.0"
-app_homepage = "https://github.com/mylinuxforwork/dotfiles-installer"
+app_version = "0.12.1"
+app_homepage = "https://ml4w.com/dotfiles-installer"
 app_github_api_tags = "https://api.github.com/repos/mylinuxforwork/dotfiles-installer/tags"
 
 # Folder Names
